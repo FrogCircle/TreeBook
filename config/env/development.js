@@ -6,10 +6,10 @@ module.exports = {
   //  aggregate: 'whatever that is not false, because boolean false value turns aggregation off', //false
   aggregate: false,
   mongoose: {
-    debug: false
+    debug: true
   },
   app: {
-    name: 'MEAN - FullStack JS - Development'
+    name: 'TreeBook'
   },
   facebook: {
     clientID: 'DEFAULT_APP_ID',
@@ -36,12 +36,15 @@ module.exports = {
     clientSecret: 'SECRET_KEY',
     callbackURL: 'http://localhost:3000/auth/linkedin/callback'
   },
-  emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
+  emailFrom: process.env.TBEMAIL, // sender address like ABC <abc@example.com>
   mailer: {
-    service: 'SERVICE_PROVIDER', // Gmail, SMTP
+    service: 'gmail', // Gmail, SMTP
     auth: {
-      user: 'EMAIL_ID',
-      pass: 'PASSWORD'
+      user: process.env.TBEMAIL,
+      pass: process.env.TBPASS
     }
   }
 };
+
+console.log(module.exports.mailer.auth.user, 123);
+console.log(module.exports.mailer.auth.pass, 456);
