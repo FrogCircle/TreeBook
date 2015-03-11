@@ -45,6 +45,3 @@ module.exports = {
     }
   }
 };
-
-console.log(module.exports.mailer.auth.user, 123);
-console.log(module.exports.mailer.auth.pass, 456);
