@@ -55,6 +55,8 @@ angular.module('mean.articles').config(['$stateProvider',
       });
   }
 ]).controller('PaginationDemoCtrl', function ($scope, $log) {
+
+  // Probably this should go in controllers file.
   $scope.totalItems = 64;
   $scope.currentPage = 4;
 
@@ -70,4 +72,3 @@ angular.module('mean.articles').config(['$stateProvider',
   $scope.bigTotalItems = 175;
   $scope.bigCurrentPage = 1;
 });
-// 550123fd5bcce8bc1a22fe55
