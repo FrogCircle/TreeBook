@@ -12,7 +12,7 @@
         "bower_components/angular-resource/angular-resource.min.js",
         "bower_components/angular-ui-router/release/angular-ui-router.min.js",
         "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
-        "bower_components/web-bootstrap/index.js"
+        "bower_components/web-bootstrap/index.js",
 
         "maps.googleapis.com/maps/api/js?sensor=false",
         "bower_components/lodash.underscore/lodash.underscore.js",
