@@ -47,7 +47,7 @@ module.exports = function(config) {
     proxies: {
       '/': 'http://localhost:3001/'
     },
-    
+
     // enable / disable colors in the output (reporters and logs)
     colors: true,
 
