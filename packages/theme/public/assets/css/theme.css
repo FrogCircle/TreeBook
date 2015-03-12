@@ -46,6 +46,7 @@
 
 .welcome .info {
   margin-top:10px;
+  margin-bottom:10px;
   background-color: #fff;
 	padding-bottom: 10px;
 }
@@ -171,17 +172,17 @@
 /* Community */
 .welcome-sprite{
   float:left;
-  width:53px;
+  width:40px;
   height:53px;
 }
 .welcome-sprite{
-  background-image: url(/theme/assets/img/welcome_sprite.png);
+  background-image: url(/theme/assets/img/tree101.png);
   background-repeat: no-repeat;
   display: block;
 }
-.docs .welcome-sprite {
-  background-position: 0 -7px ;
-}
+/*.docs .welcome-sprite {
+
+}*/
 
 .packages .welcome-sprite {
   background-position: -60px 0;
