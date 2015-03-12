@@ -4,3 +4,8 @@ h1 {
 ul.articles li:not(:last-child) {
 	border-bottom: 1px solid #ccc
 }
+
+.listitem{
+  border: 2px black solid;
+  border-radius: 15px;
+}
