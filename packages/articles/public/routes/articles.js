@@ -55,8 +55,11 @@ angular.module('mean.articles').config(['$stateProvider',
       });
   }
 ]).controller('PaginationDemoCtrl', function ($scope, $log) {
+<<<<<<< HEAD
 
   // Probably this should go in controllers file.
+=======
+>>>>>>> b5ff4574f308e7a555a58f8fd69fa8125274dfa1
   $scope.totalItems = 64;
   $scope.currentPage = 4;
 
@@ -71,4 +74,9 @@ angular.module('mean.articles').config(['$stateProvider',
   $scope.maxSize = 5;
   $scope.bigTotalItems = 175;
   $scope.bigCurrentPage = 1;
+<<<<<<< HEAD
 });
+=======
+});
+// 550123fd5bcce8bc1a22fe55
+>>>>>>> b5ff4574f308e7a555a58f8fd69fa8125274dfa1
