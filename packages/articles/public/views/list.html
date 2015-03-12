@@ -1,4 +1,6 @@
-<section data-ng-controller="ArticlesController" data-ng-init="find()">
+<section class=""welcome container-fluid""data-ng-controller="ArticlesController" data-ng-init="find()">
+<!--
+Old but helpful code
   <ul class="articles unstyled">
     <li data-ng-repeat="article in articles">
       <span>username</span>
@@ -7,10 +9,29 @@
       </h2>
       <div>content</div>
     </li>
-  </ul>
+  </ul> -->
 
+<div class="row">
+    <div class="col-md-4"></div>
+    <div>
+    <div class="col-md-8">
+      <div>
+        <h3 class="modal-title">Larry the Oak</h3>
+      </div>
+      <div>
+        stuff
+      </div>
+      <div class=>
+        OK
+      </div>
+    </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
 
-<div ng-controller="PaginationDemoCtrl">
+<!-- BELOW NEEDS ALIGN CENTER -->
+<div class="col-md-3"></div>
+<div class="col-md-6" ng-controller="PaginationDemoCtrl">
     <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>
 </div>
 

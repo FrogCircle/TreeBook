@@ -69,5 +69,5 @@ angular.module('mean.articles').config(['$stateProvider',
   $scope.maxSize = 5;
   $scope.bigTotalItems = 175;
   $scope.bigCurrentPage = 1;
-});;
+});
 // 550123fd5bcce8bc1a22fe55
