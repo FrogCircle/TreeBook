@@ -1,10 +1,12 @@
+'use strict';
+
 angular.module('mean.articles', ['uiGmapgoogle-maps'])
 
 .config(function(uiGmapGoogleMapApiProvider)
   uiGmapGoogleMapApiProvider.configure({
     //api key
-    //version
-    //libraries
+      v: '3.18',
+      libraries: 'weather,geometry,visualization'
   })
 )
 
