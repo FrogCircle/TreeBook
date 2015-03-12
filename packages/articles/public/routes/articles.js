@@ -25,33 +25,49 @@ angular.module('mean.articles').config(['$stateProvider',
 
     // states for my app
     $stateProvider
-      .state('all articles', {
-        url: '/articles',
+      .state('all trees', {
+        url: '/trees',
         templateUrl: 'articles/views/list.html',
         resolve: {
           loggedin: checkLoggedin
         }
       })
-      .state('create article', {
-        url: '/articles/create',
+      .state('tree display', {
+        url: '/about',
         templateUrl: 'articles/views/create.html',
         resolve: {
           loggedin: checkLoggedin
         }
       })
-      .state('edit article', {
-        url: '/articles/:articleId/edit',
-        templateUrl: 'articles/views/edit.html',
+      .state('profile page', {
+        url: '/trees/profile',
+        templateUrl: 'articles/views/profile.html',
         resolve: {
           loggedin: checkLoggedin
         }
       })
-      .state('article by id', {
-        url: '/articles/:articleId',
+      .state('arcticle display', {
+        url: '/trees/:articleId',
         templateUrl: 'articles/views/view.html',
         resolve: {
           loggedin: checkLoggedin
         }
       });
   }
-]);
+]).controller('PaginationDemoCtrl', function ($scope, $log) {
+  $scope.totalItems = 64;
+  $scope.currentPage = 4;
+
+  $scope.setPage = function (pageNo) {
+    $scope.currentPage = pageNo;
+  };
+
+  $scope.pageChanged = function() {
+    $log.log('Page changed to: ' + $scope.currentPage);
+  };
+
+  $scope.maxSize = 5;
+  $scope.bigTotalItems = 175;
+  $scope.bigCurrentPage = 1;
+});;
+// 550123fd5bcce8bc1a22fe55
