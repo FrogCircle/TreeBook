@@ -10,6 +10,7 @@
     "bootstrap": "3.1.1",
     "angular-bootstrap": "0.11.0",
     "angular-ui-router": "#master",
-    "web-bootstrap": "./node_modules/meanio/resources/web-bootstrap.js"
+    "web-bootstrap": "./node_modules/meanio/resources/web-bootstrap.js",
+    "underscore": "~1.8.2"
   }
 }
