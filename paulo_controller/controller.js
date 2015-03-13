@@ -30,11 +30,11 @@ var getMessagesForTree = function(req, res) {
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var selectMessages = "SELECT message FROM message WHERE treeid = $1 LIMIT 100;";
-    client.query(selectMessages, [treeid]);
-  }, function(error, results) {
-    res.send(results);
+    client.query(selectMessages, [treeid], function(error, results) {
+      res.send(results);
+    });
+    done();
   });
-  done();
 };
 exports.getMessagesForTree = getMessagesForTree;
 
@@ -43,16 +43,18 @@ exports.getMessagesForTree = getMessagesForTree;
  * @param req
  * @param res
  */
+exports.getMessagesForTree = getMessagesForTree;
+
 var getMessagesForUsers = function(req, res) {
   var username = req.body.username;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var selectMessages = "SELECT message FROM message WHERE username = $1;";
-    client.query(selectMessages, [username]);
-  }, function(error, results) {
-    res.send(results);
+    client.query(selectMessages, [username], function(error, results) {
+      res.send(results);
+    });
+    done();
   });
-  done();
 };
 exports.getMessagesForUsers = getMessagesForUsers;
 
@@ -62,7 +64,6 @@ exports.getMessagesForUsers = getMessagesForUsers;
 //  * @param res
 
 var getTreeInfo = function(req, res) {
-  //needs google maps api call
   //var treeid = req.body.treeId;
   var treeid = 50;
   pg.connect(conString, function(err, client, done) {
@@ -91,14 +92,34 @@ var postMessageFromUser = function(req, res) {
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var insertMessages = "INSERT INTO message (message, username, treeid) values ($1, $2, $3);";
-    client.query(insertMessages, [message, username, treeid]);
-  }, function(error, results) {
-    res.send(results);
+    client.query(insertMessages, [message, username, treeid], function(error, results) {
+      res.send(results);
+      done();
+    });
   });
-  done();
 };
 exports.postMessageFromUser = postMessageFromUser;
 
+exports.getTreeInfo = getTreeInfo;
+
+/**
+ * Gets a tree data for 25 trees. This function currently is not using any inputs, but it's expected that it will take
+ * current position in the future.
+ * @param req
+ * @param res
+ */
+var getTrees = function(req, res) {
+  pg.connect(conString, function(err, client, done) {
+    console.log(err);
+    var selectTrees = 'select tree.name, q.qspecies, q.picture, l.latitude, l.longitude from qspecies q join tree ON (q.qspeciesid = tree.qspeciesid) join "location" l ON (l.locationid = tree.locationid) LIMIT 25;';
+    client.query(selectTrees, function(error, results) {
+    }, function(error, results) {
+      done();
+      console.log(results.rows);
+    });
+  })
+};
+exports.getTrees = getTrees;
 
 app.get('/profile', checkifloggedin, handler.renderIndex);
 app.get('/search', checkifloggedin, handler.renderIndex);
