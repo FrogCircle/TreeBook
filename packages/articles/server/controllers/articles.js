@@ -7,10 +7,8 @@ var conString = 'postgres://postgres:1234@localhost/postgres';
  * Show an article
  */
 exports.getTreeData = function(req, res) {
-  // var treeid = req.body.treeId;
-  var treeid = 50;
+  var treeid = req.params.treeId;
   pg.connect(conString, function(err, client, done) {
-    console.log(err);
     var selectMessages = 'select tree.name, q.qspecies, q.picture, tree.plantdate, l.latitude, l.longitude from qspecies q join tree ON (q.qspeciesid = tree.qspeciesid) join "location" l ON (l.locationid = tree.locationid) where treeid = $1;';
     client.query(selectMessages, [treeid], function(error, results) {
       //res.send(results);
