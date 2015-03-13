@@ -16,7 +16,8 @@
 
 
         "maps.googleapis.com/maps/api/js?sensor=false",
-        "bower_components/lodash.underscore/lodash.underscore.js",
+        "bower_components/underscore/underscore.js",
+        "bower_components/lodash/lodash.underscore.js",
         "bower_components/angular-google-maps/dist/angular-google-maps.js"
       ]
     }
