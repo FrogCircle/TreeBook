@@ -8,5 +8,4 @@ module.exports = function(Articles, app, auth) {
     .get(articles.all);
   app.route('/articles/:articleId')
     .get(auth.isMongoId, articles.show);
-
 };
