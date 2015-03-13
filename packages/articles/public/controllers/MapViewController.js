@@ -7,7 +7,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
   uiGmapGoogleMapApi.configure({
       //provide api key if available
       v: '3.18',
-      libraries: 'weather,geometry,visualization'
+      libraries: 'geometry,visualization'
   });
 }])
 
@@ -15,7 +15,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
 .controller('MapViewController', ['$scope', 'uiGmapGoogleMapApi',
   function($scope, uiGmapGoogleMapApi) {
     //Dumb node set up
-    $scope.map = {center: {latitude: 51.219053, longitude: 4.404418 }, zoom: 14 };
+    $scope.map = {center: {latitude: 40.444597, longitude: '-79.945033' }, zoom: 14 };
     $scope.options = {scrollwheel: false};
 
     //Async call can be done here if needed
