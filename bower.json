@@ -11,6 +11,7 @@
     "angular-bootstrap": "0.11.0",
     "angular-ui-router": "#master",
     "web-bootstrap": "./node_modules/meanio/resources/web-bootstrap.js",
-    "underscore": "~1.8.2"
+    "underscore": "~1.8.2",
+    "angular-google-maps": "~2.0.16"
   }
 }
