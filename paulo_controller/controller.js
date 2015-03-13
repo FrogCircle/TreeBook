@@ -56,11 +56,11 @@ var getMessagesForUsers = function(req, res) {
 };
 exports.getMessagesForUsers = getMessagesForUsers;
 
-/**
- * Get tree info from database and send to client. Request is expecting a treeId.
- * @param req
- * @param res
- */
+// *
+//  * Get tree info from database and send to client. Request is expecting a treeId.
+//  * @param req
+//  * @param res
+
 var getTreeInfo = function(req, res) {
   //needs google maps api call
   //var treeid = req.body.treeId;
