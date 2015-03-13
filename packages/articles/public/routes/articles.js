@@ -46,9 +46,9 @@ angular.module('mean.articles').config(['$stateProvider',
           loggedin: checkLoggedin
         }
       })
-      .state('arcticle display', {
-        url: '/trees/:articleId',
-        templateUrl: 'articles/views/view.html',
+      .state('single tree display', {
+        url: '/trees/:treeId',
+        templateUrl: 'articles/views/profile.html',
         resolve: {
           loggedin: checkLoggedin
         }

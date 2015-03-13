@@ -70,3 +70,5 @@ modules/views/
 # vim Files
 # --------------------
 *.swp
+.flooignore
+.floo

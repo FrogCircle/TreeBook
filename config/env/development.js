@@ -6,7 +6,7 @@ module.exports = {
   //  aggregate: 'whatever that is not false, because boolean false value turns aggregation off', //false
   aggregate: false,
   mongoose: {
-    debug: true
+    debug: false
   },
   app: {
     name: 'TreeBook'

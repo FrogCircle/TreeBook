@@ -1,4 +1,5 @@
 'use strict';
+// sample tree object {name: "tree", qspecies: "Maytenus boaria :: Mayten", picture: "nameless", plantdate: "1969-12-31T06:00:00.000Z", latitude: -122.431434474484…}
 
 angular.module('mean.articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Global', 'Articles',
   function($scope, $stateParams, $location, Global, Articles) {
@@ -9,10 +10,16 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.find = function() {
-      Articles.query(function(articles) {
-        $scope.articles = articles;
+      Articles.get({
+        treeId: $stateParams.treeId
+      }, function(tree){
+        $scope.tree = tree;
+        console.log(tree);
       });
     };
+
+    // Eric. The data you need is avaiable within this scope. $scope.tree is the object with the data.
+    // It should have a longitude and latitude param when avaiable
 
     $scope.findOne = function() {
       Articles.get({
