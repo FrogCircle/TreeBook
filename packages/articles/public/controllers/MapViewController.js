@@ -2,21 +2,26 @@
 
 angular.module('mean.articles', ['uiGmapgoogle-maps'])
 
-.config('uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApi){
+//Configure tha google map api
+.config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApi){
   uiGmapGoogleMapApi.configure({
-    //api key
+      //provide api key if available
       v: '3.18',
       libraries: 'weather,geometry,visualization'
   });
-})
+}])
 
-.controller('MapViewController', function($scope, uiGmapGoogleMapApi) {
-  $scope.map = {center: {latitude: 51.219053, longitude: 4.404418 }, zoom: 14 };
-  $scope.options = {scrollwheel: false};
+//set up the map view ctrl
+.controller('MapViewController', ['$scope', 'uiGmapGoogleMapApi',
+  function($scope, uiGmapGoogleMapApi) {
+    //Dumb node set up
+    $scope.map = {center: {latitude: 51.219053, longitude: 4.404418 }, zoom: 14 };
+    $scope.options = {scrollwheel: false};
 
-  //Async
+    //Async call can be done here if needed
 
-  // uiGmapGoogleMapApi.then(function(maps) {
+    // uiGmapGoogleMapApi.then(function(maps) {
 
-  // });
-});
+    // });
+  }
+]);
