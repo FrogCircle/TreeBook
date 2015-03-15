@@ -1,4 +1,4 @@
-# [![MEAN Logo](https://s3-us-west-1.amazonaws.com/treebookicons/tree-64.png)](eddiedolan.com) TreeBook
+# [![MEAN Logo](https://s3-us-west-1.amazonaws.com/treebookicons/tree-64.png)] TreeBook
 
 TreeBook is the definative social networking site for trees.
 
