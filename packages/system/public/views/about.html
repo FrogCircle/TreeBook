@@ -1,0 +1,467 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<style>
+@import url(http://fonts.googleapis.com/css?family=Cabin);
+
+body {
+  font-family: "Cabin";
+  min-width: 320px;
+  padding: 0;
+}
+.full {
+  width: 100%;
+  background: #FFF;
+}
+.topbanner {
+  width: 1170px;
+  margin: 20px auto;
+}
+#banner #boxes {
+  height: 500px;
+  position: relative;
+}
+#banner #boxes div {
+  position: absolute;
+}
+.small-box {
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 249px;
+  width: 249px;
+}
+.small-box > div {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.small-box a {
+  -webkit-transition-duration: .4s;
+  transition-duration: .4s;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -ms-perspective: 1000;
+  -moz-perspective: 1000;
+  perspective: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  overflow: hidden;
+}
+.small-box a:before,
+.big-box a:before {
+  content: "";
+  display: block;
+  background: rgba(0,0,0,0);
+  z-index: 98;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: background .2s;
+  transition: background .2s;
+}
+.small-box a:hover:before,
+.big-box a:hover:before {
+  z-index: 98;
+  background: rgba(0,0,0,.3);
+  -webkit-transition: background .2s;
+  transition: background .2s;
+}
+.big-box .original:hover:before {
+  background: rgba(0,0,0,0);
+}
+
+.original {
+  opacity: .9999;
+}
+.small-box a:not(.original) {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+.small-box > div > a:not(.original):hover {
+  cursor: pointer;
+}
+.small-box > div > a.original:hover {
+  cursor: default;
+}
+.small-box a span,
+.big-box a span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 24px;
+  color: #fff;
+  letter-spacing: 1px;
+  z-index: 100;
+  background: rgba(0,0,0,.4);
+  width: 100%;
+  padding: 10px 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-shadow: 0 0 4px rgba(0,0,0,.8), 0 0 30px rgba(0,0,0,.8);
+}
+.small-box .original img {
+  display: none;
+}
+.small-box .original span {
+  height: 100%;
+  text-align: center;
+  padding-top: 135px;
+  background: none;
+  text-shadow: none;
+}
+.big-box a span {
+  font-size: 24px;
+  font-weight: normal;
+}
+.small-box.paulo {
+  top: 0;
+  left: 0;
+}
+.small-box.eddie {
+  top: 251px;
+  left: 0;
+}
+.small-box.jonah {
+  top: 0;
+  left: 251px;
+}
+.small-box.eric {
+  top: 251px;
+  left: 251px;
+}
+.small-box .original span:before {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 64px;
+  width: 64px;
+  left: 50%;
+  margin-left: -32px;
+  top: 70px;
+}
+.small-box.paulo .original span:before {
+  background: url("system/assets/img/about/tree-51-64.png");
+}
+.small-box.eddie .original span:before {
+  background: url("system/assets/img/about/tree-45-64.png");
+}
+.small-box.jonah .original span:before {
+  background: url("system/assets/img/about/tree-74-64.png");
+}
+.small-box.eric .original span:before {
+  background: url("system/assets/img/about/tree-85-64.png");
+}
+
+/* spin forward all correct cards (small-box) */
+.paulo-chosen .small-box:not(.paulo) a.paulo-visible,
+.eddie-chosen .small-box:not(.eddie) a.eddie-visible,
+.jonah-chosen .small-box:not(.jonah) a.jonah-visible,
+.eric-chosen .small-box:not(.eric) a.eric-visible {
+  -webkit-transform: rotateY(360deg) translateZ(1px);
+  transform: rotateY(360deg);
+}
+
+/* spin backward all non-correct cards (small-box)*/
+.paulo-chosen .small-box:not(.paulo) a:not(.paulo-visible),
+.eddie-chosen .small-box:not(.eddie) a:not(.eddie-visible),
+.jonah-chosen .small-box:not(.jonah) a:not(.jonah-visible),
+.eric-chosen .small-box:not(.eric) a:not(.eric-visible) {
+  -webkit-transform: rotateY(180deg) translateZ(-2px);
+  transform: rotateY(180deg);
+}
+
+.paulo-chosen .small-box:not(.paulo) a.eddie-visible,
+.eddie-chosen .small-box:not(.eddie) a.paulo-visible,
+.jonah-chosen .small-box:not(.jonah) a.paulo-visible,
+.eric-chosen .small-box:not(.eric) a.paulo-visible,
+.paulo-chosen .small-box.eddie a.paulo-visible,
+.eddie-chosen .small-box.paulo a.eddie-visible,
+.jonah-chosen .small-box.paulo a.jonah-visible,
+.eric-chosen .small-box.paulo a.eric-visible {
+  -webkit-transition-delay: .1s;
+  transition-delay: .1s;
+}
+.paulo-chosen .small-box:not(.paulo) a.jonah-visible,
+.eddie-chosen .small-box:not(.eddie) a.jonah-visible,
+.jonah-chosen .small-box:not(.jonah) a.eddie-visible,
+.eric-chosen .small-box:not(.eric) a.eddie-visible,
+.paulo-chosen .small-box.jonah a.paulo-visible,
+.eddie-chosen .small-box.jonah a.eddie-visible,
+.jonah-chosen .small-box.eddie a.jonah-visible,
+.eric-chosen .small-box.eddie a.eric-visible {
+  -webkit-transition-delay: .2s;
+  transition-delay: .2s;
+}
+.paulo-chosen .small-box:not(.paulo) a.eric-visible,
+.eddie-chosen .small-box:not(.eddie) a.eric-visible,
+.jonah-chosen .small-box:not(.jonah) a.eric-visible,
+.eric-chosen .small-box:not(.eric) a.jonah-visible,
+.paulo-chosen .small-box.eric a.paulo-visible,
+.eddie-chosen .small-box.eric a.eddie-visible,
+.jonah-chosen .small-box.eric a.jonah-visible,
+.eric-chosen .small-box.jonah a.eric-visible {
+  -webkit-transition-delay: .3s;
+  transition-delay: .3s;
+}
+
+#boxes .big-box {
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 500px;
+  width: 668px;
+  right: 0;
+}
+.big-box > div {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.big-box > div > a {
+  -webkit-transition-duration: .4s;
+  transition-duration: .4s;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 75%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  overflow: hidden;
+}
+.big-box > div > a.original {
+  background-color: #FFF;
+}
+.big-box > div > a:not(.original) {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+  overflow: hidden;
+}
+
+/* spin forward correct card (big-box) */
+.paulo-chosen .big-box a.paulo-visible,
+.eddie-chosen .big-box a.eddie-visible,
+.jonah-chosen .big-box a.jonah-visible,
+.eric-chosen .big-box a.eric-visible {
+  -webkit-transform: rotateX(360deg) translateZ(1px);
+  transform: rotateX(360deg);
+}
+
+/* spin backward all correct cards (big-box) */
+.paulo-chosen .big-box a:not(.paulo-visible),
+.eddie-chosen .big-box a:not(.eddie-visible),
+.jonah-chosen .big-box a:not(.jonah-visible),
+.eric-chosen .big-box a:not(.eric-visible) {
+  -webkit-transform: rotateX(180deg) translateZ(-1px);
+  transform: rotateX(180deg);
+}
+
+.paulo-chosen .big-box a,
+.eddie-chosen .big-box a,
+.jonah-chosen .big-box a,
+.eric-chosen .big-box a {
+  -webkit-transition-delay: .4s;
+  transition-delay: .4s;
+}
+
+.paulo .original {
+  background-color: #ee451a;
+}
+.eddie .original {
+  background-color: #019eeb;
+}
+.jonah .original {
+  background-color: #109d69;
+}
+.eric .original {
+  background-color: #ffb200;
+}
+</style>
+
+
+<div class="full">
+  <section id="banner" class="topbanner">
+    <div id="boxes">
+      <div class="small-box paulo" rel="paulo">
+        <div>
+          <a href="https://www.linkedin.com/pub/eddie-dolan/25/a14/b55" target="_blank" class="eddie-visible">
+            <span>LinkedIn</span>
+            <img src="system/assets/img/about/li.png" />
+          </a>
+          <a href="https://www.linkedin.com/in/jonahnisenson" target="_blank" class="jonah-visible">
+            <span>LinkedIn</span>
+            <img src="system/assets/img/about/li.png" />
+          </a>
+          <a href="" target="_blank" class="eric-visible">
+            <span>LinkedIn</span>
+            <img src="system/assets/img/about/li.png" />
+          </a>
+          <a class="paulo-visible original">
+            <span>Paulo Diniz</span>
+          </a>
+        </div>
+      </div>
+      <div class="small-box eddie" rel="eddie">
+        <div>
+          <a href="http://www.pdiniz.com/" target="_blank" class="paulo-visible">
+            <span>Blog</span>
+            <img src="system/assets/img/about/blog.gif" />
+          </a>
+          <a href="http://www.jonahnisenson.com/" target="_blank" class="jonah-visible">
+            <span>Blog</span>
+            <img src="system/assets/img/about/blog.gif" />
+          </a>
+          <a href="" target="_blank" class="eric-visible">
+            <span>Twitter</span>
+            <img src="system/assets/img/about/twitter.png" />
+          </a>
+          <a class="eddie-visible original">
+            <span>Eddie Dolan</span>
+          </a>
+        </div>
+      </div>
+      <div class="small-box jonah" rel="jonah">
+        <div>
+          <a href="https://www.linkedin.com/in/paulordiniz" target="_blank" class="paulo-visible">
+            <span>LinkedIn</span>
+            <img src="system/assets/img/about/li.png" />
+          </a>
+          <a href="eddiedolan.com" target="_blank" class="eddie-visible">
+            <span>Blog</span>
+            <img src="system/assets/img/about/blog.gif" />
+          </a>
+          <a href="" target="_blank" class="eric-visible">
+            <span>Blog</span>
+            <img src="system/assets/img/about/blog.gif" />
+          </a>
+          <a class="jonah-visible original">
+            <span>Jonah Nisenson</span>
+          </a>
+        </div>
+      </div>
+      <div class="small-box eric" rel="eric">
+        <div>
+          <a href="" target="_blank" class="paulo-visible">
+            <span>Twitter</span>
+            <img src="system/assets/img/about/twitter.png" />
+          </a>
+          <a href="" target="_blank" class="eddie-visible">
+            <span>Twitter</span>
+            <img src="system/assets/img/about/twitter.png" />
+          </a>
+          <a href="" target="_blank" class="jonah-visible">
+            <span>Twitter</span>
+            <img src="system/assets/img/about/twitter.png" />
+          </a>
+          <a class="eric-visible original">
+            <span>Eric Liu</span>
+          </a>
+        </div>
+      </div>
+      <div class="big-box">
+        <div>
+          <a href="https://github.com/drceric" target="_blank" class="eric-visible">
+            <span>GitHub</span>
+            <img src="system/assets/img/about/github-10-512.png" />
+          </a>
+          <a href="https://github.com/jnis77diver" target="_blank" class="jonah-visible">
+            <span>GitHub</span>
+            <img src="system/assets/img/about/github-10-512.png" />
+          </a>
+          <a href="https://github.com/Eddolan" target="_blank" class="eddie-visible">
+            <span>GitHub</span>
+            <img src="system/assets/img/about/github-10-512.png" />
+          </a>
+          <a href="https://github.com/pdiniz13" target="_blank" class="paulo-visible">
+            <span>GitHub</span>
+            <img src="system/assets/img/about/github-10-512.png" />
+          </a>
+          <a class="original">
+            <span>We speak for the trees</span>
+            <img src="system/assets/img/about/tree-10-512.png" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="text/javascript">
+
+
+var clickHandler = ('ontouchstart' in document.documentElement ? "touchend" : "click");
+
+$(function(){
+
+  var prevSelect = '';
+
+  $('.small-box .original').click(function () {
+    if($('#boxes').attr("class")) {
+      endFlip();
+    } else {
+      flipTo($(this));
+    }
+  });
+
+  $(document).on(clickHandler, function (e) {
+    var boxes = $("#boxes");
+
+    if(!boxes.is(e.target) && boxes.has(e.target).length === 0) {
+      endFlip();
+    }
+  });
+
+  function flipTo($this) {
+    var value = $this.parents('.small-box').attr('rel');
+    $('.small-box').parent().attr("class", "").addClass(value + "-chosen");
+    prevSelect = value;
+  }
+
+  function startFlip() {
+    if(prevSelect == '' || prevSelect == 'eric') {
+      flipTo($('.paulo .paulo-visible'));
+    } else if(prevSelect == 'paulo') {
+      flipTo($('.eddie .eddie-visible'));
+    } else if(prevSelect == 'eddie') {
+      flipTo($('.jonah .jonah-visible'));
+    } else if(prevSelect == 'jonah') {
+      flipTo($('.eric .eric-visible'));
+    }
+  }
+
+  function endFlip() {
+    $('#banner #boxes').attr("class", "");
+  }
+
+
+});
+</script>

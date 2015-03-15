@@ -3,8 +3,6 @@
 Refactor "articles" to "trees" - entire folder uncluding outside references - should be done on its own branch
 
 
-Design user page /packages/articles/public/profile.html - don't worry about the angular yet -- Look at other views
-- use the column layout that can be found in index.html - page is viewed by clicking on >> highlighted trees
 
 Fix the frontpage so the is a shaded gap between the "explore the forest" and the "about the project line"
 
