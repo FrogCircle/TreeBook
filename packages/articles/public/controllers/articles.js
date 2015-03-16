@@ -12,6 +12,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     $scope.find = function() {
       console.log('find has been called.');
       Articles.query(function(trees) {
+        console.log('trees is ', trees);
         $scope.trees = trees;
       });
     };

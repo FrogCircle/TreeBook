@@ -1,21 +1,26 @@
 <section data-ng-controller="ArticlesController" data-ng-init="find()">
-
+<div class="row>"><div class="col-md-8 col-md-offset-4"><h2>Browse Trees</h2></div></div>
 <!-- {name: "tree", qspecies: "Maytenus boaria :: Mayten", picture: "nameless", plantdate: "1969-12-31T06:00:00.000Z", latitude: -122.431434474484…} -->
 <div data-ng-repeat="tree in trees">
   <a ng-href='/#!/trees/{{tree.treeid}}'>
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div>
-        <div class="col-md-8">
+    <div class="row tree-row-listview">
+        <div class="col-md-4">
+          <div class="tree-in-treeview">
+            <img src="{{tree.url}}" class="tree-thumb-listview"/>
+          </div>
+        </div>
+        <div class="col-md-7">
           <div>
             <h3 class="modal-title">{{tree.name}}</h3>
+            <h5>{{tree.qspecies}}</h5>
           </div>
           <div>
-            {{tree}}
-          </div>
+            <p>Placeholder text for blurb about tree: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
         </div>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-1"></div>
+
     </div>
   </a>
 </div>
