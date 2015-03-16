@@ -58,17 +58,17 @@ var getMessagesForUsers = function(req, res) {
 };
 exports.getMessagesForUsers = getMessagesForUsers;
 
-// *
-//  * Get tree info from database and send to client. Request is expecting a treeId.
-//  * @param req
-//  * @param res
-
+/**
+ * Get tree info from database and send to client. Request is expecting a treeId.
+ * @param req
+ * @param res
+ */
 var getTreeInfo = function(req, res) {
   //var treeid = req.body.treeId;
   var treeid = 50;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = 'select tree.name, q.qspecies, q.picture, tree.plantdate, l.latitude, l.longitude from qspecies q join tree ON (q.qspeciesid = tree.qspeciesid) join "location" l ON (l.locationid = tree.locationid) where treeid = $1;';
+    var selectMessages = 'SELECT tree.name, q.qspecies, tree.plantdate, l.latitude, l.longitude, image.imageurl, image.imagewidth, image.imageheight, image.imagetype from qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN image ON (q.qspeciesid = image.qspeciesid) WHERE treeid = $1;';
     client.query(selectMessages, [treeid], function(error, results) {
       //res.send(results);
       done();
@@ -111,10 +111,12 @@ exports.getTreeInfo = getTreeInfo;
 var getTrees = function(req, res) {
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectTrees = 'select tree.name, q.qspecies, q.picture, l.latitude, l.longitude from qspecies q join tree ON (q.qspeciesid = tree.qspeciesid) join "location" l ON (l.locationid = tree.locationid) LIMIT 25;';
+    var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) LIMIT 25;';
     client.query(selectTrees, function(error, results) {
     }, function(error, results) {
       done();
+      console.log(results);
+      console.log(error);
       console.log(results.rows);
     });
   })
