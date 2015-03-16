@@ -28,7 +28,7 @@ exports.getTreeData = function(req, res) {
 exports.getAll = function(req, res) {
   console.log('in All');
   pg.connect(conString, function(err, client, done) {
-    var selectTrees = 'select tree.name, q.qspecies, q.picture, l.latitude, l.longitude from qspecies q join tree ON (q.qspeciesid = tree.qspeciesid) join "location" l ON (l.locationid = tree.locationid) LIMIT 25;';
+    var selectTrees = 'select treeid, tree.name, q.qspecies, q.picture, l.latitude, l.longitude from qspecies q join tree ON (q.qspeciesid = tree.qspeciesid) join "location" l ON (l.locationid = tree.locationid) LIMIT 25;';
     client.query(selectTrees, function(error, results) {
     }, function(error, results) {
       res.json(results.rows);
