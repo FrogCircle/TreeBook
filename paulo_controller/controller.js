@@ -111,8 +111,7 @@ exports.getTreeInfo = getTreeInfo;
 var getTrees = function(req, res) {
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) LIMIT 25;';
-    client.query(selectTrees, function(error, results) {
+    var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) LIMIT 250;';    client.query(selectTrees, function(error, results) {
     }, function(error, results) {
       done();
       console.log(results);
