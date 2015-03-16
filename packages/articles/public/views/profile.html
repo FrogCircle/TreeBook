@@ -1,30 +1,22 @@
-<section data-ng-controller="ArticlesController" data-ng-init="find()">
-<!-- The tree object avaiable in this scope after find() look like:
-{name: "tree", qspecies: "Maytenus boaria :: Mayten", picture: "nameless", plantdate: "1969-12-31T06:00:00.000Z", latitude: -122.431434474484…} -->
-  <div class="container-fluid" style="margin: -30px 0 10px -100px;">
-    <img src="theme/assets/img/top-gradient.jpg" width="1400" height="76"/>
-  </div>
+<section data-ng-controller="ArticlesController" data-ng-init="findOne()">
   <div class="row">
   <div class="col-md-3 col-md-offset-1">
     <img src="theme/assets/img/cypress1.jpg" width="262" height="173"/>
-    <p><strong>Date planted:</strong> Sept. 4, 2002</p>
+
+    <h3>{{tree.name}}</h3>
+    <p><strong>Species: {{tree.qspecies}}</strong></p>
+    <h4>Info block 1</h4>
+    <h4>Info block 2</h4>
+    <p><strong>Date planted:</strong> {{tree.plantdate | date:'yyyy-MM-dd'}}</p>
     <p><strong>Caretaker:</strong> City of San Francisco</p>
-
-
   </div>
-  <div class="col-md-6 well">
+  <div class="col-md-6 well" style="height: 365px;">
     <div class="text-center" style="float: right;">
-<!--       <div style="width: 250px; height: 200px; background-color: #000011; color: white;">Map</div> -->
-
       <div class="angular-google-map-container" data-ng-controller="MapViewController">
         <ui-gmap-google-map center="map.center" zoom="map.zoom"></ui-gmap-google-map>
       </div>
 
     </div>
-    <h3 style="margin-top: -10px;">{{tree.name}}</h3>
-    <p><strong>Species: {{tree.qspecies}}</strong></p>
-    <h4>Info block 1</h4>
-    <h4>Info block 2</h4>
 
   </div>
   </div>
@@ -35,9 +27,8 @@
                 type="text" placeholder="Get to know a tree"
                 cols="110" rows="3"></textarea>
     </div>
-
-
   </div>
+
   <div class="row col-md-10 col-lg-offset-1 message">
     <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
     <span><strong>Jimmy The Cypress</strong></span><br>

@@ -1,35 +1,26 @@
-<section class=""welcome container-fluid""data-ng-controller="ArticlesController" data-ng-init="find()">
-<!--
-Old but helpful code
-  <ul class="articles unstyled">
-    <li data-ng-repeat="article in articles">
-      <span>username</span>
-      <h2>
-        <a data-ng-href="#!/articles/{{article._id}}">title</a>
-      </h2>
-      <div>content</div>
-    </li>
-  </ul> -->
+<section data-ng-controller="ArticlesController" data-ng-init="find()">
 
-<div class="row">
-    <div class="col-md-4"></div>
-    <div>
-    <div class="col-md-8">
-      <div>
-        <h3 class="modal-title">Larry the Oak</h3>
-      </div>
-      <div>
-        stuff
-      </div>
-      <div class=>
-        OK
-      </div>
+<!-- {name: "tree", qspecies: "Maytenus boaria :: Mayten", picture: "nameless", plantdate: "1969-12-31T06:00:00.000Z", latitude: -122.431434474484…} -->
+<div data-ng-repeat="tree in trees">
+  <a ng-href='/#!/trees/{{tree.treeid}}'>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div>
+        <div class="col-md-8">
+          <div>
+            <h3 class="modal-title">{{tree.name}}</h3>
+          </div>
+          <div>
+            {{tree}}
+          </div>
+        </div>
+        </div>
+        <div class="col-md-4"></div>
     </div>
-    </div>
-    <div class="col-md-4"></div>
+  </a>
 </div>
 
-<!-- BELOW NEEDS ALIGN CENTER -->
+
 <div class="col-md-3"></div>
 <div class="col-md-6" ng-controller="PaginationDemoCtrl">
     <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>

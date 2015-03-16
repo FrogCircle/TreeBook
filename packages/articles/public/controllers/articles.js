@@ -10,22 +10,19 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.find = function() {
-      Articles.get({
-        treeId: $stateParams.treeId
-      }, function(tree){
-        $scope.tree = tree;
-        console.log(tree);
+      console.log('find has been called.');
+      Articles.query(function(trees) {
+        $scope.trees = trees;
       });
     };
 
-    // Eric. The data you need is avaiable within this scope. $scope.tree is the object with the data.
-    // It should have a longitude and latitude param when avaiable
-
     $scope.findOne = function() {
+      console.log('findOne has been called.');
       Articles.get({
-        articleId: $stateParams.articleId
-      }, function(article) {
-        $scope.article = article;
+        treeId: $stateParams.treeId
+      }, function(tree) {
+        console.log(tree);
+        $scope.tree = tree;
       });
     };
   }
