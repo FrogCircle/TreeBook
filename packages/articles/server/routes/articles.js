@@ -5,7 +5,7 @@ var articles = require('../controllers/articles');
 module.exports = function(Articles, app, auth) {
 
   app.route('/articles')
-    .get(articles.all);
+    .get(articles.getAll);
   app.route('/articles/:treeId')
     .get(articles.getTreeData);
 
