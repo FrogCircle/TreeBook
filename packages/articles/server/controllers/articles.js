@@ -30,8 +30,13 @@ exports.getAll = function(req, res) {
   pg.connect(conString, function(err, client, done) {
     var selectTrees = 'select treeid, tree.name, q.qspecies, q.picture, l.latitude, l.longitude from qspecies q join tree ON (q.qspeciesid = tree.qspeciesid) join "location" l ON (l.locationid = tree.locationid) LIMIT 25;';
     client.query(selectTrees, function(error, results) {
-    }, function(error, results) {
-      res.json(results.rows);
+      console.log('results is ', results);
+      if (err) {
+        console.log(error, 'THERE WAS AN ERROR');
+      } else {
+
+        res.json(results.rows);
+      }
     });
   });
 };
