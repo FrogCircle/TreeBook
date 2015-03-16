@@ -14,7 +14,6 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
       Articles.query(function(trees) {
         console.log('trees is ', trees);
         $scope.trees = trees;
-        console.log('$scope.trees is ', $scope.trees);
       });
     };
 

@@ -11,9 +11,24 @@ ul.articles li:not(:last-child) {
 }
 
 .angular-google-map-container {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.tree-in-treeview {
+  width:115px;
+  height: 115px;
+  overflow:hidden;
+  float: right;
+}
+
+.tree-thumb-listview {
+  width: 100%;
+}
+
+.tree-row-listview {
+  margin: 0 0 10px 0;
 }
