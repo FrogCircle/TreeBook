@@ -1,16 +1,18 @@
 <section data-ng-controller="ArticlesController" data-ng-init="findOne()">
   <div class="row">
-  <div class="col-md-3 col-md-offset-1">
-    <img src="theme/assets/img/cypress1.jpg" width="262" height="173"/>
+  <div class="col-md-4 col-md-offset-1">
+    <div class="profile-image-div">
+      <img src="{{tree.imageurl}}" class="profile-tree-image">
+    </div>
 
     <h3>{{tree.name}}</h3>
-    <p><strong>Species: {{tree.qspecies}}</strong></p>
+    <p><strong><span class="species">Species:</span> {{tree.qspecies}}</strong></p>
     <h4>Info block 1</h4>
     <h4>Info block 2</h4>
     <p><strong>Date planted:</strong> {{tree.plantdate | date:'yyyy-MM-dd'}}</p>
     <p><strong>Caretaker:</strong> City of San Francisco</p>
   </div>
-  <div class="col-md-6 well" style="height: 365px;">
+  <div class="col-md-5" style="height: 365px;">
     <div class="text-center" style="float: right;">
       <div class="angular-google-map-container" data-ng-controller="MapViewController">
         <ui-gmap-google-map center="map.center" zoom="map.zoom"></ui-gmap-google-map>
