@@ -68,7 +68,10 @@ var getTreeInfo = function(req, res) {
   var treeid = 50;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = 'SELECT tree.name, q.qspecies, tree.plantdate, l.latitude, l.longitude, image.imageurl, image.imagewidth, image.imageheight, image.imagetype from qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN image ON (q.qspeciesid = image.qspeciesid) WHERE treeid = $1;';
+    var selectMessages = 'SELECT tree.name, q.qspecies, tree.plantdate, l.latitude, l.longitude, image.imageurl, ' +
+      'image.imagewidth, image.imageheight, image.imagetype from qspecies q JOIN tree ON (q.qspeciesid = ' +
+      'tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN image ON (q.qspeciesid = ' +
+      'image.qspeciesid) WHERE treeid = $1;';
     client.query(selectMessages, [treeid], function(error, results) {
       //res.send(results);
       done();
@@ -103,24 +106,55 @@ exports.postMessageFromUser = postMessageFromUser;
 exports.getTreeInfo = getTreeInfo;
 
 /**
- * Gets a tree data for 25 trees. This function currently is not using any inputs, but it's expected that it will take
- * current position in the future.
+ * Gets a tree data for 250 trees. This function takes an offset. If the offset is not provided it will default to 0;
  * @param req
  * @param res
  */
 var getTrees = function(req, res) {
+  var offset = req.offset || 0;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) LIMIT 250;';    client.query(selectTrees, function(error, results) {
-    }, function(error, results) {
+    var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
+      'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) ' +
+      'JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) ' +
+      'LIMIT 250 OFFSET $1;';
+    client.query(selectTrees, [offset], function(error, results) {
       done();
-      console.log(results);
-      console.log(error);
       console.log(results.rows);
     });
   })
 };
 exports.getTrees = getTrees;
+
+/**
+ * Search tree return 250 results matching the search params. It takes a search param, and an offset. If offset is not
+ * provided it will default to 0.
+ * @param req
+ * @param res
+ */
+var searchTrees = function(req, res) {
+  var search = req.search;
+  var offset = req.offset || 0;
+  var search = "Briana";
+  var searchString = typeof search === "string" ? "%" + search + "%" : "do not use";
+  var searchNum = typeof search === "number" ? search : 0;
+  var offset = 0;
+  pg.connect(conString, function(err, client, done) {
+    console.log("in search trees");
+    console.log(err);
+    var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
+      'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
+      '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
+      'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies = $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
+    client.query(selectTrees, [searchNum, searchString, offset], function(error, results){
+      console.log('error', error);
+      //console.log('results', results);
+      console.log(results.rows);
+      done();
+    });
+  })
+};
+exports.searchTrees = searchTrees;
 
 app.get('/profile', checkifloggedin, handler.renderIndex);
 app.get('/search', checkifloggedin, handler.renderIndex);
