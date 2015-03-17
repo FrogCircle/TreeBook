@@ -156,6 +156,28 @@ var searchTrees = function(req, res) {
 };
 exports.searchTrees = searchTrees;
 
+/**
+ * This function expects a treeid to insert messages. The userid will be saved with the value of -1 which means that
+ * the message was sent by the tree.
+ * @param req
+ * @param res
+ */
+var insertMessagesFromTrees = function(req, res) {
+  var treeid = req.treeid;
+  var userid = -1;
+  var message = req.message;
+  pg.connect(conString, function(err, client, done) {
+    console.log(err);
+    var selectMessages = "INSERT INTO message (message, treeid, userid) values($1, $2, $3)";
+    client.query(selectMessages, [message, treeid, userid], function(error, results) {
+      res.send(results);
+      done();
+    });
+
+  });
+};
+exports.insertMessagesFromTrees = insertMessagesFromTrees;
+
 app.get('/profile', checkifloggedin, handler.renderIndex);
 app.get('/search', checkifloggedin, handler.renderIndex);
 
