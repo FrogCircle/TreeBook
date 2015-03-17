@@ -1,5 +1,10 @@
 'use strict';
 
+/*
+  Controller that handle the map display, get the lat and lng data and
+  display the map on the profile.html
+  currently need maker to be added
+*/
 angular.module('mean.articles', ['uiGmapgoogle-maps'])
 
 //Configure tha google map api
@@ -12,7 +17,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
 }])
 
 //set up the map view ctrl
-.controller('MapViewController', ['$scope', 'uiGmapGoogleMapApi','treeData',
+.controller('MapViewController', ['$scope', 'uiGmapGoogleMapApi', 'treeData',
   function($scope, uiGmapGoogleMapApi, treeData) {
     $scope.resolved = false;
     treeData.promise.$promise.then(function(){
