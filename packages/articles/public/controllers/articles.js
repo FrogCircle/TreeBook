@@ -16,29 +16,27 @@ angular.module('mean.articles')
         $scope.trees = trees;
       });
     };
+
     $scope.findOne = function() {
-      $scope.tree = treeData.getTree();
-      treeData.promise.$promise.then(function(){
-        $scope.tree = treeData.getTree();
-        console.log($scope.tree);
+      treeData.getTree().$promise.then(function(tree){
+        $scope.tree = tree;
       });
     };
   }
 ])
 
 .service('treeData', ['Articles', '$stateParams', function(Articles, $stateParams){
-  var tree = null;
-  console.log($stateParams.treeId);
-  var promise = Articles.get({
-      treeId: $stateParams.treeId
-    }, function(t) {
-      tree = t;
-    });
-  return {
-    promise:promise,
-    getTree: function(){
-      return tree;
-    }
+
+  var tree;
+
+  var getTree = function(){
+    console.log(Articles);
+    return Articles
+      .get({ treeId: 296 }, function(t){
+        tree = t;
+        return tree;
+      });
   };
-}
-]);
+
+  return { getTree: getTree };
+}]);

@@ -12,7 +12,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
   uiGmapGoogleMapApi.configure({
       //provide api key if available
       v: '3.18',
-      libraries: 'geometry,visualization'
+      libraries: 'geometry, visualization, places'
   });
 }])
 
@@ -20,8 +20,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
 .controller('MapViewController', ['$scope', 'uiGmapGoogleMapApi', 'treeData',
   function($scope, uiGmapGoogleMapApi, treeData) {
     $scope.resolved = false;
-    treeData.promise.$promise.then(function(){
-      var tree = treeData.getTree();
+    treeData.getTree().$promise.then(function(tree){
       var lat =  tree.latitude;
       var lon =  tree.longitude;
       console.log(lon,lat);
