@@ -26,10 +26,18 @@
   </div>
   <div class="row ">
     <div class="col-md-9 col-md-offset-1 well">
-      <textarea style="border-radius: 5px; border: 2px solid #9EBD2E; margin-left: 15px;"
-                name="message-input"
-                type="text" placeholder="Get to know a tree"
-                cols="110" rows="3"></textarea>
+      <form name="messageForm" ng-submit="submitMessage()">
+        <div class="textarea-holder">
+        <textarea style="border-radius: 5px; border: 2px solid #9EBD2E; margin-left: 15px;"
+                  name="message-input"
+                  type="text" placeholder="Get to know a tree"
+                  cols="110" rows="3"
+                  ng-model="message">
+
+        </textarea>
+        <input type="submit" value="Submit" class="btn message-button" ng-disabled="messageForm.$invalid">
+        </div>
+      </form>
     </div>
   </div>
 
