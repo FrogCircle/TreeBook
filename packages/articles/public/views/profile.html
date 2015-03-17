@@ -5,7 +5,7 @@
       <img src="{{tree.imageurl}}" class="profile-tree-image">
     </div>
 
-    <h3>{{tree.name}}</h3>
+    <h3 data-treeid="{{tree.treeid}}">{{tree.name}}</h3>
     <p><strong><span class="species">Species:</span> {{tree.qspecies}}</strong></p>
     <h4>Info block 1</h4>
     <h4>Info block 2</h4>
@@ -35,7 +35,7 @@
                   name="message-input"
                   type="text" placeholder="Get to know a tree"
                   cols="110" rows="3"
-                  ng-model="message">
+                  ng-model="postMessage">
 
         </textarea>
         <input type="submit" value="Submit" class="btn message-button" ng-disabled="messageForm.$invalid">
@@ -44,11 +44,13 @@
     </div>
   </div>
 
-  <div class="row col-md-10 col-lg-offset-1 message">
-    <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
-    <span><strong>Jimmy The Cypress</strong></span><br>
+  <div class="row col-md-10 col-lg-offset-1 message" data-ng-repeat="message in messages">
+    <div class="thumb-container">
+      <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
+    </div>
+    <span><strong>{{ message.username }}</strong></span><br>
     <span style="color:#727272;">March 1st, 2015 at 2:48 pm</span>
+    <p>{{ message.message }}</p>
     <div style="clear:both;"></div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   </div>
 </section>
