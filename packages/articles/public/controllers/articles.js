@@ -41,7 +41,7 @@ angular.module('mean.articles')
       };
       Messages.save(body)
         .then(function(data) {
-        /*      //not getting any data back from server on POST so below isn't working
+ /*      //not getting any data back from server on POST so below isn't working
          console.log("response data is ", data);
          $scope.prependItem = function() {
          $scope.messages.unshift({
@@ -58,7 +58,6 @@ angular.module('mean.articles')
 
       //reset form to empty
       $scope.postMessage = "";
-      //this call to getMessages will be removed once we are getting the data back from post submit
     };
 
     //get All messages for a Tree and display on tree profile page
