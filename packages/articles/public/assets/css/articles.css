@@ -81,3 +81,5 @@ ul.articles li:not(:last-child) {
 .textarea-holder {
   width: 805px;
 }
+
+.thumb-container { height: 100%; }
