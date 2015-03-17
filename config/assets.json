@@ -14,7 +14,6 @@
         "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
         "bower_components/web-bootstrap/index.js",
 
-
         "maps.googleapis.com/maps/api/js?sensor=false",
         "bower_components/underscore/underscore.js",
         "bower_components/lodash/lodash.underscore.js",
