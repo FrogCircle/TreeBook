@@ -17,16 +17,30 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
 }])
 
 //set up the map view ctrl
-.controller('MapViewController', ['$scope', 'uiGmapGoogleMapApi', 'treeData',
-  function($scope, uiGmapGoogleMapApi, treeData) {
+.controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'treeData',
+  function($scope, $q, uiGmapGoogleMapApi, treeData) {
     $scope.resolved = false;
+
+    var onLoad = function(data){
+      return $q.when(data).then(function(data){
+        console.log(data);
+        var mapCenter = {
+          latitude: data.longitude,
+          longitude: data.latitude
+        };
+        console.log(mapCenter);
+        $scope.map = {center: mapCenter, zoom: 14 };
+        $scope.resolved = true;
+        console.log($scope.map);
+      });
+    };
+
     treeData.getTree().$promise.then(function(tree){
-      var lat =  tree.latitude;
-      var lon =  tree.longitude;
-      console.log(lon,lat);
-      $scope.map = {center: {latitude: 40.444597, longitude: '-79.945033'}, zoom: 14 };
-      $scope.options = {scrollwheel: false};
-      $scope.resolved = true;
+      onLoad(tree);
+    });
+
+    uiGmapGoogleMapApi.then(function(maps){
+      console.log(maps);
     });
   }
 ]);
