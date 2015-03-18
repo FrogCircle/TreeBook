@@ -22,6 +22,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
     $scope.resolved = false;
 
     // Promise assign the latitude and longitude to the $scope
+    // $scope.resolved is used for the ng-if
     var onLoad = function(data){
       return $q.when(data).then(function(data){
         var mapCenter = {
@@ -29,10 +30,17 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
           longitude: data.latitude
         };
         console.log(mapCenter);
-        $scope.map = {center: mapCenter, zoom: 14 };
+        $scope.map = {center: mapCenter, zoom: 20 };
+
+        //There is a little bug here, when the map is moving, the marker will
+        //move as well. I spot this bug but fix it need a little bit time, so
+        //I skip it first as it is not very important.
+        $scope.coordsUpdates = 0;
+        $scope.dynamicMoveCtr = 0;
         $scope.marker = {
-          id: 0,
-          coords: mapCenter
+          id: 1,
+          coords: mapCenter,
+          options: { draggable: false }
         };
         $scope.resolved = true;
       });
