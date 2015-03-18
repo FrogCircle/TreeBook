@@ -38,7 +38,10 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
         $scope.marker = {
           id: 1,
           coords: mapCenter,
-          options: { draggable: true }
+          options: {
+            animation: 1,
+            draggable: true
+          }
         };
         $scope.resolved = true;
       });
