@@ -52,9 +52,9 @@ exports.getMessagesForTree = function(req, res) {
   console.log('in getMessageForTree and treeid is', treeid);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = "SELECT message.message, message.treeid, message.username, message.messageid FROM message WHERE treeid = $1 LIMIT 100;";
+    var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid FROM message WHERE treeid = $1 LIMIT 100;';
     client.query(selectMessages, [treeid], function(error, results) {
-      console.log("results is ", results.rows);
+      console.log('results is ', results.rows);
       res.json(results.rows);
     });
     done();
@@ -73,9 +73,9 @@ exports.getMessagesForUsers = function(req, res) {
   console.log('in getMessageForUsers and username is', username);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = "SELECT message FROM message WHERE username = $1;";
+    var selectMessages = 'SELECT message FROM message WHERE username = $1;';
     client.query(selectMessages, [username], function(error, results) {
-      console.log("results.rows is ", results.rows);
+      console.log('results.rows is ', results.rows);
       res.json(results.rows);
     });
     done();
@@ -90,7 +90,7 @@ exports.getMessagesForUsers = function(req, res) {
  */
 //
 exports.postMessageFromUser = function(req, res) {
-  console.log("got into postMessageFromUser ");
+  console.log('got into postMessageFromUser');
   //this is a GET so we should be looking at params but I can't figure out how to send params from the
   //Messages factory
   var username = req.body.username;
@@ -98,13 +98,15 @@ exports.postMessageFromUser = function(req, res) {
   var treeid = req.body.treeid;
   console.log(username, message, treeid);
   pg.connect(conString, function(err, client, done) {
-    console.log("error is", err);
-    var insertMessages = "INSERT INTO message (message, username, treeid) values ($1, $2, $3);";
-    client.query(insertMessages, [message, username, treeid], function(error, results) {
-      console.log("postMessageFromUser result is ", results.rows);
-      res.json(results.rows);
-      done();
-    });
+    if(err) { console.log('error is', err); }
+    else {
+      var insertMessages = 'INSERT INTO message (message, username, treeid) values ($1, $2, $3) RETURNING *;';
+      client.query(insertMessages, [message, username, treeid], function (error, results) {
+        console.log('postMessageFromUser result is ', results.rows);
+        res.json(results.rows);
+        done();
+      });
+    }
   });
 };
 
@@ -117,12 +119,10 @@ exports.postMessageFromUser = function(req, res) {
 exports.searchTrees = function(req, res) {
   var search = req.search;
   var offset = req.offset || 0;
-  var search = "Briana";
-  var searchString = typeof search === "string" ? "%" + search + "%" : "do not use";
-  var searchNum = typeof search === "number" ? search : 0;
-  var offset = 0;
+  var searchString = typeof search === 'string' ? '%' + search + '%' : 'do not use';
+  var searchNum = typeof search === 'number' ? search : 0;
   pg.connect(conString, function(err, client, done) {
-    console.log("in search trees");
+    console.log('in search trees');
     console.log(err);
     var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
       'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
@@ -144,22 +144,21 @@ exports.searchTrees = function(req, res) {
  * @param res
  */
 exports.insertMessagesFromTrees = function(req, res) {
-  console.log("got into insertMessagesFromTrees is ");
+  console.log('got into insertMessagesFromTrees is ');
   var treeid = req.body.treeid;
   var userid = -1;
   var message = req.body.message;
   console.log(treeid, userid, message);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = "INSERT INTO message (message, treeid, userid) values($1, $2, $3)";
+    var selectMessages = 'INSERT INTO message (message, treeid, userid) values($1, $2, $3)';
     client.query(selectMessages, [message, treeid, userid], function(error, results) {
-      console.log("results is ", results);
+      console.log('results is ', results);
       res.send(results);
       done();
     });
 
   });
 };
-
 
 

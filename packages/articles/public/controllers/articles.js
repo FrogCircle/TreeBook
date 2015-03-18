@@ -43,14 +43,13 @@ angular.module('mean.articles')
         //reset message form to empty
         $scope.message = '';
       });
-
     };
 
     //get All messages for a Tree and display on tree profile page
     $scope.getMessages = function($stateParams) {
       //console.log("getMessages $scopr.tree.treeid ", $scope.tree.treeid);
        GetMessages.get({ treeid: $scope.tree.treeid }, function(messages) {
-        console.log("$scope.messages is ", messages);
+        console.log('$scope.messages is ', messages);
         $scope.messages = messages;
       });
 
