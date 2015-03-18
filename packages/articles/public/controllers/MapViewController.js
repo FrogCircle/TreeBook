@@ -1,5 +1,10 @@
 'use strict';
 
+/*
+  Controller that handle the map display, get the lat and lng data and
+  display the map on the profile.html
+  currently need maker to be added
+*/
 angular.module('mean.articles', ['uiGmapgoogle-maps'])
 
 //Configure tha google map api
@@ -7,22 +12,42 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
   uiGmapGoogleMapApi.configure({
       //provide api key if available
       v: '3.18',
-      libraries: 'geometry,visualization'
+      libraries: 'geometry, visualization, places'
   });
 }])
 
 //set up the map view ctrl
-.controller('MapViewController', ['$scope', 'uiGmapGoogleMapApi','treeData',
-  function($scope, uiGmapGoogleMapApi, treeData) {
+.controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'treeData',
+  function($scope, $q, uiGmapGoogleMapApi, treeData) {
     $scope.resolved = false;
-    treeData.promise.$promise.then(function(){
-      var tree = treeData.getTree();
-      var lat =  tree.latitude;
-      var lon =  tree.longitude;
-      console.log(lon,lat);
-      $scope.map = {center: {latitude: 40.444597, longitude: '-79.945033'}, zoom: 14 };
-      $scope.options = {scrollwheel: false};
-      $scope.resolved = true;
+
+    // Promise assign the latitude and longitude to the $scope
+    // $scope.resolved is used for the ng-if
+    var onLoad = function(data){
+      return $q.when(data).then(function(data){
+        var mapCenter = {
+          latitude: data.longitude,
+          longitude: data.latitude
+        };
+        console.log(mapCenter);
+        $scope.map = {center: mapCenter, zoom: 20 };
+
+        //There is a little bug here, when the map is moving, the marker will
+        //move as well. I spot this bug but fix it need a little bit time, so
+        //I skip it first as it is not very important.
+        $scope.coordsUpdates = 0;
+        $scope.dynamicMoveCtr = 0;
+        $scope.marker = {
+          id: 1,
+          coords: mapCenter,
+          options: { draggable: false }
+        };
+        $scope.resolved = true;
+      });
+    };
+
+    treeData.getTree().$promise.then(function(tree){
+      onLoad(tree);
     });
   }
 ]);

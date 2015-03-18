@@ -12,33 +12,27 @@ angular.module('mean.articles')
     $scope.find = function() {
       console.log('find has been called.');
       Articles.query(function(trees) {
-        console.log('trees is ', trees);
         $scope.trees = trees;
       });
     };
+
     $scope.findOne = function() {
-      $scope.tree = treeData.getTree();
-      treeData.promise.$promise.then(function(){
-        $scope.tree = treeData.getTree();
-        console.log($scope.tree);
+      treeData.getTree().$promise.then(function(tree){
+        $scope.tree = tree;
       });
     };
   }
 ])
 
 .service('treeData', ['Articles', '$stateParams', function(Articles, $stateParams){
-  var tree = null;
-  console.log($stateParams.treeId);
-  var promise = Articles.get({
-      treeId: $stateParams.treeId
-    }, function(t) {
-      tree = t;
-    });
-  return {
-    promise:promise,
-    getTree: function(){
-      return tree;
-    }
+
+  var getTree = function(){
+    console.log(Articles);
+    return Articles
+      .get({ treeId: 298 }, function(t){
+        return t;
+      });
   };
-}
-]);
+
+  return { getTree: getTree };
+}]);
