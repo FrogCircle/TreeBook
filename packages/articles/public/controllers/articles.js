@@ -17,18 +17,15 @@ angular.module('mean.articles')
       });
     };
 
+
     $scope.findOne = function() {
-      //treeData.getTree().$promise.then(function(tree){
-      //  $scope.tree = tree;
-      $scope.tree = treeData.getTree();
-      treeData.promise.$promise.then(function(){
-        $scope.tree = treeData.getTree();
-        console.log($scope.tree);
-      })
-      .then(function() {
+      treeData.getTree().$promise.then(function(tree){
+        $scope.tree = tree;
         $scope.getMessages();
       });
     };
+
+
     //Post message to database from single tree (profile) view
     //to be able to access tree.treeid, added data-treeid to h3 tag in profile.html
     $scope.submitMessage = function() {
@@ -50,7 +47,6 @@ angular.module('mean.articles')
 
     //get All messages for a Tree and display on tree profile page
     $scope.getMessages = function($stateParams) {
-      //console.log("getMessages $scopr.tree.treeid ", $scope.tree.treeid);
        GetMessages.get({ treeid: $scope.tree.treeid }, function(messages) {
         console.log('$scope.messages is ', messages);
         $scope.messages = messages;
@@ -62,20 +58,33 @@ angular.module('mean.articles')
 ])
 
 .service('treeData', ['Articles', '$stateParams', function(Articles, $stateParams){
-  var tree = null;
-  var promise = Articles.get({
-      treeId: $stateParams.treeId
-    }, function(t) {
-      tree = t;
-    });
-  return {
-    promise: promise,
-    getTree: function(){
-      return tree;
-    }
+
+  var getTree = function(){
+    return Articles
+      .get({ treeId: $stateParams.treeId }, function(t){
+        return t;
+      });
   };
-}
-]);
+
+  return { getTree: getTree };
+}])
+
+.controller('PaginationDemoCtrl', function ($scope, $log) {
+  $scope.totalItems = 10;
+  $scope.currentPage = 1;
+
+  $scope.setPage = function (pageNo) {
+    $scope.currentPage = pageNo;
+  };
+
+  $scope.pageChanged = function() {
+    $log.log('Page changed to: ' + $scope.currentPage);
+  };
+
+  $scope.maxSize = 5;
+  $scope.bigTotalItems = 400;
+  $scope.bigCurrentPage = 10;
+});
 
 
 

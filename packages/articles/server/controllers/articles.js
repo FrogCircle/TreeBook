@@ -7,7 +7,6 @@ var conString = 'postgres://postgres:1234@localhost/postgres';
  * Get tree data for a single tree (profile view)
  */
 exports.getTreeData = function(req, res) {
-  console.log('in getTreeData');
   var treeid = req.params.treeId;
   pg.connect(conString, function(err, client, done) {
     var selectMessages = 'SELECT tree.name, tree.treeid, q.qspecies, tree.plantdate, l.latitude, l.longitude, image.imageurl, image.imagewidth, image.imageheight, image.imagetype from qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN image ON (q.qspeciesid = image.qspeciesid) WHERE treeid = $1;';
@@ -26,7 +25,6 @@ exports.getTreeData = function(req, res) {
  * Get tree data for 250 trees (list view)
  */
 exports.getAll = function(req, res) {
-  console.log('in get All');
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var selectTrees = 'SELECT tree.name, tree.treeid, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) LIMIT 250;';
@@ -36,7 +34,6 @@ exports.getAll = function(req, res) {
       if(error) {
         console.log('Error is ', error);
       }
-      console.log(results.rows);
       res.json(results.rows);
     });
   });
@@ -54,7 +51,6 @@ exports.getMessagesForTree = function(req, res) {
     console.log(err);
     var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid FROM message WHERE treeid = $1 LIMIT 100;';
     client.query(selectMessages, [treeid], function(error, results) {
-      console.log('results is ', results.rows);
       res.json(results.rows);
     });
     done();

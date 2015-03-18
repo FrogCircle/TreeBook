@@ -40,7 +40,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
         $scope.marker = {
           id: 1,
           coords: mapCenter,
-          options: { draggable: false }
+          options: { draggable: true }
         };
         $scope.resolved = true;
       });
