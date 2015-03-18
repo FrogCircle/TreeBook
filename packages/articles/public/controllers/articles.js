@@ -12,7 +12,6 @@ angular.module('mean.articles')
     $scope.find = function() {
       console.log('find has been called.');
       Articles.query(function(trees) {
-        console.log('trees is ', trees);
         $scope.trees = trees;
       });
     };
@@ -27,14 +26,11 @@ angular.module('mean.articles')
 
 .service('treeData', ['Articles', '$stateParams', function(Articles, $stateParams){
 
-  var tree;
-
   var getTree = function(){
     console.log(Articles);
     return Articles
-      .get({ treeId: 296 }, function(t){
-        tree = t;
-        return tree;
+      .get({ treeId: 298 }, function(t){
+        return t;
       });
   };
 
