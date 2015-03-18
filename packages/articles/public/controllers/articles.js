@@ -18,8 +18,11 @@ angular.module('mean.articles')
     };
 
     $scope.findOne = function() {
-      treeData.getTree().$promise.then(function(tree){
-        $scope.tree = tree;
+      //treeData.getTree().$promise.then(function(tree){
+      //  $scope.tree = tree;
+      $scope.tree = treeData.getTree();
+      treeData.promise.$promise.then(function(){
+        $scope.tree = treeData.getTree();
         console.log($scope.tree);
       })
       .then(function() {

@@ -34,14 +34,8 @@ angular.module('mean.articles')
       save: {
         method: 'POST',
         isArray: true
-        }
-      });
-    }
+      }
+    });
+  }
 );
-
-
-
-
-
-
 
