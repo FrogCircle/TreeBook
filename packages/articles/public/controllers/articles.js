@@ -21,7 +21,7 @@ angular.module('mean.articles')
       $scope.tree = treeData.getTree();
       treeData.promise.$promise.then(function(){
         $scope.tree = treeData.getTree();
-        console.log($scope.tree)
+        console.log($scope.tree);
       })
       .then(function() {
         $scope.getMessages();
@@ -30,8 +30,7 @@ angular.module('mean.articles')
     //Post message to database from single tree (profile) view
     //to be able to access tree.treeid, added data-treeid to h3 tag in profile.html
     $scope.submitMessage = function() {
-      console.log("inside submit  ");
-      var message = $scope.postMessage;
+      var message = $scope.message;
       var username = $scope.tree.name;
       var treeid = $scope.tree.treeid;
       var body = {
@@ -39,32 +38,19 @@ angular.module('mean.articles')
         username: username,
         treeid: treeid
       };
-      Messages.save(body)
-        .then(function(data) {
- /*      //not getting any data back from server on POST so below isn't working
-         console.log("response data is ", data);
-         $scope.prependItem = function() {
-         $scope.messages.unshift({
-         message: data
-         });
-         };
-         */
-        console.log('data is', data);
-/*        data.$save(function (data) {
-          console.log("got into data.$save");
-          $scope.getMessages();
-        });*/
+      Messages.save(body, function(data) {
+        //async load new message to DOM. Loads to end of message list
+        $scope.messages.push(data[0]);
+        //reset message form to empty
+        $scope.message = '';
       });
-
-      //reset form to empty
-      $scope.postMessage = "";
     };
 
     //get All messages for a Tree and display on tree profile page
     $scope.getMessages = function($stateParams) {
       //console.log("getMessages $scopr.tree.treeid ", $scope.tree.treeid);
        GetMessages.get({ treeid: $scope.tree.treeid }, function(messages) {
-        console.log("$scope.messages is ", messages);
+        console.log('$scope.messages is ', messages);
         $scope.messages = messages;
       });
 

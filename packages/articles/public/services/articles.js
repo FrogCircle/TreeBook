@@ -16,7 +16,6 @@ angular.module('mean.articles').factory('Articles', ['$resource',
 angular.module('mean.articles')
   .factory('GetMessages', ['$resource', '$stateParams',
     function($resource, $stateParams) {
-      console.log('stateParams', $stateParams.treeId);
       return $resource('treemessages/:treeid', {
         treeid: '@_treeid'
       }, {
@@ -27,15 +26,14 @@ angular.module('mean.articles')
       });
     }
   ]);
-
 //Message factory for posting usermessage
 angular.module('mean.articles')
   .factory('Messages',
   function($resource, $stateParams) {
-    console.log('stateParams ', $stateParams);
     return $resource('usermessages', {}, {
       save: {
-        method: 'POST'
+        method: 'POST',
+        isArray: true
         }
       });
     }
@@ -43,20 +41,7 @@ angular.module('mean.articles')
 
 
 
-/*//Message factory for posting usermessage
-angular.module('mean.articles')
-  .factory('Messages',
-  function($resource) {
-    console.log('got inside func');
-    return $resource('usermessages', {}, {
-      save: {
-        method: 'POST'
-      }
-    });
-  }
-);*/
 
-//
 
 
 
