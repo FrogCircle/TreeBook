@@ -21,26 +21,25 @@ angular.module('mean.articles', ['uiGmapgoogle-maps'])
   function($scope, $q, uiGmapGoogleMapApi, treeData) {
     $scope.resolved = false;
 
+    // Promise assign the latitude and longitude to the $scope
     var onLoad = function(data){
       return $q.when(data).then(function(data){
-        console.log(data);
         var mapCenter = {
           latitude: data.longitude,
           longitude: data.latitude
         };
         console.log(mapCenter);
         $scope.map = {center: mapCenter, zoom: 14 };
+        $scope.marker = {
+          id: 0,
+          coords: mapCenter
+        };
         $scope.resolved = true;
-        console.log($scope.map);
       });
     };
 
     treeData.getTree().$promise.then(function(tree){
       onLoad(tree);
-    });
-
-    uiGmapGoogleMapApi.then(function(maps){
-      console.log(maps);
     });
   }
 ]);
