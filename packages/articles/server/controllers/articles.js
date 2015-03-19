@@ -1,13 +1,7 @@
 'use strict';
 var pg = require('pg');
 var conString = 'postgres://postgres:1234@localhost/postgres';
-//May need to delete the stuff below
-//var express = require('express');
-//var util = require('util');
-//var app = express();
-//var multer = require('multer');
-//app.use(multer({dest:'./uploads/'}));
-//var fs = require('fs');
+
 
 /**
  * Get tree data for a single tree (profile view)
