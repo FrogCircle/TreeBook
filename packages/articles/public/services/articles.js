@@ -26,6 +26,20 @@ angular.module('mean.articles')
       });
     }
   ]);
+//GetUserMessages factory for getting all messages posted by a user
+angular.module('mean.articles')
+  .factory('GetUserMessages', ['$resource', '$stateParams',
+    function($resource, $stateParams) {
+      return $resource('usermessages/:username', {
+        treeid: '@_username'
+      }, {
+        get: {
+          method: 'GET',
+          isArray: true
+        }
+      });
+    }
+  ]);
 //Message factory for posting usermessage
 angular.module('mean.articles')
   .factory('Messages',
@@ -58,7 +72,7 @@ angular.module('mean.articles')
     };
     return  {
       loadUserImage: loadUserImage
-      }
+      };
   }
 );
 

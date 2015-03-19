@@ -1,11 +1,12 @@
 'use strict';
 // sample tree object {name: "tree", qspecies: "Maytenus boaria :: Mayten", picture: "nameless", plantdate: "1969-12-31T06:00:00.000Z", latitude: -122.431434474484…}
 
-angular.module('mean.articles', ['angularFileUpload'])
+angular.module('mean.articles')
 .controller('ArticlesController', ['$scope', '$http','$resource','$stateParams',
-    '$location', 'Global', 'GetMessages', 'Messages', 'Articles', 'treeData', '$upload', 'UserImage',
+    '$location', 'Global', 'GetMessages', 'Messages', 'Articles', 'treeData',
+    '$upload', 'UserImage', 'GetUserMessages',
   function($scope, $http, $stateParams, $resource, $location, Global, GetMessages,
-           Messages, Articles, treeData, $upload, UserImage) {
+           Messages, Articles, treeData, $upload, UserImage, GetUserMessages) {
     $scope.global = Global;
     $scope.hasAuthorization = function(article) {
       if (!article || !article.user) return false;
@@ -32,7 +33,7 @@ angular.module('mean.articles', ['angularFileUpload'])
     //to be able to access tree.treeid, added data-treeid to h3 tag in profile.html
     $scope.submitMessage = function() {
       var message = $scope.message;
-      var username = $scope.tree.name;
+      var username = $scope.global.user.username;
       var treeid = $scope.tree.treeid;
       var body = {
         message: message,
@@ -56,9 +57,9 @@ angular.module('mean.articles', ['angularFileUpload'])
     };
 
     $scope.findOneUser = function() {
-      console.log('$scope.global is ', $scope.global);
-      $scope.user = {};
-      $scope.user.name = $scope.global.user.name;
+      //console.log('$scope.global is ', $scope.global);
+      //$scope.user = {};
+      //$scope.user.name = $scope.global.user.name;
       //console.log('$scope.name is ', $scope.name);
       //treeData.getTree().$promise.then(function(tree){
       //  $scope.tree = tree;
@@ -94,9 +95,22 @@ angular.module('mean.articles', ['angularFileUpload'])
         }
       }
     };
+
+    //load user image in conjunction with factory UserImage
     $scope.loadUserImage = function(url) {
       console.log('got into load');
       $scope.user.image = UserImage.loadUserImage(url);
+    };
+
+    //get All messages from a User and display on user profile page
+    $scope.getUserMessages = function($stateParams) {
+      GetUserMessages.get({ username: $scope.global.user.username }, function(messages) {
+        console.log('$scope.messages is ', messages);
+        $scope.user = {};
+        $scope.user.messages = messages;
+        $scope.user.name = $scope.global.user.name;
+        $scope.loadUserImage();
+      });
     };
   }
 ])

@@ -1,11 +1,9 @@
-<section data-ng-controller="ArticlesController" data-ng-init="findOneUser()">
+<section data-ng-controller="ArticlesController" data-ng-init="getUserMessages()">
   <div class="row">
     <div class="col-md-3 col-md-offset-1">
       <div class="profile-image-div">
         <!--<img src="theme/assets/img/icons/user-icon.png||theme/assets/uploads/1426730135_User1426726728212.png" class="profile-user-image">-->
-        <img ng-src="{{user.image}}" class="profile-user-image" data-ng-init="loadUserImage()">
-
-        theme/assets/img/icons/user-icon.png
+        <img ng-src="{{user.image}}" class="profile-user-image">
       </div>
       <div style="text-align: center;">
         <button class="btn btn-default" ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">
@@ -17,11 +15,8 @@
     </div>
     <div class="col-md-7 well">
       <h3 class="no-top-margin" data-userid="{{user.userid}}">{{user.name}}</h3>
-      <p><strong><span class="species">Species:</span> {{tree.qspecies}}</strong></p>
       <h4>Info block 1</h4>
       <h4>Info block 2</h4>
-      <p><strong>Date planted:</strong> {{tree.plantdate | date:'yyyy-MM-dd'}}</p>
-      <p><strong>Caretaker:</strong> City of San Francisco</p>
 
     </div>
   </div>
@@ -35,7 +30,7 @@
     </div>
   </div>
 
-  <div class="row col-md-10 col-lg-offset-1 message" data-ng-repeat="message in messages">
+  <div class="row col-md-7 col-lg-offset-4 message" data-ng-repeat="message in user.messages">
     <div class="thumb-container">
       <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
     </div>

@@ -5,7 +5,7 @@
   display the map on the profile.html
   currently need maker to be added
 */
-angular.module('mean.articles', ['uiGmapgoogle-maps'])
+angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
 
 //Configure tha google map api
 .config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApi){
