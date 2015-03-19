@@ -1,7 +1,7 @@
 'use strict';
-
 var pg = require('pg');
 var conString = 'postgres://postgres:1234@localhost/postgres';
+
 
 /**
  * Get tree data for a single tree (profile view)
@@ -63,13 +63,11 @@ exports.getMessagesForTree = function(req, res) {
  * @param res
  */
 exports.getMessagesForUsers = function(req, res) {
-  var username = req.params.username;
-
-  //var username = req.body.username;
+  var username = req.params.userid;
   console.log('in getMessageForUsers and username is', username);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = 'SELECT message FROM message WHERE username = $1;';
+    var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid FROM message WHERE username = $1 LIMIT 100;';
     client.query(selectMessages, [username], function(error, results) {
       console.log('results.rows is ', results.rows);
       res.json(results.rows);
@@ -87,8 +85,6 @@ exports.getMessagesForUsers = function(req, res) {
 //
 exports.postMessageFromUser = function(req, res) {
   console.log('got into postMessageFromUser');
-  //this is a GET so we should be looking at params but I can't figure out how to send params from the
-  //Messages factory
   var username = req.body.username;
   var message = req.body.message;
   var treeid = req.body.treeid;
@@ -156,5 +152,7 @@ exports.insertMessagesFromTrees = function(req, res) {
 
   });
 };
+//This can be refactored to store image in DB instead of locally in folder
+exports.uploadUserImage = function(req, res) {
 
-
+};

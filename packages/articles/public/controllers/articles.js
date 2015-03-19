@@ -2,8 +2,11 @@
 // sample tree object {name: "tree", qspecies: "Maytenus boaria :: Mayten", picture: "nameless", plantdate: "1969-12-31T06:00:00.000Z", latitude: -122.431434474484…}
 
 angular.module('mean.articles')
-.controller('ArticlesController', ['$scope', '$http','$resource','$stateParams', '$location', 'Global', 'GetMessages', 'Messages', 'Articles', 'treeData',
-  function($scope, $http, $stateParams, $resource, $location, Global, GetMessages, Messages, Articles, treeData) {
+.controller('ArticlesController', ['$scope', '$http','$resource','$stateParams',
+    '$location', 'Global', 'GetMessages', 'Messages', 'Articles', 'treeData',
+    '$upload', 'UserImage', 'GetUserMessages',
+  function($scope, $http, $stateParams, $resource, $location, Global, GetMessages,
+           Messages, Articles, treeData, $upload, UserImage, GetUserMessages) {
     $scope.global = Global;
     $scope.hasAuthorization = function(article) {
       if (!article || !article.user) return false;
@@ -26,11 +29,10 @@ angular.module('mean.articles')
     };
 
 
-    //Post message to database from single tree (profile) view
-    //to be able to access tree.treeid, added data-treeid to h3 tag in profile.html
+    //Post message to database from single tree profile view
     $scope.submitMessage = function() {
       var message = $scope.message;
-      var username = $scope.tree.name;
+      var username = $scope.global.user.username;
       var treeid = $scope.tree.treeid;
       var body = {
         message: message,
@@ -51,8 +53,55 @@ angular.module('mean.articles')
         console.log('$scope.messages is ', messages);
         $scope.messages = messages;
       });
+    };
 
 
+    //watch for image file upload
+    $scope.$watch('files', function () {
+      $scope.upload($scope.files);
+    });
+    //upload image file
+    $scope.upload = function (files) {
+      if (files && files.length) {
+        //for (var i = 0; i < files.length; i++) {
+        //  var file = files[i];
+        var file = files[0];
+        $upload.upload({
+            url: 'user/image',
+            fields: {
+              'username': $scope.username
+            },
+            file: file
+          }).progress(function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' +
+            evt.config.file.name);
+          }).success(function (data, status, headers, config) {
+            console.log('file ' + config.file.name + 'uploaded. Response: ' +
+            console.log('returned data ', data));
+            $scope.image = data;
+            console.log('$scope.image is ', $scope.image);
+            $scope.loadUserImage($scope.image.path);
+          });
+        }
+
+    };
+
+    //load user image in conjunction with factory UserImage
+    $scope.loadUserImage = function(url) {
+      console.log('got into load');
+      $scope.user.image = UserImage.loadUserImage(url);
+    };
+
+    //get All messages from a User and display on user profile page
+    $scope.getUserMessages = function($stateParams) {
+      GetUserMessages.get({ username: $scope.global.user.username }, function(messages) {
+        console.log('$scope.messages is ', messages);
+        $scope.user = {};
+        $scope.user.messages = messages;
+        $scope.user.name = $scope.global.user.name;
+        $scope.loadUserImage();
+      });
     };
   }
 ])
