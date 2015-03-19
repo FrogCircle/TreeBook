@@ -27,16 +27,17 @@
     </div>
     <div class="col-md-7">
       <h3>My Comments</h3>
+      <div data-ng-repeat="message in user.messages">
+        <div class="thumb-container">
+          <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
+        </div>
+        <span><strong>{{ message.username }}</strong></span><br>
+        <span style="color:#727272;">March 1st, 2015 at 2:48 pm</span>
+        <p>{{ message.message }}</p>
+        <div style="clear:both;"></div>
+      </div>
     </div>
   </div>
 
-  <div class="row col-md-7 col-lg-offset-4 message" data-ng-repeat="message in user.messages">
-    <div class="thumb-container">
-      <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
-    </div>
-    <span><strong>{{ message.username }}</strong></span><br>
-    <span style="color:#727272;">March 1st, 2015 at 2:48 pm</span>
-    <p>{{ message.message }}</p>
-    <div style="clear:both;"></div>
-  </div>
+
 </section>

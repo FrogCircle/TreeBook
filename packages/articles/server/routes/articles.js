@@ -35,18 +35,7 @@ module.exports = function(Articles, app, auth) {
     });
     handler(req, res, next);
   });
-/*  app.use(multer({ dest: './uploads/',
-    rename: function (fieldname, filename) {
-      return filename+Date.now();
-    },
-    onFileUploadStart: function (file) {
-      console.log(file.originalname + ' is starting ...')
-    },
-    onFileUploadComplete: function (file) {
-      console.log(file.fieldname + ' uploaded to  ' + file.path)
-      done=true;
-    }
-  }));*/
+
 
 
   app.route('/articles').get(articles.getAll);
@@ -56,12 +45,9 @@ module.exports = function(Articles, app, auth) {
   app.route('/usermessages').post(articles.postMessageFromUser);
   app.route('/treemessages/:treeid').get(articles.getMessagesForTree);
   app.route('/treemessages').post(articles.insertMessagesFromTrees);
+  //the app.use middleware route above with multer handles file uploads
   app.route('/user/image').post(function(req, res) {
     console.log('req.files ', req.files);
   });
 
-
-
-  // if certain route
-  // give the function to send data
 };
