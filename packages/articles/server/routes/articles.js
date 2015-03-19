@@ -16,18 +16,15 @@ module.exports = function(Articles, app, auth) {
         return filename+Date.now();
       },
       onFileSizeLimit: function (file) {
-        // res does exist here now :)
         res.json({
-          message: "Upload failed",
-          status: MARankings.Enums.Status.FILE_TOO_LARGE
-          // status: -6
+          message: 'Upload failed'
         });
       },
       onFileUploadStart: function (file) {
-        console.log(file.originalname + ' is starting ...')
+        console.log(file.originalname + ' is starting ...');
       },
       onFileUploadComplete: function (file) {
-        console.log(file.fieldname + ' uploaded to  ' + file.path)
+        console.log(file.fieldname + ' uploaded to  ' + file.path);
         done=true;
         res.send(file);
       }

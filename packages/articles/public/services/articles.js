@@ -52,6 +52,7 @@ angular.module('mean.articles')
     });
   }
 );
+
 //UserImage factory for persisting user photo
 angular.module('mean.articles')
   .factory('UserImage',

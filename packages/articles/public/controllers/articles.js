@@ -29,8 +29,7 @@ angular.module('mean.articles')
     };
 
 
-    //Post message to database from single tree (profile) view
-    //to be able to access tree.treeid, added data-treeid to h3 tag in profile.html
+    //Post message to database from single tree profile view
     $scope.submitMessage = function() {
       var message = $scope.message;
       var username = $scope.global.user.username;
@@ -56,16 +55,7 @@ angular.module('mean.articles')
       });
     };
 
-    $scope.findOneUser = function() {
-      //console.log('$scope.global is ', $scope.global);
-      //$scope.user = {};
-      //$scope.user.name = $scope.global.user.name;
-      //console.log('$scope.name is ', $scope.name);
-      //treeData.getTree().$promise.then(function(tree){
-      //  $scope.tree = tree;
-      //  $scope.getMessages();
-      //});
-    };
+
     //watch for image file upload
     $scope.$watch('files', function () {
       $scope.upload($scope.files);
@@ -73,9 +63,10 @@ angular.module('mean.articles')
     //upload image file
     $scope.upload = function (files) {
       if (files && files.length) {
-        for (var i = 0; i < files.length; i++) {
-          var file = files[i];
-          $upload.upload({
+        //for (var i = 0; i < files.length; i++) {
+        //  var file = files[i];
+        var file = files[0];
+        $upload.upload({
             url: 'user/image',
             fields: {
               'username': $scope.username
@@ -93,7 +84,7 @@ angular.module('mean.articles')
             $scope.loadUserImage($scope.image.path);
           });
         }
-      }
+
     };
 
     //load user image in conjunction with factory UserImage
