@@ -1,13 +1,11 @@
-<section data-ng-controller="ArticlesController" data-ng-init="find()">
-<div class="row>"><div class="col-md-8 col-md-offset-4"><h2>Browse Trees</h2></div></div>
-<!-- {name: "tree", qspecies: "Maytenus boaria :: Mayten", picture: "nameless", plantdate: "1969-12-31T06:00:00.000Z", latitude: -122.431434474484…} -->
-
-<!-- <div data-ng-controller="TreeSearchController">
-  <form name="searchForm" novalidate>
-    <input type="text" data-ng-model="TreeSearchController.address">
-    <input type="submit">
-  </form>
-</div> -->
+<section data-ng-controller="TreesController" data-ng-init="find()">
+<div class="row>">
+  <div class="col-md-8 col-md-offset-4">
+    <h2>
+      Browse Trees
+    </h2>
+  </div>
+</div>
 
 <div data-ng-repeat="tree in trees">
   <a ng-href='/#!/trees/{{tree.treeid}}'>

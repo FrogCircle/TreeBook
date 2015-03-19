@@ -1,4 +1,4 @@
-<section data-ng-controller="ArticlesController" data-ng-init="findOne()">
+<section data-ng-controller="TreesController" data-ng-init="findOne()">
   <div class="row">
   <div class="col-md-4 col-md-offset-1">
     <div class="profile-image-div">
@@ -27,30 +27,32 @@
 
   </div>
   </div>
-  <div class="row ">
-    <div class="col-md-9 col-md-offset-1 well">
-      <form name="messageForm" ng-submit="submitMessage()">
-        <div class="textarea-holder">
-        <textarea style="border-radius: 5px; border: 2px solid #9EBD2E; margin-left: 15px;"
-                  name="message-input"
-                  type="text" placeholder="Get to know a tree"
-                  cols="110" rows="3"
-                  ng-model="message">
+  <div ng-controller="MessagesController" ng-init="getMessages()">
+    <div class="row ">
+      <div class="col-md-9 col-md-offset-1 well">
+        <form name="messageForm" ng-submit="submitMessage()">
+          <div class="textarea-holder">
+          <textarea style="border-radius: 5px; border: 2px solid #9EBD2E; margin-left: 15px;"
+                    name="message-input"
+                    type="text" placeholder="Get to know a tree"
+                    cols="110" rows="3"
+                    ng-model="message">
 
-        </textarea>
-        <input type="submit" value="Submit" class="btn message-button" ng-disabled="messageForm.$invalid">
-        </div>
-      </form>
+          </textarea>
+          <input type="submit" value="Submit" class="btn message-button" ng-disabled="messageForm.$invalid">
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <div class="row col-md-10 col-lg-offset-1 message" data-ng-repeat="message in messages">
-    <div class="thumb-container">
-      <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
+    <div class="row col-md-10 col-lg-offset-1 message" data-ng-repeat="message in messages">
+      <div class="thumb-container">
+        <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
+      </div>
+      <span><strong>{{ message.username }}</strong></span><br>
+      <span style="color:#727272;">March 1st, 2015 at 2:48 pm</span>
+      <p>{{ message.message }}</p>
+      <div style="clear:both;"></div>
     </div>
-    <span><strong>{{ message.username }}</strong></span><br>
-    <span style="color:#727272;">March 1st, 2015 at 2:48 pm</span>
-    <p>{{ message.message }}</p>
-    <div style="clear:both;"></div>
-  </div>
+  <div>
 </section>

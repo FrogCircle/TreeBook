@@ -2,10 +2,8 @@
 <ed>
 Refactor "articles" to "trees" - entire folder uncluding outside references - should be done on its own branch
 
-
-
 Fix the frontpage so the is a shaded gap between the "explore the forest" and the "about the project line"
 
 Make an about page
 
-Create design for item on search page
+Ability for users to like trees.

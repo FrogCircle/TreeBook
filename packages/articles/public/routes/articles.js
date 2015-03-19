@@ -55,7 +55,7 @@ angular.module('mean.articles').config(['$stateProvider',
       })
       .state('user profile page', {
         url: '/user/:userId',
-        templateUrl: 'articles/views/userProfile.html',
+        templateUrl: 'users/views/userProfile.html',
         resolve: {
           loggedin: checkLoggedin
         }
