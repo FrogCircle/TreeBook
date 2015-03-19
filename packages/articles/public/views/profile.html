@@ -8,9 +8,9 @@
     <h3 data-treeid="{{tree.treeid}}">{{tree.name}}</h3>
     <p><strong><span class="species">Species:</span> {{tree.qspecies}}</strong></p>
     <h4>Info block 1</h4>
-    <h4>Info block 2</h4>
+    <p><strong>Plotsize:</strong> {{tree.plotsize}}</p>
     <p><strong>Date planted:</strong> {{tree.plantdate | date:'yyyy-MM-dd'}}</p>
-    <p><strong>Caretaker:</strong> City of San Francisco</p>
+    <p><strong>Caretaker:</strong> {{tree.qcaretaker}}</p>
   </div>
   <div class="col-md-5" style="height: 365px;">
     <div class="text-center" style="float: right;">
