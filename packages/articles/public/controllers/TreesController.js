@@ -18,10 +18,7 @@ angular.module('mean.articles')
     // The tree is determined by $stateParams (URL)
     $scope.findOne = function() {
       TreeData.getTree().$promise.then(function(tree){
-<<<<<<< HEAD
         console.log('tree caretaker ', tree.caretaker);
-=======
->>>>>>> Refactor controllers into their own files
         $scope.tree = tree;
       });
     };
