@@ -3,9 +3,10 @@
 var articles = require('../controllers/articles');
 
 module.exports = function(Articles, app, auth) {
-  //use multer middleware for image uploads
   var multer = require('multer');
   var done = false;
+
+  //use multer middleware for image uploads, max size 500kb
   app.use('/user/image', function(req, res, next) {
     var handler = multer({
       dest: 'packages/theme/public/assets/img/uploads/',
