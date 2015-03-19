@@ -39,7 +39,7 @@ angular.module('mean.articles').config(['$stateProvider',
           loggedin: checkLoggedin
         }
       })
-      .state('profile page', {
+      .state('tree profile page', {
         url: '/trees/profile',
         templateUrl: 'articles/views/profile.html',
         resolve: {
@@ -49,6 +49,13 @@ angular.module('mean.articles').config(['$stateProvider',
       .state('single tree display', {
         url: '/trees/:treeId',
         templateUrl: 'articles/views/profile.html',
+        resolve: {
+          loggedin: checkLoggedin
+        }
+      })
+      .state('user profile page', {
+        url: '/user/:userId',
+        templateUrl: 'articles/views/userProfile.html',
         resolve: {
           loggedin: checkLoggedin
         }

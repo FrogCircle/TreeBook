@@ -26,6 +26,20 @@ angular.module('mean.articles')
       });
     }
   ]);
+//GetUserMessages factory for getting all messages posted by a user
+angular.module('mean.articles')
+  .factory('GetUserMessages', ['$resource', '$stateParams',
+    function($resource, $stateParams) {
+      return $resource('usermessages/:username', {
+        treeid: '@_username'
+      }, {
+        get: {
+          method: 'GET',
+          isArray: true
+        }
+      });
+    }
+  ]);
 //Message factory for posting usermessage
 angular.module('mean.articles')
   .factory('Messages',
@@ -38,4 +52,30 @@ angular.module('mean.articles')
     });
   }
 );
+
+//UserImage factory for persisting user photo
+angular.module('mean.articles')
+  .factory('UserImage',
+  function($resource, $stateParams) {
+    var alreadyLoadedNewImage = false;
+    var newUrl;
+    var loadUserImage = function(url) {
+      if (url) {
+        url = url.split('packages/theme/public/assets/img');
+        newUrl = 'theme/assets/img' + url[1];
+        alreadyLoadedNewImage = true;
+        return newUrl;
+      } else if(alreadyLoadedNewImage) {
+        return newUrl;
+      } else {
+        return 'theme/assets/img/icons/user-icon.png';
+      }
+    };
+    return  {
+      loadUserImage: loadUserImage
+      };
+  }
+);
+
+
 
