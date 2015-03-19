@@ -1,7 +1,9 @@
 'use strict';
 
-//Articles service used for articles REST endpoint
-angular.module('mean.articles').factory('Articles', ['$resource',
+// Articles service used for articles REST endpoint
+angular.module('mean.articles')
+
+.factory('Trees', ['$resource',
   function($resource) {
     return $resource('articles/:treeId', {
       treeId: '@_id'
@@ -11,38 +13,53 @@ angular.module('mean.articles').factory('Articles', ['$resource',
       }
     });
   }
-]);
-//GetMessages factory for getting all messages related to a treeid
-angular.module('mean.articles')
-  .factory('GetMessages', ['$resource', '$stateParams',
-    function($resource, $stateParams) {
-      return $resource('treemessages/:treeid', {
-        treeid: '@_treeid'
-      }, {
-        get: {
-          method: 'GET',
-          isArray: true
-        }
-      });
-    }
-  ]);
-//GetUserMessages factory for getting all messages posted by a user
-angular.module('mean.articles')
-  .factory('GetUserMessages', ['$resource', '$stateParams',
-    function($resource, $stateParams) {
-      return $resource('usermessages/:username', {
-        treeid: '@_username'
-      }, {
-        get: {
-          method: 'GET',
-          isArray: true
-        }
-      });
-    }
-  ]);
-//Message factory for posting usermessage
-angular.module('mean.articles')
-  .factory('Messages',
+])
+
+// treeData service to provide tree data
+.factory('TreeData', ['Trees', '$stateParams',
+  function(Trees, $stateParams){
+    // Save Tree to var
+    var getTree = function(){
+      return Trees
+        .get({ treeId: $stateParams.treeId }, function(t){
+          return t;
+        });
+    };
+
+    return { getTree: getTree };
+  }
+])
+
+// GetMessages factory for getting all messages related to a treeid
+.factory('GetMessages', ['$resource', '$stateParams',
+  function($resource, $stateParams) {
+    return $resource('treemessages/:treeid', {
+      treeid: '@_treeid'
+    }, {
+      get: {
+        method: 'GET',
+        isArray: true
+      }
+    });
+  }
+])
+
+// GetUserMessages factory for getting all messages posted by a user
+.factory('GetUserMessages', ['$resource', '$stateParams',
+  function($resource, $stateParams) {
+    return $resource('usermessages/:username', {
+      treeid: '@_username'
+    }, {
+      get: {
+        method: 'GET',
+        isArray: true
+      }
+    });
+  }
+])
+
+// Message factory for posting usermessage
+.factory('Messages',
   function($resource, $stateParams) {
     return $resource('usermessages', {}, {
       save: {
@@ -51,11 +68,10 @@ angular.module('mean.articles')
       }
     });
   }
-);
+)
 
-//UserImage factory for persisting user photo
-angular.module('mean.articles')
-  .factory('UserImage',
+// UserImage factory for persisting user photo
+.factory('UserImage',
   function($resource, $stateParams) {
     var alreadyLoadedNewImage = false;
     var newUrl;
