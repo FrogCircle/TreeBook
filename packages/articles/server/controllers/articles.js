@@ -9,7 +9,7 @@ var conString = 'postgres://postgres:1234@localhost/postgres';
 exports.getTreeData = function(req, res) {
   var treeid = req.params.treeId;
   pg.connect(conString, function(err, client, done) {
-    var selectMessages = 'SELECT tree.name, tree.treeid, q.qspecies, tree.plantdate, l.latitude, l.longitude, image.imageurl, image.imagewidth, image.imageheight, image.imagetype from qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN image ON (q.qspeciesid = image.qspeciesid) WHERE treeid = $1;';
+    var selectMessages = 'SELECT tree.name, tree.treeid, q.qspecies, tree.plotsize, tree.qcaretaker, tree.plantdate, l.latitude, l.longitude, image.imageurl, image.imagewidth, image.imageheight, image.imagetype from qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN image ON (q.qspeciesid = image.qspeciesid) WHERE treeid = $1;';
     client.query(selectMessages, [treeid], function(error, results) {
       done();
       if (error) {
@@ -49,7 +49,7 @@ exports.getMessagesForTree = function(req, res) {
   console.log('in getMessageForTree and treeid is', treeid);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid FROM message WHERE treeid = $1 LIMIT 100;';
+    var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid FROM message  WHERE treeid = $1 LIMIT 100;';
     client.query(selectMessages, [treeid], function(error, results) {
       res.json(results.rows);
     });
