@@ -14,6 +14,11 @@ angular.module('mean.articles')
     //upload image file
     $scope.upload = function (files) { // user controller
       if (files && files.length) {
+<<<<<<< HEAD
+=======
+        //for (var i = 0; i < files.length; i++) {
+        //  var file = files[i];
+>>>>>>> Refactored Controllers
         var file = files[0];
         $upload.upload({
             url: 'user/image',
@@ -30,10 +35,13 @@ angular.module('mean.articles')
             console.log('returned data ', data));
             $scope.image = data;
             console.log('$scope.image is ', $scope.image);
+<<<<<<< HEAD
             console.log('status is ', status);
             console.log('headers is ', headers());
             console.log('config is ', config.transformRequest[0]());
             console.log('args ', arguments);
+=======
+>>>>>>> Refactored Controllers
             $scope.loadUserImage($scope.image.path);
           });
         }

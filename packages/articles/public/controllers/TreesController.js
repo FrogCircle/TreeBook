@@ -14,7 +14,7 @@ angular.module('mean.articles')
       });
     };
 
-    // Helper methods to call TreeData service with to get a specific trees data.
+    // Helper methos to call TreeData service with to get a specific trees data.
     // The tree is determined by $stateParams (URL)
     $scope.findOne = function() {
       TreeData.getTree().$promise.then(function(tree){

@@ -40,7 +40,6 @@ angular.module('mean.articles')
       console.log('in getMessages');
       GetMessages.get({ treeid: $stateParams.treeId }, function(messages) {
         $scope.messages = messages;
-        console.log('$scope.messages is ', $scope.messages);
       });
     };
 }]);
