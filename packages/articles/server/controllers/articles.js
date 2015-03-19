@@ -1,7 +1,13 @@
 'use strict';
-
 var pg = require('pg');
 var conString = 'postgres://postgres:1234@localhost/postgres';
+//May need to delete the stuff below
+//var express = require('express');
+//var util = require('util');
+//var app = express();
+//var multer = require('multer');
+//app.use(multer({dest:'./uploads/'}));
+//var fs = require('fs');
 
 /**
  * Get tree data for a single tree (profile view)
@@ -156,5 +162,21 @@ exports.insertMessagesFromTrees = function(req, res) {
 
   });
 };
-
-
+//This can be refactored to store image in DB instead of locally in folder
+exports.uploadUserImage = function(req, res) {
+  console.log('in uploadUserImage with req to: ' + req.url);
+  console.log('files ' + req.files);
+  if (req.files) {
+    console.log("util.inspect" + util.inspect(req.files));
+    if (req.files.myFile.size === 0) {
+      return next(new Error("Hey, first would you select a file?"));
+    }
+    fs.exists(req.files.myFile.path, function(exists) {
+      if(exists) {
+        res.end("Got your file!");
+      } else {
+        res.end("Well, there is no magic for those who don’t believe in it!");
+      }
+    });
+  }
+};

@@ -1,9 +1,11 @@
 'use strict';
 // sample tree object {name: "tree", qspecies: "Maytenus boaria :: Mayten", picture: "nameless", plantdate: "1969-12-31T06:00:00.000Z", latitude: -122.431434474484…}
 
-angular.module('mean.articles')
-.controller('ArticlesController', ['$scope', '$http','$resource','$stateParams', '$location', 'Global', 'GetMessages', 'Messages', 'Articles', 'treeData',
-  function($scope, $http, $stateParams, $resource, $location, Global, GetMessages, Messages, Articles, treeData) {
+angular.module('mean.articles', ['angularFileUpload'])
+.controller('ArticlesController', ['$scope', '$http','$resource','$stateParams',
+    '$location', 'Global', 'GetMessages', 'Messages', 'Articles', 'treeData', '$upload', 'UserImage',
+  function($scope, $http, $stateParams, $resource, $location, Global, GetMessages,
+           Messages, Articles, treeData, $upload, UserImage) {
     $scope.global = Global;
     $scope.hasAuthorization = function(article) {
       if (!article || !article.user) return false;
@@ -51,8 +53,50 @@ angular.module('mean.articles')
         console.log('$scope.messages is ', messages);
         $scope.messages = messages;
       });
+    };
 
-
+    $scope.findOneUser = function() {
+      console.log('$scope.global is ', $scope.global);
+      $scope.user = {};
+      $scope.user.name = $scope.global.user.name;
+      //console.log('$scope.name is ', $scope.name);
+      //treeData.getTree().$promise.then(function(tree){
+      //  $scope.tree = tree;
+      //  $scope.getMessages();
+      //});
+    };
+    //watch for image file upload
+    $scope.$watch('files', function () {
+      $scope.upload($scope.files);
+    });
+    //upload image file
+    $scope.upload = function (files) {
+      if (files && files.length) {
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          $upload.upload({
+            url: 'user/image',
+            fields: {
+              'username': $scope.username
+            },
+            file: file
+          }).progress(function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' +
+            evt.config.file.name);
+          }).success(function (data, status, headers, config) {
+            console.log('file ' + config.file.name + 'uploaded. Response: ' +
+            console.log('returned data ', data));
+            $scope.image = data;
+            console.log('$scope.image is ', $scope.image);
+            $scope.loadUserImage($scope.image.path);
+          });
+        }
+      }
+    };
+    $scope.loadUserImage = function(url) {
+      console.log('got into load');
+      $scope.user.image = UserImage.loadUserImage(url);
     };
   }
 ])

@@ -38,4 +38,29 @@ angular.module('mean.articles')
     });
   }
 );
+//UserImage factory for persisting user photo
+angular.module('mean.articles')
+  .factory('UserImage',
+  function($resource, $stateParams) {
+    var alreadyLoadedNewImage = false;
+    var newUrl;
+    var loadUserImage = function(url) {
+      if (url) {
+        url = url.split('packages/theme/public/assets/img');
+        newUrl = 'theme/assets/img' + url[1];
+        alreadyLoadedNewImage = true;
+        return newUrl;
+      } else if(alreadyLoadedNewImage) {
+        return newUrl;
+      } else {
+        return 'theme/assets/img/icons/user-icon.png';
+      }
+    };
+    return  {
+      loadUserImage: loadUserImage
+      }
+  }
+);
+
+
 
