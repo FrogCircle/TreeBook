@@ -24,10 +24,10 @@ angular.module('mean.articles')
         //change date format for each message to readable format
         var date = new Date(newMessage.createdat);
         var options = {
-          weekday: "long", year: "numeric", month: "short",
-          day: "numeric", hour: "2-digit", minute: "2-digit"
+          weekday: 'long', year: 'numeric', month: 'short',
+          day: 'numeric', hour: '2-digit', minute: '2-digit'
         };
-        newMessage.createdat = date.toLocaleDateString("en-us", options);
+        newMessage.createdat = date.toLocaleDateString('en-us', options);
         //async load new message to DOM. Loads to end of message list
         $scope.messages.push(data[0]);
         //reset message form to empty
