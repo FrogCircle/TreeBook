@@ -18,7 +18,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-var conString = "postgres://postgres:1234@localhost/postgres";
+var conString = process.env.POSTGRES;
 
 /**
  * Gets tree's messages from database and sends it to client. Request is expecting a treeId.
