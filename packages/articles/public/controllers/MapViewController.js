@@ -25,8 +25,8 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
     var onLoad = function(data){
       return $q.when(data).then(function(data){
         var mapCenter = {
-          latitude: data.longitude,
-          longitude: data.latitude
+          latitude: data.latitude,
+          longitude: data.longitude
         };
         $scope.map = {center: mapCenter, zoom: 20 };
 
