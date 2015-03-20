@@ -18,7 +18,8 @@ module.exports = {
     }
   },
   hostname: process.env.HOST || process.env.HOSTNAME,
-  db: 'mongodb://treebookuser:7777jjjj@ds045107.mongolab.com:45107/treebook',
+  //db: 'mongodb://treebookuser:7777jjjj@ds045107.mongolab.com:45107/treebook',
+  db: 'mongodb://' + (process.env.MONGODB || 'localhost'),
   templateEngine: 'swig',
 
   // The secret should be set to a non-guessable string that
