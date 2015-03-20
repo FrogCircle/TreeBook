@@ -49,7 +49,7 @@ exports.getMessagesForTree = function(req, res) {
   console.log('in getMessageForTree and treeid is', treeid);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid FROM message  WHERE treeid = $1 LIMIT 100;';
+    var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid, message.createdAt FROM message  WHERE treeid = $1 LIMIT 100;';
     client.query(selectMessages, [treeid], function(error, results) {
       res.json(results.rows);
     });
@@ -67,7 +67,7 @@ exports.getMessagesForUsers = function(req, res) {
   console.log('in getMessageForUsers and username is', username);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid FROM message WHERE username = $1 LIMIT 100;';
+    var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid, message.createdAt FROM message WHERE username = $1 LIMIT 100;';
     client.query(selectMessages, [username], function(error, results) {
       console.log('results.rows is ', results.rows);
       res.json(results.rows);

@@ -17,10 +17,9 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
 }])
 
 //set up the map view ctrl
-.controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'treeData',
-  function($scope, $q, uiGmapGoogleMapApi, treeData) {
+.controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'TreeData',
+  function($scope, $q, uiGmapGoogleMapApi, TreeData) {
     $scope.resolved = false;
-
     // Promise assign the latitude and longitude to the $scope
     // $scope.resolved is used for the ng-if
     var onLoad = function(data){
@@ -29,7 +28,6 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
           latitude: data.longitude,
           longitude: data.latitude
         };
-        console.log(mapCenter);
         $scope.map = {center: mapCenter, zoom: 20 };
 
         //There is a little bug here, when the map is moving, the marker will
@@ -46,7 +44,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
       });
     };
 
-    treeData.getTree().$promise.then(function(tree){
+    TreeData.getTree().$promise.then(function(tree){
       onLoad(tree);
     });
   }
