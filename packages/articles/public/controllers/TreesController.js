@@ -3,8 +3,8 @@
 angular.module('mean.articles')
 
 // Controller to handle getting tree data
-.controller('TreesController', ['$scope', '$resource','$stateParams', 'Trees', 'TreeData',
-  function($scope, $stateParams, $resource, Trees, TreeData) {
+.controller('TreesController', ['$scope', '$resource','$stateParams', 'Trees', 'TreeData', 'GeoCode',
+  function($scope, $stateParams, $resource, Trees, TreeData, GeoCode) {
 
     // Helper method to call Trees factory to get all trees
     $scope.find = function() {
@@ -22,5 +22,11 @@ angular.module('mean.articles')
       });
     };
 
+    $scope.searchTrees = function(){
+      var requestAddress = $scope.address;
+      console.log(requestAddress);
+      var location = GeoCode.getLocation(requestAddress);
+      console.log(location);
+    };
   }
 ]);
