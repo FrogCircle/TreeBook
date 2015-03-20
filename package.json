@@ -47,6 +47,7 @@
     "load-grunt-tasks": "^0.6.0",
     "lodash": "2.4.1",
     "meanio": "linnovate/meanio",
+    "mongodb": "1.4.28",
     "mongoose": "3.8.21",
     "morgan": "1.5.0",
     "ms": "0.6.2",
