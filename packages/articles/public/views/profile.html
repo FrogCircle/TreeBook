@@ -45,12 +45,12 @@
       </div>
     </div>
 
-    <div class="row col-md-10 col-lg-offset-1 message" data-ng-repeat="message in messages">
+    <div class="row col-md-10 col-lg-offset-1 message" data-ng-repeat="message in messages | orderBy:'-createdat'">
       <div class="thumb-container">
         <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
       </div>
       <span><strong>{{ message.username }}</strong></span><br>
-      <span style="color:#727272;">March 1st, 2015 at 2:48 pm</span>
+      <span style="color:#727272;">{{ message.createdat | date: 'medium' }}</span>
       <p>{{ message.message }}</p>
       <div style="clear:both;"></div>
     </div>

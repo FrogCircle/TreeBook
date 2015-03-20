@@ -20,6 +20,14 @@ angular.module('mean.articles')
         treeid: treeid
       };
       Messages.save(body, function(data) {
+        var newMessage = data[0];
+        //change date format for each message to readable format
+        var date = new Date(newMessage.createdat);
+        var options = {
+          weekday: "long", year: "numeric", month: "short",
+          day: "numeric", hour: "2-digit", minute: "2-digit"
+        };
+        newMessage.createdat = date.toLocaleDateString("en-us", options);
         //async load new message to DOM. Loads to end of message list
         $scope.messages.push(data[0]);
         //reset message form to empty
@@ -32,6 +40,7 @@ angular.module('mean.articles')
       console.log('in getMessages');
       GetMessages.get({ treeid: $stateParams.treeId }, function(messages) {
         $scope.messages = messages;
+        console.log('$scope.messages is ', $scope.messages);
       });
     };
 }]);
