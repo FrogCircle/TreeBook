@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = {
-  db: 'mongodb://' + (process.env.MONGODB || 'localhost') + '/mean-test',
+  //db: 'mongodb://' + (process.env.MONGODB || 'localhost') + '/mean-test',
+  db: 'mongodb://treebookuser:7777jjjj@ds045107.mongolab.com:45107/treebook',
   http: {
     port: 3001
   },

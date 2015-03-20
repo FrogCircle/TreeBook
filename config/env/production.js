@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = {
-  db: 'mongodb://' + (process.env.MONGODB || 'localhost') + '/mean-prod',
+  //db: 'mongodb://' + (process.env.MONGODB || 'localhost') + '/mean-prod',
+  db: "mongodb://treebookuser:7777jjjj@ds045107.mongolab.com:45107/treebook",
   /**
    * Database options that will be passed directly to mongoose.connect
    * Below are some examples.
