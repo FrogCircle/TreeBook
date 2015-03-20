@@ -19,6 +19,11 @@ module.exports = {
   },
   hostname: process.env.HOST || process.env.HOSTNAME,
   db: process.env.MONGOHQ_URL,
+  //db: 'treebook.cloudapp.net/27017',
+
+  //db: 'mongodb://treebookuser:7777jjjj@ds045107.mongolab.com:45107/treebook',
+  //db: 'mongodb://treebook.cloudapp.net/mean-test',
+
   templateEngine: 'swig',
 
   // The secret should be set to a non-guessable string that

@@ -2,6 +2,10 @@
 
 module.exports = {
   db: 'mongodb://' + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/mean-test',
+  //db: 'mongodb://treebook.cloudapp.net/27017/mean-test',
+
+  //db: 'mongodb://treebookuser:7777jjjj@ds045107.mongolab.com:45107/treebook',
+  //db: 'mongodb://treebook.cloudapp.net/mean-test',
   http: {
     port: 3001
   },
