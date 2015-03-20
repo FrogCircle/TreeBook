@@ -1,6 +1,6 @@
 'use strict';
 var pg = require('pg');
-var conString = "postgres://" + process.env.POSTGRES + "/postgres";
+var conString = 'postgres://' + process.env.POSTGRES + '/postgres';
 
 
 /**
