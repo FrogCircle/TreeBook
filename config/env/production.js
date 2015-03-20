@@ -2,6 +2,9 @@
 
 module.exports = {
   db: 'mongodb://' + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/mean-prod',
+  //db: 'mongodb://treebookuser:7777jjjj@ds045107.mongolab.com:45107/treebook',
+  //db: 'mongodb://treebook.cloudapp.net/mean-test',
+
   /**
    * Database options that will be passed directly to mongoose.connect
    * Below are some examples.
