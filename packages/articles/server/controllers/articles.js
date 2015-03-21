@@ -14,7 +14,7 @@ exports.getTreeData = function(req, res) {
       done();
       if (error) {
         console.log(error, 'THERE WAS AN ERROR');
-      }else{
+      } else {
         res.json(results.rows[0]);
       }
     });
@@ -31,7 +31,7 @@ exports.getAll = function(req, res) {
     client.query(selectTrees, function(error, results) {
     }, function(error, results) {
       done();
-      if(error) {
+      if (error) {
         console.log('Error is ', error);
       }
       res.json(results.rows);
@@ -90,10 +90,12 @@ exports.postMessageFromUser = function(req, res) {
   var treeid = req.body.treeid;
   console.log(username, message, treeid);
   pg.connect(conString, function(err, client, done) {
-    if(err) { console.log('error is', err); }
+    if (err) {
+      console.log('error is', err);
+    }
     else {
       var insertMessages = 'INSERT INTO message (message, username, treeid) values ($1, $2, $3) RETURNING *;';
-      client.query(insertMessages, [message, username, treeid], function (error, results) {
+      client.query(insertMessages, [message, username, treeid], function(error, results) {
         console.log('postMessageFromUser result is ', results.rows);
         res.json(results.rows);
         done();
@@ -120,7 +122,7 @@ exports.searchTrees = function(req, res) {
       'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
       '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
       'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies = $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
-    client.query(selectTrees, [searchNum, searchString, offset], function(error, results){
+    client.query(selectTrees, [searchNum, searchString, offset], function(error, results) {
       console.log('error', error);
       //console.log('results', results);
       console.log(results.rows);
@@ -149,7 +151,48 @@ exports.insertMessagesFromTrees = function(req, res) {
       res.send(results);
       done();
     });
+  });
+};
 
+exports.insertLikes = function(req, res) {
+  var treeid = req.body.treeid;
+  var userid = req.body.userid;
+  pg.connect(conString, function(err, client, done) {
+    console.log(err);
+    var insertLikes = 'INSERT INTO likes (userid, treeid) values($1, $2)';
+    client.query(insertLikes, [userid, treeid], function(error, results) {
+      console.log('results is ', results);
+      res.send(results);
+      done();
+    });
+  });
+};
+
+exports.getTreeLikes = function(req, res) {
+  var userid = req.body.userid;
+  pg.connect(conString, function(err, client, done) {
+    console.log(err);
+    var selectLikes = 'SELECT tree.name, q.qspecies, thumbnail.url, thumbnail.width, thumbnail.height, ' +
+      'thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN thumbnail ON ' +
+      '(q.qspeciesid = thumbnail.qspeciesid) JOIN likes ON (tree.treeid = likes.treeid)' + ' WHERE likes.userid = $1;';
+    client.query(selectLikes, [userid], function(error, results) {
+      console.log('results is ', results);
+      res.send(results);
+      done();
+    });
+  });
+};
+
+exports.getUserLikes = function(req, res) {
+  var treeid = req.body.treeid;
+  pg.connect(conString, function(err, client, done) {
+    console.log(err);
+    var selectLikes = 'SELECT userid from likes WHERE likes.treeid = $1;';
+    client.query(selectLikes, [treeid], function(error, results) {
+      console.log('results is ', results);
+      res.send(results);
+      done();
+    });
   });
 };
 //This can be refactored to store image in DB instead of locally in folder
