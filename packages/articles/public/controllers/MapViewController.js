@@ -50,5 +50,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
     TreeData.getTree().$promise.then(function(tree){
       onLoad(tree);
     });
+    // var tree = TreeData.returnTree();
+    // onLoad(tree);
   }
 ]);
