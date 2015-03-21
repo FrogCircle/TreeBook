@@ -267,7 +267,7 @@ exports.getComments = function(req, res) {
 //This can be refactored to store image in DB instead of locally in folder
 exports.uploadUserImage = function(req, res) {
   var image = req.image;
-  blobSvc.createBlockBlobFromStream('userpictures', 'dinizappfiles', 'test.txt', function(error, result, response){
+  blobSvc.createBlockBlobFromStream('userpictures', 'dinizappfiles', image, function(error, result, response){
     if(!error){
       // file uploaded
     }
