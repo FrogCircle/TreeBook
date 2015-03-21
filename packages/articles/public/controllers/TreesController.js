@@ -21,7 +21,8 @@ angular.module('mean.articles')
       var requestAddress = $scope.address;
       console.log(requestAddress);
       var location = GeoCode.getLocation(requestAddress);
-      console.log(location);
+      console.log(location.lat);
+      console.log(location.lng);
     };
   }
 ]);
