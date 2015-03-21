@@ -7,6 +7,13 @@
   </div>
 </div>
 
+<div class="search">
+  <form data-ng-submit="searchTrees()">
+    <input type="text" data-ng-model="address">
+    <input type="submit">
+  </form>
+</div>
+
 <div data-ng-repeat="tree in trees">
   <a ng-href='/#!/trees/{{tree.treeid}}'>
     <div class="row tree-row-listview">
