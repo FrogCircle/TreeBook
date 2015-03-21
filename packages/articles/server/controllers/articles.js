@@ -1,7 +1,16 @@
 'use strict';
+var azure = require('azure-storage');
 var pg = require('pg');
 var conString = 'postgres://' + process.env.POSTGRES + '/postgres';
-
+var retryOperations = new azure.ExponentialRetryPolicyFilter();
+var blobSvc = azure.createBlobService().withFilter(retryOperations);
+blobSvc.createContainerIfNotExists('userpictures', {publicAccessLevel : 'blob'}, function(error, result, response){
+  if(!error){
+    console.log(error);
+    console.log(result);
+    console.log(response);
+  }
+});
 
 /**
  * Get tree data for a single tree (profile view)
@@ -154,13 +163,18 @@ exports.insertMessagesFromTrees = function(req, res) {
   });
 };
 
+/**
+ * Inserts likes into database. This takes username and treeid.
+ * @param req
+ * @param res
+ */
 exports.insertLikes = function(req, res) {
   var treeid = req.body.treeid;
-  var userid = req.body.userid;
+  var username = req.body.username;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var insertLikes = 'INSERT INTO likes (userid, treeid) values($1, $2)';
-    client.query(insertLikes, [userid, treeid], function(error, results) {
+    var insertLikes = 'INSERT INTO likes (username, treeid) values($1, $2)';
+    client.query(insertLikes, [username, treeid], function(error, results) {
       console.log('results is ', results);
       res.send(results);
       done();
@@ -168,14 +182,19 @@ exports.insertLikes = function(req, res) {
   });
 };
 
+/**
+ * This gets a list of trees that the user likes. It takes an username.
+ * @param req
+ * @param res
+ */
 exports.getTreeLikes = function(req, res) {
-  var userid = req.body.userid;
+  var username = req.body.username;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var selectLikes = 'SELECT tree.name, q.qspecies, thumbnail.url, thumbnail.width, thumbnail.height, ' +
       'thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN thumbnail ON ' +
-      '(q.qspeciesid = thumbnail.qspeciesid) JOIN likes ON (tree.treeid = likes.treeid)' + ' WHERE likes.userid = $1;';
-    client.query(selectLikes, [userid], function(error, results) {
+      '(q.qspeciesid = thumbnail.qspeciesid) JOIN likes ON (tree.treeid = likes.treeid)' + ' WHERE likes.username = $1;';
+    client.query(selectLikes, [username], function(error, results) {
       console.log('results is ', results);
       res.send(results);
       done();
@@ -183,6 +202,11 @@ exports.getTreeLikes = function(req, res) {
   });
 };
 
+/**
+ * This gets a list of users which like a particular tree. It takes a treeid.
+ * @param req
+ * @param res
+ */
 exports.getUserLikes = function(req, res) {
   var treeid = req.body.treeid;
   pg.connect(conString, function(err, client, done) {
@@ -195,7 +219,57 @@ exports.getUserLikes = function(req, res) {
     });
   });
 };
+
+/**
+ * Insert comments for a message into comments table. This takes a username, comment, treeid, and messageid.
+ * @param req
+ * @param res
+ */
+exports.insertComments = function(req, res) {
+  console.log('insert comments');
+  var username = req.body.username;
+  var comment = req.body.comment;
+  var treeid = req.body.treeid;
+  var messageid = req.message.messageid;
+  console.log(username, message, treeid);
+  pg.connect(conString, function(err, client, done) {
+    if (err) {
+      console.log('error is', err);
+    }
+    else {
+      var insertComments = 'INSERT INTO comment (comment, username, treeid, messageid) values ($1, $2, $3, $5) RETURNING *;';
+      client.query(insertComments, [comment, username, treeid, messageid], function(error, results) {
+        console.log('postCommentFromUser result is ', results.rows);
+        res.json(results.rows);
+        done();
+      });
+    }
+  });
+};
+
+/**
+ * Gets comments from the database for a particular message. This takes a messageid.
+ * @param req
+ * @param res
+ */
+exports.getComments = function(req, res) {
+  var messageid = req.params.messageid;
+  console.log('in getComment');
+  pg.connect(conString, function(err, client, done) {
+    console.log(err);
+    var selectMessages = 'SELECT comment.comment, message.treeid, message.username, comment.createdAt FROM comments  WHERE messageid = $1 LIMIT 100;';
+    client.query(selectMessages, [messageid], function(error, results) {
+      res.json(results.rows);
+    });
+    done();
+  });
+};
 //This can be refactored to store image in DB instead of locally in folder
 exports.uploadUserImage = function(req, res) {
-
+  var image = req.image;
+  blobSvc.createBlockBlobFromStream('userpictures', 'dinizappfiles', 'test.txt', function(error, result, response){
+    if(!error){
+      // file uploaded
+    }
+  });
 };
