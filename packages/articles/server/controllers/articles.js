@@ -4,8 +4,8 @@ var pg = require('pg');
 var conString = 'postgres://' + process.env.POSTGRES + '/postgres';
 var retryOperations = new azure.ExponentialRetryPolicyFilter();
 var blobSvc = azure.createBlobService().withFilter(retryOperations);
-blobSvc.createContainerIfNotExists('userpictures', {publicAccessLevel : 'blob'}, function(error, result, response){
-  if(!error){
+blobSvc.createContainerIfNotExists('userpictures', {publicAccessLevel: 'blob'}, function(error, result, response) {
+  if (!error) {
     console.log(result);
     console.log(response);
   } else {
@@ -265,12 +265,41 @@ exports.getComments = function(req, res) {
     done();
   });
 };
+
+/**
+ * This queries the database for a location withing 0.01 from the users longitude and latitude. It expects a latitude
+ * and longitude.
+ * @param req
+ * @param res
+ */
+exports.findTreesByLocation = function(req, res) {
+  var upperLongitude = req.longiture + 0.01;
+  var upperLatitude = req.latitude + 0.01;
+  var lowerLatitude = req.latiture - 0.01;
+  var lowerLongitude = req.longitude - 0.01;
+  pg.connect(conString, function(err, client, done) {
+    console.log('in location search');
+    console.log(err);
+    var locationQuery = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
+      'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
+      '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
+      '(l.latitude BETWEEN $1 AND $2) AND (l.longitude BETWEEN $3 AND $4)';
+    client.query(locationQuery, [lowerLatitude, upperLatitude, lowerLongitude, upperLongitude], function(error, results) {
+      console.log('error', error);
+      //console.log('results', results);
+      console.log(results.rows);
+      done();
+    });
+  });
+};
+
+
 //This can be refactored to store image in DB instead of locally in folder
 exports.uploadUserImage = function(req, res, imageName, cb) {
   //packages/articles/server/controllers/test/uploads/
   var localPath = 'packages/theme/public/assets/img/uploads/' + imageName;
-  blobSvc.createBlockBlobFromLocalFile('userpictures', imageName, localPath, function(error, result, response){
-    if(!error){
+  blobSvc.createBlockBlobFromLocalFile('userpictures', imageName, localPath, function(error, result, response) {
+    if (!error) {
       console.log('file uploaded');
       console.log('result is ', result);
       console.log('response is ', response);
