@@ -4,8 +4,8 @@ angular.module('mean.articles')
 
 
 // Controller to handle getting tree data
-.controller('TreesController', ['$scope', '$resource','$stateParams', 'Trees', 'TreeData', 'GeoCode',
-  function($scope, $stateParams, $resource, Trees, TreeData, GeoCode) {
+.controller('TreesController', ['$scope', '$resource','$stateParams', 'Trees', 'TreeData', 'Search',
+  function($scope, $stateParams, $resource, Trees, TreeData, Search) {
 
 
     // Helper methos to call TreeData service with to get a specific trees data.
@@ -18,9 +18,10 @@ angular.module('mean.articles')
 
     // Search for the tree location based on the address typed in
     $scope.searchTrees = function(){
-      var requestAddress = $scope.address;
-      console.log(requestAddress);
-      var location = GeoCode.getLocation(requestAddress);
+      var searchString = $scope.searchString;
+      console.log(searchString);
+
+      var location = Search.getLocation(requestAddress);
       console.log(location.lat);
       console.log(location.lng);
     };
