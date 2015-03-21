@@ -156,11 +156,11 @@ exports.insertMessagesFromTrees = function(req, res) {
 
 exports.insertLikes = function(req, res) {
   var treeid = req.body.treeid;
-  var userid = req.body.userid;
+  var username = req.body.username;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var insertLikes = 'INSERT INTO likes (userid, treeid) values($1, $2)';
-    client.query(insertLikes, [userid, treeid], function(error, results) {
+    var insertLikes = 'INSERT INTO likes (username, treeid) values($1, $2)';
+    client.query(insertLikes, [username, treeid], function(error, results) {
       console.log('results is ', results);
       res.send(results);
       done();
@@ -174,8 +174,8 @@ exports.getTreeLikes = function(req, res) {
     console.log(err);
     var selectLikes = 'SELECT tree.name, q.qspecies, thumbnail.url, thumbnail.width, thumbnail.height, ' +
       'thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN thumbnail ON ' +
-      '(q.qspeciesid = thumbnail.qspeciesid) JOIN likes ON (tree.treeid = likes.treeid)' + ' WHERE likes.userid = $1;';
-    client.query(selectLikes, [userid], function(error, results) {
+      '(q.qspeciesid = thumbnail.qspeciesid) JOIN likes ON (tree.treeid = likes.treeid)' + ' WHERE likes.username = $1;';
+    client.query(selectLikes, [username], function(error, results) {
       console.log('results is ', results);
       res.send(results);
       done();
