@@ -6,9 +6,10 @@ var retryOperations = new azure.ExponentialRetryPolicyFilter();
 var blobSvc = azure.createBlobService().withFilter(retryOperations);
 blobSvc.createContainerIfNotExists('userpictures', {publicAccessLevel : 'blob'}, function(error, result, response){
   if(!error){
-    console.log(error);
     console.log(result);
     console.log(response);
+  } else {
+    console.log('error creating azure blob container ', error);
   }
 });
 
@@ -265,11 +266,21 @@ exports.getComments = function(req, res) {
   });
 };
 //This can be refactored to store image in DB instead of locally in folder
-exports.uploadUserImage = function(req, res) {
-  var image = req.image;
-  blobSvc.createBlockBlobFromStream('userpictures', 'dinizappfiles', image, function(error, result, response){
+exports.uploadUserImage = function(req, res, imageName, cb) {
+  //packages/articles/server/controllers/test/uploads/
+  var localPath = 'packages/theme/public/assets/img/uploads/' + imageName;
+  blobSvc.createBlockBlobFromLocalFile('userpictures', imageName, localPath, function(error, result, response){
     if(!error){
-      // file uploaded
+      console.log('file uploaded');
+      console.log('result is ', result);
+      console.log('response is ', response);
+      cb();
+    } else {
+      console.log('error on image upload is ', error);
+      return error;
     }
   });
 };
+
+
+

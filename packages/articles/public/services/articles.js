@@ -77,8 +77,9 @@ angular.module('mean.articles')
     var newUrl;
     var loadUserImage = function(url) {
       if (url) {
-        url = url.split('packages/theme/public/assets/img');
-        newUrl = 'theme/assets/img' + url[1];
+        //url = url.split('packages/theme/public/assets/img');
+        //newUrl = 'theme/assets/img' + url[1];
+        newUrl = url;
         alreadyLoadedNewImage = true;
         return newUrl;
       } else if(alreadyLoadedNewImage) {
