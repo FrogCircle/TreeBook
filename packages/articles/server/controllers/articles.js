@@ -1,7 +1,16 @@
 'use strict';
+var azure = require('azure-storage');
 var pg = require('pg');
 var conString = 'postgres://' + process.env.POSTGRES + '/postgres';
-
+var retryOperations = new azure.ExponentialRetryPolicyFilter();
+var blobSvc = azure.createBlobService().withFilter(retryOperations);
+blobSvc.createContainerIfNotExists('userpictures', {publicAccessLevel : 'blob'}, function(error, result, response){
+  if(!error){
+    console.log(error);
+    console.log(result);
+    console.log(response);
+  }
+});
 
 /**
  * Get tree data for a single tree (profile view)
@@ -257,5 +266,10 @@ exports.getComments = function(req, res) {
 };
 //This can be refactored to store image in DB instead of locally in folder
 exports.uploadUserImage = function(req, res) {
-
+  var image = req.image;
+  blobSvc.createBlockBlobFromStream('userpictures', 'dinizappfiles', 'test.txt', function(error, result, response){
+    if(!error){
+      // file uploaded
+    }
+  });
 };
