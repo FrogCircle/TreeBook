@@ -2,6 +2,7 @@
 
 angular.module('mean.articles')
 
+
 // Controller to handle getting tree data
 .controller('TreesController', ['$scope', '$resource','$stateParams', 'Trees', 'TreeData', 'GeoCode',
   function($scope, $stateParams, $resource, Trees, TreeData, GeoCode) {
