@@ -232,7 +232,6 @@ exports.insertComments = function(req, res) {
   var comment = req.body.comment;
   var treeid = req.body.treeid;
   var messageid = req.message.messageid;
-  console.log(username, message, treeid);
   pg.connect(conString, function(err, client, done) {
     if (err) {
       console.log('error is', err);

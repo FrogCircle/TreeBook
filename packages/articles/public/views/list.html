@@ -1,4 +1,4 @@
-<section data-ng-controller="TreesController" data-ng-init="find()">
+<section data-ng-controller="PaginationDemoCtrl" data-ng-init="find()">
 <div class="row>">
   <div class="col-md-8 col-md-offset-4">
     <h2>
@@ -14,7 +14,7 @@
   </form>
 </div>
 
-<div data-ng-repeat="tree in trees">
+<div data-ng-repeat="tree in treees[currentPage]">
   <a ng-href='/#!/trees/{{tree.treeid}}'>
     <div class="row tree-row-listview">
         <div class="col-md-4">
@@ -39,7 +39,8 @@
 </div>
 
 
-<div class="col-md-3"></div>
-
+<div align="center">
+    <pagination total-items="totalItems" ng-model="currentPage"></pagination>
+</div>
 
 </section>

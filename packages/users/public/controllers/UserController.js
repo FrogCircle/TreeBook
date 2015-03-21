@@ -30,10 +30,6 @@ angular.module('mean.articles')
             console.log('returned data ', data));
             $scope.image = data;
             console.log('$scope.image is ', $scope.image);
-            console.log('status is ', status);
-            console.log('headers is ', headers());
-            console.log('config is ', config.transformRequest[0]());
-            console.log('args ', arguments);
             $scope.loadUserImage($scope.image.path);
           });
         }

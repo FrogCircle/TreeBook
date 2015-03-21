@@ -4,7 +4,6 @@ var articles = require('../controllers/articles');
 
 module.exports = function(Articles, app, auth) {
   var multer = require('multer');
-  var done = false;
 
   //use multer middleware for image uploads, max size 500kb
   app.use('/user/image', function(req, res, next) {
@@ -28,7 +27,6 @@ module.exports = function(Articles, app, auth) {
         console.log(file.fieldname + ' uploaded to  ' + file.path);
         //console.log('new name is', req.files.file[0].name);
         //console.log('req.user.username', req.user.username);
-        var username = req.user.username;
         var newFileName = req.files.file[0].name;
         articles.uploadUserImage(req, res, newFileName, function(){
           file.path = 'https://treebooktest.blob.core.windows.net/userpictures/' + newFileName;
