@@ -3,7 +3,9 @@
   Factory that handle the address search in the list.html
 */
 angular.module('mean.articles')
-
+/*
+  Factory that handle the search in the list.html
+*/
 .factory('Search', ['uiGmapGoogleMapApi',
   function(uiGmapGoogleMapApi){
     /*
