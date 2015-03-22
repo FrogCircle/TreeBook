@@ -60,4 +60,15 @@ module.exports = function(Articles, app, auth) {
   app.route('/treemessages').post(articles.insertMessagesFromTrees);
   //the app.use middleware route above uses multer to handle file uploads
   app.route('/user/image').post(function(req, res) {});
+
+  app.route('/treesearch').get(articles.findTreesByLocation);
+  //the app.use middleware route above with multer handles file uploads
+/*
+  app.route('/user/image').post(function(req, res) {
+    console.log('req is ', req);
+    //var username = req.user.username;
+    //var newFileName = req.files.file[0].name;
+    //articles.uploadUserImage(req, res, newFileName, username);
+  });
+*/
 };

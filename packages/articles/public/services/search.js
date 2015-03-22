@@ -6,8 +6,8 @@ angular.module('mean.articles')
 /*
   Factory that handle the search in the list.html
 */
-.factory('Search', ['uiGmapGoogleMapApi',
-  function(uiGmapGoogleMapApi){
+.factory('Search', ['$resource', 'uiGmapGoogleMapApi',
+  function($resource, uiGmapGoogleMapApi){
     /*
       Take the address as params and return the location(lat, lng)
       should remember check the validation of the input somewhere
@@ -31,6 +31,9 @@ angular.module('mean.articles')
       });
     };
 
+    var getNearLocation = function(target) {
+
+    }
     return { getLocation: getLocation };
   }
 ]);
