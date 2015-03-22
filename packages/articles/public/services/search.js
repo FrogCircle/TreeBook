@@ -31,13 +31,32 @@ angular.module('mean.articles')
       });
     };
 
-    var getNearLocation = function(target) {
-
+    var getNearTrees = function(target) {
+      return $resource('/searchbyloc/:location',
+      { search: '@_location' },
+      {
+        get:{
+          method: 'GET',
+          isArray: true
+        }
+      });
     };
 
     var getByName = function(target) {
+      return $resource('/searchbyname/:search',
+      { search: '@_search' },
+      {
+        get:{
+          method: 'GET',
+          isArray: true
+        }
+      });
+    };
 
-    }
-    return { getLocation: getLocation };
+    return {
+      getLocation: getLocation,
+      getNearTree: getNearTree,
+      getByName: getByName
+    };
   }
 ]);

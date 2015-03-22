@@ -5,9 +5,8 @@ angular.module('mean.articles')
 /**
  * Handles Pagination on list page
  */
-.controller('PaginationDemoCtrl', ['$scope', 'Trees',
-  function($scope, Trees) {
-    // For some reason the number of pages will be totalItems / 8 so we intialize to 1 page
+.controller('PaginationDemoCtrl', ['$scope', 'Trees', 'Search',
+  function($scope, Trees, Search) {
     $scope.totalItems = 8;
     var itemsPerPage = 25;
     $scope.currentPage = 1;
@@ -47,8 +46,16 @@ angular.module('mean.articles')
       var lng = location.lng;
       if(lat <= -122.368107024455 && lat >= -122.511257155794 && lng <=  37.8103949467147 && lng >=  37.5090039879895) {
         //Search by location
+        var body = { longitude: lng, latitude: lat};
+        Search.getNearTrees({ search: body }, function(results){
+          console.log(results);
+        })
       } else {
         //search by name
+        Search.getByName.get({ search: searchString }, function(results){
+          console.log(results);
+          //add the results to the page
+        })
       }
     };
   }
