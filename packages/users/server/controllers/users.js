@@ -144,13 +144,16 @@ exports.updateImageUrl = function(req, res, next) {
  * Get user profile image url
  */
 exports.getImageUrl = function(req, res, next) {
-  console.log('req.params in getImageUrl', req.params);
-  var username = req.body.username;
+  var username = req.url.split('/')[2];
   User
     .findOne({
       username: username
-    }, function(err, user) {
-      res.send(user);
+    }, function(err, user){
+      if (user){
+        res.send(user.imageUrl);
+      } else{
+        res.send('theme/assets/img/icons/user-icon.png');
+      }
     });
 };
 

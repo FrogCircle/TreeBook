@@ -28,7 +28,7 @@
   </div>
   </div>
   <div ng-controller="MessagesController" ng-init="getMessages()">
-    <div class="row ">
+    <div class="row">
       <div class="col-md-9 col-md-offset-1 well">
         <form name="messageForm" ng-submit="submitMessage()">
           <div class="textarea-holder">
@@ -36,7 +36,7 @@
                     name="message-input"
                     type="text" placeholder="Get to know a tree"
                     cols="110" rows="3"
-                    ng-model="message">
+                    ng-model="inputMessage">
 
           </textarea>
           <input type="submit" value="Submit" class="btn message-button" ng-disabled="messageForm.$invalid">
@@ -46,8 +46,8 @@
     </div>
 
     <div class="row col-md-10 col-lg-offset-1 message" data-ng-repeat="message in messages | orderBy:'-createdat'">
-      <div class="thumb-container">
-        <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
+      <div ng-if="message.imageUrl" class="thumb-container">
+        <img ng-src="{{message.imageUrl}}" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
       </div>
       <span><strong>{{ message.username }}</strong></span><br>
       <span style="color:#727272;">{{ message.createdat | date: 'medium' }}</span>

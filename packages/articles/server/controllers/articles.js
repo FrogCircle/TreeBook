@@ -79,7 +79,6 @@ exports.getMessagesForUsers = function(req, res) {
     console.log(err);
     var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid, message.createdAt FROM message WHERE username = $1 LIMIT 100;';
     client.query(selectMessages, [username], function(error, results) {
-      console.log('results.rows is ', results.rows);
       res.json(results.rows);
     });
     done();
@@ -104,7 +103,7 @@ exports.postMessageFromUser = function(req, res) {
       console.log('error is', err);
     }
     else {
-      var insertMessages = 'INSERT INTO message (message, username, treeid) values ($1, $2, $3) RETURNING *;';
+      var insertMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
       client.query(insertMessages, [message, username, treeid], function(error, results) {
         console.log('postMessageFromUser result is ', results.rows);
         res.json(results.rows);

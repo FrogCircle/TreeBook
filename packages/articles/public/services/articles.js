@@ -74,11 +74,20 @@ angular.module('mean.articles')
 // UserImage factory for persisting user photo
 .factory('UserImage', ['$http',
   function($http, $stateParams) {
-    var loadUserImage = function(url) {
-      if (url) {
-        return url;
+    var imageStore = {};
+
+    var loadUserImage = function(username, cb) {
+      if (imageStore[username]){
+        cb(imageStore[username]);
       } else {
-        return 'theme/assets/img/icons/user-icon.png';
+        $http.get('/userimage/'+username)
+        .success(function(url){
+          imageStore[username] = url;
+          cb(url);
+        })
+        .error(function(){
+          console.log('Error getting user image URL');
+        });
       }
     };
 
