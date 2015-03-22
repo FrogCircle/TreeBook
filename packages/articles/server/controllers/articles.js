@@ -272,9 +272,9 @@ exports.getComments = function(req, res) {
  * @param res
  */
 exports.findTreesByLocation = function(req, res) {
-  var upperLongitude = req.longiture + 0.01;
+  var upperLongitude = req.longitude + 0.01;
   var upperLatitude = req.latitude + 0.01;
-  var lowerLatitude = req.latiture - 0.01;
+  var lowerLatitude = req.latitude - 0.01;
   var lowerLongitude = req.longitude - 0.01;
   pg.connect(conString, function(err, client, done) {
     console.log('in location search');
