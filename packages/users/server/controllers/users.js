@@ -146,7 +146,6 @@ exports.updateImageUrl = function(req, res, next) {
 exports.getImageUrl = function(req, res, next) {
   console.log('req.params in getImageUrl', req.params);
   var username = req.body.username;
-  var url = req.body.imageUrl;
   User
     .findOne({
       username: username

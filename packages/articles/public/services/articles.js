@@ -85,7 +85,7 @@ angular.module('mean.articles')
     var saveUserImage = function(user, url) {
       $http.post('/userimage', {username: user, imageUrl: url}).
         success(function(data) {
-          console.log('success saving image in mongo db')
+          console.log('success saving image in mongo db');
         }).
         error(function() {
           console.log('there was an error');
