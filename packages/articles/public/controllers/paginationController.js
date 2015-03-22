@@ -10,7 +10,6 @@ angular.module('mean.articles')
     var itemsPerPage = 25;
     $scope.currentPage = 1;
     $scope.treees = [];
-
     // Helper method to call Trees factory to get all trees
     $scope.find = function() {
       console.log('find has been called.');

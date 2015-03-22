@@ -260,3 +260,15 @@
   font-size:14px;
   margin-left:0;
 }
+
+.white-logo{
+  background-image: url(/theme/assets/img/sequoia-logo.png);
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.indexBlurb {
+  display: table-cell;
+  vertical-align:middle;
+  text-align: center;
+}
