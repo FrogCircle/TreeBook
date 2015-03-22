@@ -3,10 +3,11 @@
 angular.module('mean.articles')
 
 //Handles sumbit message and get all messages on tree profile page
-.controller('MessagesController',['$scope', 'Messages', 'Global',
+.controller('MessagesController',['$scope','Messages', 'Global',
                                  'GetMessages', 'TreeData', '$stateParams',
   function($scope, Messages, Global, GetMessages, TreeData, $stateParams){
     $scope.global = Global;
+    console.log('Global is ', Global);
     $scope.tree = TreeData.getTree();
 
     //Post message to database from single tree profile view
@@ -37,10 +38,13 @@ angular.module('mean.articles')
 
     //get All messages for a Tree and display on tree profile page
     $scope.getMessages = function() {
+      //$scope.global = Global;
+      console.log('Global is ', Global);
       console.log('in getMessages');
       GetMessages.get({ treeid: $stateParams.treeId }, function(messages) {
         console.log(messages);
         $scope.messages = messages;
+        console.log('$scope.messages is ', $scope.messages);
       });
     };
 }]);

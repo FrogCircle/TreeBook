@@ -74,6 +74,10 @@ var UserSchema = new Schema({
     type: String,
     default: 'local'
   },
+  imageUrl: {
+    type: String,
+    default: ''
+  },
   salt: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
@@ -168,7 +172,7 @@ UserSchema.methods = {
 
   /**
    * Hide security sensitive fields
-   * 
+   *
    * @returns {*|Array|Binary|Object}
    */
   toJSON: function() {

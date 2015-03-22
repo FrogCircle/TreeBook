@@ -2,14 +2,13 @@
   <div class="row">
     <div class="col-md-3 col-md-offset-1">
       <div class="profile-image-div">
-        <!--<img src="theme/assets/img/icons/user-icon.png||theme/assets/uploads/1426730135_User1426726728212.png" class="profile-user-image">-->
         <img ng-src="{{user.image}}" class="profile-user-image">
       </div>
       <div style="text-align: center;">
         <button class="btn btn-default" ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">
           Upload Image
         </button>
-        <div ng-show>Success</div>
+        <div style="color:red;" ng-if="user.uploadError">{{user.uploadError}}</div>
 
       </div>
     </div>
