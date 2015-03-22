@@ -18,20 +18,20 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
   });
 }])
 
-/**
- * set up the map view ctrl
- */
-.controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'TreeData', 'Search'
+//set up the map view ctrl
+.controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'TreeData', 'Search',
   function($scope, $q, uiGmapGoogleMapApi, TreeData, Search) {
     $scope.resolved = false;
+
+    //Search the near tree and assign the results for markers use
+    // var nearTreeSearch = function(treeLoc){
+    //   Search.getNearTrees.get({ search: treeLoc }, function(results){
+    //     $scope.nearTrees = results;
+    //   });
+    // };
+
     // Promise assign the latitude and longitude to the $scope
     // $scope.resolved is used for the ng-if
-    var nearTreeSearch = function(treeLoc){
-      Search.getNearTrees.get({ search: treeLoc }, function(results){
-        $scope.nearTrees = results;
-      });
-    };
-
     var onLoad = function(data){
       return $q.when(data).then(function(data){
         var mapCenter = {

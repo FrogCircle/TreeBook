@@ -20,7 +20,7 @@ angular.module('mean.articles')
         $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
       }
       $scope.trees = trees;
-    }
+    };
 
     // Helper method to call Trees factory to get all trees
     $scope.find = function() {
@@ -47,24 +47,33 @@ angular.module('mean.articles')
       var searchString = $scope.searchString;
       console.log(searchString);
       //location or the other
-      var location = Search.getLocation(searchString);
-      var lat = location.lat;
-      var lng = location.lng;
-      if(lat <= -122.368107024455 && lat >= -122.511257155794 && lng <=  37.8103949467147 && lng >=  37.5090039879895) {
-        //Search by location
-        var body = { longitude: lng, latitude: lat };
-        Search.getNearTrees.get({ search: body }, function(results){
-          console.log(results);
-          paginateTree(results);
-        })
-      } else {
-        //search by name
-        Search.getByName.get({ search: searchString }, function(results){
-          console.log(results);
-          //add the results to the page
-          paginateTree(results);
-        })
+      Search.getLocation(searchString).then(function(location){
+        console.log('check location in bound');
+        console.log(location);
+        //Weird place, is a function to be called
+        var lat = location.lat();
+        var lng = location.lng();
+        console.log(lat, lng);
+        if(lng <= -122.368107024455 && lng >= -122.511257155794 && lat <= 37.8103949467147 && lat >=  37.5090039879895) {
+            //Search by location
+          var body = { longitude: lng, latitude: lat };
+          console.log('Search place called');
+          Search.getNearTrees().get({ search: body }, function(results){
+            console.log(results);
+            paginateTree(results);
+          });
+        } else {
+          //search by name
+          console.log('Search by name called');
+          Search.getByName().get({ search: searchString }, function(results){
+            console.log(results);
+            //add the results to the page
+            paginateTree(results);
+          });
+        }
+      }, function(status){
+        console.log(status + 'address failed');
       }
-    };
-  }
-]);
+    );
+  };
+}]);

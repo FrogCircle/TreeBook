@@ -6,8 +6,8 @@ angular.module('mean.articles')
 /*
   Factory that handle the search in the list.html
 */
-.factory('Search', ['$resource', 'uiGmapGoogleMapApi',
-  function($resource, uiGmapGoogleMapApi){
+.factory('Search', ['$resource', '$q', 'uiGmapGoogleMapApi',
+  function($resource, $q, uiGmapGoogleMapApi){
     /*
       Take the address as params and return the location(lat, lng)
       should remember check the validation of the input somewhere
@@ -15,23 +15,27 @@ angular.module('mean.articles')
       @result
     */
     var getLocation = function(target) {
-      return uiGmapGoogleMapApi.then(function(maps){
-        var geocoder = new maps.Geocoder();
-        var request = { address: target };
-        geocoder.geocode(request, function(results, status){
-          // location is found
-          if (status === maps.GeocoderStatus.OK) {
-            console.log(results[0].geometry.location);
-            var location = results[0].geometry.location;
-            return location;
-          } else {
-            console.log('No Valid Address Found: ' + status);
-          }
+      console.log('get Location async');
+      return $q(function(resolve, reject){
+        uiGmapGoogleMapApi.then(function(maps){
+          var geocoder = new maps.Geocoder();
+          var request = { address: target };
+          geocoder.geocode(request, function(results, status){
+            // location is found
+            if (status === maps.GeocoderStatus.OK) {
+              console.log(results[0].geometry.location);
+              var location = results[0].geometry.location;
+              resolve(location);
+            } else {
+              console.log('No Valid Address Found: ' + status);
+              reject(status);
+            }
+          });
         });
       });
     };
 
-    var getNearTrees = function(target) {
+    var getNearTrees = function(queryObj) {
       return $resource('/searchbyloc/:location',
       { search: '@_location' },
       {
@@ -55,7 +59,7 @@ angular.module('mean.articles')
 
     return {
       getLocation: getLocation,
-      getNearTree: getNearTree,
+      getNearTrees: getNearTrees,
       getByName: getByName
     };
   }
