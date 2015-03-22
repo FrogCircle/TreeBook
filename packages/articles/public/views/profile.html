@@ -49,7 +49,7 @@
       <div ng-if="message.imageUrl" class="thumb-container">
         <img ng-src="{{message.imageUrl}}" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
       </div>
-      <span><strong>{{ message.username }}</strong></span><br>
+      <span><strong><a ng-href="#!/user/{{message.username}}">{{ message.username }}</a></strong></span><br>
       <span style="color:#727272;">{{ message.createdat | date: 'medium' }}</span>
       <p>{{ message.message }}</p>
       <div style="clear:both;"></div>

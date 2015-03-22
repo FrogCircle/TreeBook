@@ -20,6 +20,7 @@ angular.module('mean.articles')
         username: username,
         treeid: treeid
       };
+
       Messages.save(body, function(data) {
         var newMessage = data[0];
         //change date format for each message to readable format
@@ -47,6 +48,7 @@ angular.module('mean.articles')
       GetMessages.get({ treeid: $stateParams.treeId }, function(messages) {
         $scope.messages = messages;
         $scope.messages.forEach(function(message){
+          console.log(message);
           UserImage.loadUserImage(message.username, function(url){
             message.imageUrl = url;
           });
