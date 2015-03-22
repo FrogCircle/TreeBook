@@ -37,5 +37,19 @@ angular.module('mean.articles')
       $scope.currentPage = pageNo;
     };
 
+    // Search for the tree location based on the address typed in
+    $scope.searchTrees = function(){
+      var searchString = $scope.searchString;
+      console.log(searchString);
+      //location or the other
+      var location = Search.getLocation(searchString);
+      var lat = location.lat;
+      var lng = location.lng;
+      if(lat <= -122.368107024455 && lat >= -122.511257155794 && lng <=  37.8103949467147 && lng >=  37.5090039879895) {
+        //Search by location
+      } else {
+        //search by name
+      }
+    };
   }
 ]);

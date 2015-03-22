@@ -33,6 +33,10 @@ angular.module('mean.articles')
 
     var getNearLocation = function(target) {
 
+    };
+
+    var getByName = function(target) {
+
     }
     return { getLocation: getLocation };
   }
