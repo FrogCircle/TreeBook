@@ -16,6 +16,7 @@ angular.module('mean.articles')
     */
     var getLocation = function(target) {
       console.log('get Location async');
+      //this function need to be an async, so &q is used
       return $q(function(resolve, reject){
         uiGmapGoogleMapApi.then(function(maps){
           var geocoder = new maps.Geocoder();
@@ -35,9 +36,12 @@ angular.module('mean.articles')
       });
     };
 
+    /*
+      Get the nearby trees using the service
+    */
     var getNearTrees = function(queryObj) {
-      return $resource('/searchbyloc/:location',
-      { search: '@_location' },
+      return $resource('/searchbyloc/:lat/:lng',
+      { lat: '@latitude', lng: '@longitude'},
       {
         get:{
           method: 'GET',
@@ -46,9 +50,12 @@ angular.module('mean.articles')
       });
     };
 
+    /*
+      Get the trees using the service through the name, id or species
+      search should support both clear and vague string
+    */
     var getByName = function(queryObj) {
-      return $resource('/searchbyname/:search',
-      { search: '@search' },
+      return $resource('/searchbyname/:search', {search: '@search'},
       {
         get:{
           method: 'GET',
