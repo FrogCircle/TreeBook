@@ -42,9 +42,9 @@ angular.module('mean.articles')
       });
     };
 
-    var getByName = function(target) {
+    var getByName = function(queryObj) {
       return $resource('/searchbyname/:search',
-      { search: '@_search' },
+      { search: '@search' },
       {
         get:{
           method: 'GET',
