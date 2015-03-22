@@ -104,7 +104,7 @@ exports.postMessageFromUser = function(req, res) {
       console.log('error is', err);
     }
     else {
-      var insertMessages = 'INSERT INTO message (message, username, treeid) values ($1, $2, $3) RETURNING *;';
+      var insertMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
       client.query(insertMessages, [message, username, treeid], function(error, results) {
         console.log('postMessageFromUser result is ', results.rows);
         res.json(results.rows);
@@ -155,7 +155,7 @@ exports.insertMessagesFromTrees = function(req, res) {
   console.log(treeid, userid, message);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = 'INSERT INTO message (message, treeid, userid) values($1, $2, $3)';
+    var selectMessages = 'INSERT INTO message (message, treeid, userid, createdat) values($1, $2, $3, now())';
     client.query(selectMessages, [message, treeid, userid], function(error, results) {
       console.log('results is ', results);
       res.send(results);
@@ -237,7 +237,7 @@ exports.insertComments = function(req, res) {
       console.log('error is', err);
     }
     else {
-      var insertComments = 'INSERT INTO comment (comment, username, treeid, messageid) values ($1, $2, $3, $5) RETURNING *;';
+      var insertComments = 'INSERT INTO comment (comment, username, treeid, messageid, createdat) values ($1, $2, $3, $5, now) RETURNING *;';
       client.query(insertComments, [comment, username, treeid, messageid], function(error, results) {
         console.log('postCommentFromUser result is ', results.rows);
         res.json(results.rows);
