@@ -44,7 +44,7 @@ angular.module('mean.articles')
       var searchString = $scope.searchString;
       console.log(searchString);
 
-      var location = Search.getLocation(requestAddress);
+      var location = Search.getLocation(searchString);
       console.log(location.lat);
       console.log(location.lng);
     };

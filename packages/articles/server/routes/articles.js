@@ -64,4 +64,15 @@ module.exports = function(Articles, app, auth) {
   app.route('/treelikes').post(articles.getUserLikes);
   app.route('/userlikes').post(articles.getTreeLikes);
 
+
+  app.route('/treesearch').get(articles.findTreesByLocation);
+  //the app.use middleware route above with multer handles file uploads
+/*
+  app.route('/user/image').post(function(req, res) {
+    console.log('req is ', req);
+    //var username = req.user.username;
+    //var newFileName = req.files.file[0].name;
+    //articles.uploadUserImage(req, res, newFileName, username);
+  });
+*/
 };
