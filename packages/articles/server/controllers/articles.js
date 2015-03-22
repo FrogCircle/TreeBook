@@ -300,8 +300,6 @@ exports.uploadUserImage = function(req, res, imageName, cb) {
   blobSvc.createBlockBlobFromLocalFile('userpictures', imageName, localPath, function(error, result, response) {
     if (!error) {
       console.log('file uploaded');
-      console.log('result is ', result);
-      console.log('response is ', response);
       cb();
     } else {
       console.log('error on image upload is ', error);

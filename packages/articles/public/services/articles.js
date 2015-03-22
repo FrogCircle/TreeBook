@@ -15,6 +15,7 @@ angular.module('mean.articles')
   }
 ])
 
+
 // treeData service to provide tree data
 .factory('TreeData', ['Trees', '$stateParams',
   function(Trees, $stateParams){
@@ -31,8 +32,8 @@ angular.module('mean.articles')
 ])
 
 // GetMessages factory for getting all messages related to a treeid
-.factory('GetMessages', ['$resource', '$stateParams',
-  function($resource, $stateParams) {
+.factory('GetMessages', ['$resource', '$stateParams', 'Global',
+  function($resource, $stateParams, Global) {
     return $resource('treemessages/:treeid', {
       treeid: '@_treeid'
     }, {
@@ -71,28 +72,30 @@ angular.module('mean.articles')
 )
 
 // UserImage factory for persisting user photo
-.factory('UserImage',
-  function($resource, $stateParams) {
-    var alreadyLoadedNewImage = false;
-    var newUrl;
+.factory('UserImage', ['$http',
+  function($http, $stateParams) {
     var loadUserImage = function(url) {
       if (url) {
-        //url = url.split('packages/theme/public/assets/img');
-        //newUrl = 'theme/assets/img' + url[1];
-        newUrl = url;
-        alreadyLoadedNewImage = true;
-        return newUrl;
-      } else if(alreadyLoadedNewImage) {
-        return newUrl;
+        return url;
       } else {
         return 'theme/assets/img/icons/user-icon.png';
       }
     };
+
+    var saveUserImage = function(user, url) {
+      $http.post('/userimage', {username: user, imageUrl: url}).
+        success(function(data) {
+          console.log('success saving image in mongo db')
+        }).
+        error(function() {
+          console.log('there was an error');
+        });
+    };
     return  {
-      loadUserImage: loadUserImage
+      loadUserImage: loadUserImage,
+      saveUserImage: saveUserImage
       };
   }
-);
-
+]);
 
 

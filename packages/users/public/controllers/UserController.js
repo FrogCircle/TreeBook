@@ -13,12 +13,13 @@ angular.module('mean.articles')
 
     //upload image file
     $scope.upload = function (files) { // user controller
+      var thisUser = $scope.global.user.username;
       if (files && files.length) {
         var file = files[0];
         $upload.upload({
             url: 'user/image',
             fields: {
-              'username': $scope.username
+              'username': thisUser
             },
             file: file
           }).progress(function (evt) {
@@ -30,16 +31,22 @@ angular.module('mean.articles')
             console.log('returned data ', data));
             $scope.image = data;
             console.log('$scope.image is ', $scope.image);
-            $scope.loadUserImage($scope.image.path);
+            if( $scope.image.uploadError ) {
+              $scope.user.uploadError = $scope.image.uploadError;
+              console.log('error on hand');
+            } else {
+              $scope.user.uploadError = '';
+              $scope.loadUserImage($scope.image.path);
+              UserImage.saveUserImage(thisUser, $scope.image.path);
+            }
           });
         }
 
     };
 
     //load user image in conjunction with factory UserImage
-    $scope.loadUserImage = function(url) { // user controller
-      console.log('got into load');
-      $scope.user.image = UserImage.loadUserImage(url);
+    $scope.loadUserImage = function(username) { // user controller
+      $scope.user.image = UserImage.loadUserImage(username);
     };
 
     //get All messages from a User and display on user profile page
@@ -49,7 +56,9 @@ angular.module('mean.articles')
         $scope.user = {};
         $scope.user.messages = messages;
         $scope.user.name = $scope.global.user.name;
-        $scope.loadUserImage();
+        //$scope.loadUserImage($scope.global.user.username);
+        $scope.loadUserImage($scope.global.user.imageUrl);
+
       });
     };
 }]);

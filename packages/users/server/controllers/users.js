@@ -125,6 +125,37 @@ exports.user = function(req, res, next, id) {
 };
 
 /**
+ * Update user profile image url
+ */
+exports.updateImageUrl = function(req, res, next) {
+  console.log('req.body in imageUrl', req.body);
+  var username = req.body.username;
+  var url = req.body.imageUrl;
+  User
+    .findOne({
+      username: username
+    }, function(err, user) {
+      user.imageUrl = url;
+      user.save();
+    });
+};
+
+/**
+ * Get user profile image url
+ */
+exports.getImageUrl = function(req, res, next) {
+  console.log('req.params in getImageUrl', req.params);
+  var username = req.body.username;
+  var url = req.body.imageUrl;
+  User
+    .findOne({
+      username: username
+    }, function(err, user) {
+      res.send(user);
+    });
+};
+
+/**
  * Resets the password
  */
 
