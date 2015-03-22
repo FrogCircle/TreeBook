@@ -79,7 +79,6 @@ exports.getMessagesForUsers = function(req, res) {
     console.log(err);
     var selectMessages = 'SELECT message.message, message.treeid, message.username, message.messageid, message.createdAt FROM message WHERE username = $1 LIMIT 100;';
     client.query(selectMessages, [username], function(error, results) {
-      console.log('results.rows is ', results.rows);
       res.json(results.rows);
     });
     done();
