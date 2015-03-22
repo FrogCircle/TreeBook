@@ -136,7 +136,6 @@ exports.getTrees = getTrees;
 var searchTrees = function(req, res) {
   var search = req.search;
   var offset = req.offset || 0;
-  var search = "Briana";
   var searchString = typeof search === "string" ? "%" + search + "%" : "do not use";
   var searchNum = typeof search === "number" ? search : 0;
   var offset = 0;
@@ -182,6 +181,11 @@ exports.insertMessagesFromTrees = insertMessagesFromTrees;
 app.get('/profile', checkifloggedin, handler.renderIndex);
 app.get('/search', checkifloggedin, handler.renderIndex);
 
+//Search route for server
+app.get('/searchbyloc', checkifloggedin, handler.renderIndex);
+app.get('/searchbyname', checkifloggedin, searchTrees());
+
+//Message route for server
 app.get('/usermessages', checkifloggedin, getMessagesForUsers());
 app.post('/usermessages', checkifloggedin, postMessageFromUser());
 app.get('/treemssages', checkifloggedin, getMessagesForTree());
