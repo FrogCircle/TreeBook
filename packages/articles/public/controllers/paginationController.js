@@ -9,10 +9,10 @@ angular.module('mean.articles')
     // For some reason the number of pages will be totalItems / 8
     var itemsPerPage = 25;
     $scope.currentPage = 1;
-    $scope.treees = [];
 
     //Factor out the pagination function to be reused for all the methods
     var paginateTree = function(trees){
+      $scope.treees = [];
       $scope.totalItems = trees.length / itemsPerPage * 8;
       for (var i = 0; i < $scope.totalItems; i = i + 1){
         $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
@@ -48,18 +48,18 @@ angular.module('mean.articles')
         //Weird place, is a function to be called
         var lat = location.lat();
         var lng = location.lng();
-        console.log(lat, lng);
         if(lng <= -122.368107024455 && lng >= -122.511257155794 && lat <= 37.8103949467147 && lat >=  37.5090039879895) {
             //Search by location
           var body = { longitude: lng, latitude: lat };
           console.log('Search place called');
-          Search.getNearTrees().get({ search: body }, function(results){
+          Search.getNearTrees().get({ location: body }, function(results){
             console.log(results);
             paginateTree(results);
           });
         } else {
           //search by name
           console.log('Search by name called');
+          console.log(Search.getByName());
           Search.getByName().get({ search: searchString }, function(results){
             console.log(results);
             //add the results to the page
