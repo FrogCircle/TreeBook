@@ -40,7 +40,6 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
             }
             $scope.nearTrees.push(tmp);
           }
-          console.log($scope.nearTrees);
         });
       });
     };

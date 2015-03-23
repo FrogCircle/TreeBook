@@ -5,13 +5,19 @@ angular.module('mean.articles')
 /**
  * Handles Pagination on list page
  */
-.controller('PaginationDemoCtrl', ['$scope', 'Trees', 'Search',
-  function($scope, Trees, Search) {
+.controller('PaginationDemoCtrl', ['$scope', '$state', 'Trees', 'Search',
+  function($scope, $state, Trees, Search) {
     $scope.totalItems = 8;
     var itemsPerPage = 25;
     $scope.currentPage = 1;
     // $scope.trees is an array of arrays. Each subarray is one page which contains tree objects
     $scope.treees = [];
+    $scope.currentStatus = true;
+
+    $scope.changeStatus = function(){
+      $scope.currentStatus = !$scope.currentStatus;
+      $state.go('search');
+    };
 
     //Factor out the pagination function to be reused for all the methods
     var paginateTree = function(trees){
@@ -20,7 +26,6 @@ angular.module('mean.articles')
       for (var i = 0; i < $scope.totalItems; i = i + 1){
         $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
       }
-      $scope.trees = trees;
       $scope.searchString = '';
     };
 
@@ -30,6 +35,7 @@ angular.module('mean.articles')
       searchString = searchString.toLowerCase();
       searchString = searchString[0].toUpperCase() + searchString.slice(1);
       console.log(searchString);
+      console.log($state.current.name);
       var body = { search: searchString };
       return Search.getByName().get(body, function(results){
         //add the results to the page
@@ -42,6 +48,7 @@ angular.module('mean.articles')
       //Search by location
       var body = { longitude: lng, latitude: lat };
       console.log('Search place called');
+      console.log($state.current.name);
       return Search.getNearTrees().get(body, function(results){
         return results;
       });
@@ -49,8 +56,9 @@ angular.module('mean.articles')
 
     // Helper method to call Trees factory to get all trees
     $scope.find = function() {
-      console.log('find has been called.');
+      console.log($state.current.name);
       Trees.query(function(trees) {
+        $scope.trees = trees;
         paginateTree(trees);
       });
     };
