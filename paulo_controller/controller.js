@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 var conString = process.env.POSTGRES;
+// var conString = 'postgres://postgres:1234@localhost/postgres';
 
 /**
  * Gets tree's messages from database and sends it to client. Request is expecting a treeId.
@@ -135,7 +136,6 @@ exports.getTrees = getTrees;
 var searchTrees = function(req, res) {
   var search = req.search;
   var offset = req.offset || 0;
-  var search = "Briana";
   var searchString = typeof search === "string" ? "%" + search + "%" : "do not use";
   var searchNum = typeof search === "number" ? search : 0;
   var offset = 0;
@@ -145,7 +145,7 @@ var searchTrees = function(req, res) {
     var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
       'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
       '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
-      'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies = $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
+      'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies LIKE $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
     client.query(selectTrees, [searchNum, searchString, offset], function(error, results){
       console.log('error', error);
       //console.log('results', results);
@@ -181,6 +181,11 @@ exports.insertMessagesFromTrees = insertMessagesFromTrees;
 app.get('/profile', checkifloggedin, handler.renderIndex);
 app.get('/search', checkifloggedin, handler.renderIndex);
 
+//Search route for server
+app.get('/searchbyloc', checkifloggedin, handler.renderIndex);
+app.get('/searchbyname', checkifloggedin, searchTrees());
+
+//Message route for server
 app.get('/usermessages', checkifloggedin, getMessagesForUsers());
 app.post('/usermessages', checkifloggedin, postMessageFromUser());
 app.get('/treemssages', checkifloggedin, getMessagesForTree());

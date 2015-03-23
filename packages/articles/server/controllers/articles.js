@@ -121,7 +121,9 @@ exports.postMessageFromUser = function(req, res) {
  * @param res
  */
 exports.searchTrees = function(req, res) {
-  var search = req.search;
+  var search = req.params.search;
+  search = search.replace('%20', ' ');
+  console.log(search);
   var offset = req.offset || 0;
   var searchString = typeof search === 'string' ? '%' + search + '%' : 'do not use';
   var searchNum = typeof search === 'number' ? search : 0;
@@ -131,13 +133,14 @@ exports.searchTrees = function(req, res) {
     var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
       'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
       '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
-      'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies = $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
+      'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies LIKE $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
     client.query(selectTrees, [searchNum, searchString, offset], function(error, results) {
       console.log('error', error);
       //console.log('results', results);
       console.log(results.rows);
-      done();
+      res.json(results.rows);
     });
+    done();
   });
 };
 
@@ -272,10 +275,13 @@ exports.getComments = function(req, res) {
  * @param res
  */
 exports.findTreesByLocation = function(req, res) {
-  var upperLongitude = req.longiture + 0.01;
-  var upperLatitude = req.latitude + 0.01;
-  var lowerLatitude = req.latiture - 0.01;
-  var lowerLongitude = req.longitude - 0.01;
+  console.log('find by loc');
+  var lat = parseFloat(req.query.latitude);
+  var lng = parseFloat(req.query.longitude);
+  var upperLongitude = lng + 0.0005;
+  var upperLatitude = lat + 0.0005;
+  var lowerLatitude = lat - 0.0005;
+  var lowerLongitude = lng - 0.0005;
   pg.connect(conString, function(err, client, done) {
     console.log('in location search');
     console.log(err);
@@ -287,6 +293,7 @@ exports.findTreesByLocation = function(req, res) {
       console.log('error', error);
       //console.log('results', results);
       console.log(results.rows);
+      res.json(results.rows);
       done();
     });
   });

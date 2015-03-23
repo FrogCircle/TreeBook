@@ -17,9 +17,17 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
 }])
 
 //set up the map view ctrl
-.controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'TreeData',
-  function($scope, $q, uiGmapGoogleMapApi, TreeData) {
+.controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'TreeData', 'Search',
+  function($scope, $q, uiGmapGoogleMapApi, TreeData, Search) {
     $scope.resolved = false;
+
+    //Search the near tree and assign the results for markers use
+    // var nearTreeSearch = function(treeLoc){
+    //   Search.getNearTrees.get({ search: treeLoc }, function(results){
+    //     $scope.nearTrees = results;
+    //   });
+    // };
+
     // Promise assign the latitude and longitude to the $scope
     // $scope.resolved is used for the ng-if
     var onLoad = function(data){
@@ -35,6 +43,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
         //I skip it first as it is not very important.
         $scope.coordsUpdates = 0;
         $scope.dynamicMoveCtr = 0;
+
         $scope.marker = {
           id: 1,
           coords: mapCenter,
