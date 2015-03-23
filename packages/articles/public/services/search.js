@@ -40,8 +40,7 @@ angular.module('mean.articles')
       Get the nearby trees using the service
     */
     var getNearTrees = function(queryObj) {
-      return $resource('/searchbyloc/:lat/:lng',
-      { lat: '@latitude', lng: '@longitude'},
+      return $resource('/searchbyloc', { lat: '@latitude', lng: '@longitude'},
       {
         get:{
           method: 'GET',
