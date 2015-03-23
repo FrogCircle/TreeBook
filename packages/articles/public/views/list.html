@@ -1,19 +1,22 @@
 <section data-ng-controller="PaginationDemoCtrl" data-ng-init="find()">
 <div class="row>">
-  <div class="col-md-8 col-md-offset-4">
+  <div class="col-md-12 col-md-offset-2" style="padding-left:60px;">
     <h2>
       Browse Trees
     </h2>
 
-
-
-  <div class="search">
+  <div class="search" style="display: inline-block; padding-bottom: 10px;">
     <form data-ng-submit="searchTrees()">
       <input type="text" data-ng-model="searchString">
       <input type="submit">
     </form>
   </div>
 
+  <div style="display: inline-block;">
+    Search by name, species or address.
+  </div>
+
+</div>
 
 
 <div data-ng-repeat="tree in treees[currentPage]">
