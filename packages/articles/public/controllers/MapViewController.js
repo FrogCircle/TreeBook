@@ -31,10 +31,11 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
         Search.getNearTrees().get(center, function(results){
           for(var i = 0, size = results.length; i < size; i = i + 1){
             var tmp = {};
-            tmp.id = results[i].treeid;
+            tmp.id = i;
             tmp.coords = {latitude: results[i].latitude, longitude: results[i].longitude};
             $scope.nearTrees.push(tmp);
           }
+          console.log($scope.nearTrees);
         });
       });
     };
@@ -48,30 +49,30 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
           longitude: data.longitude
         };
         $scope.map = {center: mapCenter, zoom: 20 };
+        searchNearTrees(mapCenter).then(function(){
+          console.log('Get the near trees and markers');
 
-        //There is a little bug here, when the map is moving, the marker will
-        //move as well. I spot this bug but fix it need a little bit time, so
-        //I skip it first as it is not very important.
-        $scope.coordsUpdates = 0;
-        $scope.dynamicMoveCtr = 0;
+          $scope.coordsUpdates = 0;
+          $scope.dynamicMoveCtr = 0;
 
-        $scope.marker = {
-          id: 1,
-          coords: mapCenter,
-          options: {
-            animation: 1,
-            draggable: true
-          }
-        };
-        $scope.resolved = true;
-        searchNearTrees(mapCenter)
+          //make the marker for the center tree
+          $scope.marker = {
+            id: 1,
+            coords: mapCenter,
+            options: {
+              animation: 1,
+              draggable: true
+            }
+          };
+
+          //Changed to resolve once all data are loaded
+          $scope.resolved = true;
+        });
       });
     };
 
     TreeData.getTree().$promise.then(function(tree){
       onLoad(tree);
     });
-    // var tree = TreeData.returnTree();
-    // onLoad(tree);
   }
 ]);

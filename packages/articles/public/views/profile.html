@@ -33,6 +33,8 @@
           <ui-gmap-google-map center="map.center" zoom="map.zoom">
             <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
             </ui-gmap-marker>
+            <ui-gmap-marker data-ng-repeat="m in nearTrees" coords="m.coords" idkey="m.id">
+            </ui-gmap-marker>
           </ui-gmap-google-map>
         </div>
       </div>

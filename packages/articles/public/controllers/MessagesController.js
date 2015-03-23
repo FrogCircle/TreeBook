@@ -6,8 +6,7 @@ angular.module('mean.articles')
 /**
  * Handles sumbit message and get all messages on tree profile page
  */
-.controller('MessagesController',['$scope','Messages', 'Global','GetMessages',
-                                  'TreeData', '$stateParams', 'UserImage',
+.controller('MessagesController',['$scope','Messages', 'Global','GetMessages', 'TreeData', '$stateParams', 'UserImage',
   function($scope, Messages, Global, GetMessages, TreeData, $stateParams, UserImage){
 
     // $scope.global is necissary to get user information
