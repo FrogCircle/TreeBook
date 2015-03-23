@@ -4,7 +4,7 @@
       <div class="profile-image-div">
         <img ng-src="{{user.image}}" class="profile-user-image">
       </div>
-      <div style="text-align: center;">
+      <div ng-if="isProfileOwner" style="text-align: center;">
         <button class="btn btn-default" ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">
           Upload Image
         </button>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="col-md-7 well">
-      <h3 class="no-top-margin" data-userid="{{user.userid}}">{{user.name}}</h3>
+      <h3 class="no-top-margin"> {{user.name}}</h3>
     </div>
   </div>
   <div class="row">
