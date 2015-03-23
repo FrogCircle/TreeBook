@@ -122,6 +122,7 @@ exports.postMessageFromUser = function(req, res) {
  */
 exports.searchTrees = function(req, res) {
   var search = req.params.search;
+  search = search.replace('%20', ' ');
   console.log(search);
   var offset = req.offset || 0;
   var searchString = typeof search === 'string' ? '%' + search + '%' : 'do not use';
@@ -275,10 +276,12 @@ exports.getComments = function(req, res) {
  */
 exports.findTreesByLocation = function(req, res) {
   console.log('find by loc');
-  var upperLongitude = req.params.lng + 0.01;
-  var upperLatitude = req.params.lat + 0.01;
-  var lowerLatitude = req.params.lat - 0.01;
-  var lowerLongitude = req.params.lng  - 0.01;
+  var lat = parseFloat(req.query.latitude);
+  var lng = parseFloat(req.query.longitude);
+  var upperLongitude = lng + 0.0005;
+  var upperLatitude = lat + 0.0005;
+  var lowerLatitude = lat - 0.0005;
+  var lowerLongitude = lng - 0.0005;
   pg.connect(conString, function(err, client, done) {
     console.log('in location search');
     console.log(err);
