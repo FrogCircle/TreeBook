@@ -94,10 +94,11 @@ angular.module('mean.articles')
       }
     };
 
-    var saveUserImage = function(user, url) {
+    var saveUserImage = function(user, url, cb) {
       $http.post('/userimage', {username: user, imageUrl: url}).
         success(function(data) {
-          console.log('success saving image in mongo db');
+          imageStore[data.username] = data.url;
+          cb(data);
         }).
         error(function() {
           console.log('there was an error');

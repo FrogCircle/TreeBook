@@ -5,13 +5,19 @@ angular.module('mean.articles')
 /**
  * Handles Pagination on list page
  */
-.controller('PaginationDemoCtrl', ['$scope', 'Trees', 'Search',
-  function($scope, Trees, Search) {
+.controller('PaginationDemoCtrl', ['$scope', '$state', 'Trees', 'Search',
+  function($scope, $state, Trees, Search) {
     $scope.totalItems = 8;
     var itemsPerPage = 25;
     $scope.currentPage = 1;
     // $scope.trees is an array of arrays. Each subarray is one page which contains tree objects
     $scope.treees = [];
+    $scope.currentStatus = true;
+
+    $scope.changeStatus = function(){
+      $scope.currentStatus = !$scope.currentStatus;
+      $state.go('search');
+    };
 
     //Factor out the pagination function to be reused for all the methods
     var paginateTree = function(trees){
@@ -20,15 +26,18 @@ angular.module('mean.articles')
       for (var i = 0; i < $scope.totalItems; i = i + 1){
         $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
       }
-      $scope.trees = trees;
+      $scope.searchString = '';
     };
 
     // Search by name based on the search String, async promise
     var searchByName = function(searchString){
       console.log('Search by name called');
+      searchString = searchString.toLowerCase();
+      searchString = searchString[0].toUpperCase() + searchString.slice(1);
+      console.log(searchString);
+      console.log($state.current.name);
       var body = { search: searchString };
       return Search.getByName().get(body, function(results){
-        console.log(results);
         //add the results to the page
         return results;
       });
@@ -39,16 +48,17 @@ angular.module('mean.articles')
       //Search by location
       var body = { longitude: lng, latitude: lat };
       console.log('Search place called');
+      console.log($state.current.name);
       return Search.getNearTrees().get(body, function(results){
-        console.log(results);
         return results;
       });
     };
 
     // Helper method to call Trees factory to get all trees
     $scope.find = function() {
-      console.log('find has been called.');
+      console.log($state.current.name);
       Trees.query(function(trees) {
+        $scope.trees = trees;
         paginateTree(trees);
       });
     };
@@ -63,11 +73,8 @@ angular.module('mean.articles')
     // Search for the tree location based on the address typed in
     $scope.searchTrees = function(){
       var searchString = $scope.searchString;
-      console.log(searchString);
       //location or the other
       Search.getLocation(searchString).then(function(location){
-        console.log('check location in bound');
-        console.log(location);
         //Weird place, is a function to be called location.lat()
         var lat = location.lat();
         var lng = location.lng();

@@ -28,8 +28,17 @@ angular.module('mean.articles').config(['$stateProvider',
       .state('all trees', {
         url: '/trees',
         templateUrl: 'articles/views/list.html',
+        controller: 'PaginationDemoCtrl',
         resolve: {
-          loggedin: checkLoggedin
+          loggedin: checkLoggedin,
+        }
+      })
+      .state('search', {
+        url: '/trees/search',
+        templateUrl: 'articles/views/list.html',
+        controller: 'PaginationDemoCtrl',
+        resolve: {
+          loggedin: checkLoggedin,
         }
       })
       .state('tree display', {

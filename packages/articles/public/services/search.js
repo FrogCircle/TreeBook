@@ -24,7 +24,6 @@ angular.module('mean.articles')
           geocoder.geocode(request, function(results, status){
             // location is found
             if (status === maps.GeocoderStatus.OK) {
-              console.log(results[0].geometry.location);
               var location = results[0].geometry.location;
               resolve(location);
             } else {

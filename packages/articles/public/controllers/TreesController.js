@@ -32,21 +32,8 @@ angular.module('mean.articles')
       // It determines the tree by looking at the $stateparams
       TreeData.getTree().$promise.then(function(tree){
         $scope.tree = tree;
-        console.log(tree);
         $scope.getLikes();
       });
-    };
-
-    /**
-     * Search for the tree location based on the address typed in
-     */
-    $scope.searchTrees = function(){
-      var searchString = $scope.searchString;
-      console.log(searchString);
-
-      var location = Search.getLocation(searchString);
-      console.log(location.lat);
-      console.log(location.lng);
     };
 
     /**
