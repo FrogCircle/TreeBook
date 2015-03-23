@@ -163,4 +163,3 @@ angular.module('mean.articles')
   }
 ]);
 
-

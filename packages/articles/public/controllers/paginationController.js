@@ -10,6 +10,8 @@ angular.module('mean.articles')
     $scope.totalItems = 8;
     var itemsPerPage = 25;
     $scope.currentPage = 1;
+    // $scope.trees is an array of arrays. Each subarray is one page which contains tree objects
+    $scope.treees = [];
 
     //Factor out the pagination function to be reused for all the methods
     var paginateTree = function(trees){

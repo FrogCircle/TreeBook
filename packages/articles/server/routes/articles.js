@@ -60,12 +60,14 @@ module.exports = function(Articles, app, auth) {
   app.route('/treemessages').post(articles.insertMessagesFromTrees);
   //the app.use middleware route above uses multer to handle file uploads
   app.route('/user/image').post(function(req, res) {});
-
-  app.route('/searchbyloc').get(articles.findTreesByLocation);
-  app.route('/searchbyname/:search').get(articles.searchTrees);
   app.route('/treelike').post(articles.insertLikes);
   app.route('/treelikes').post(articles.getUserLikes);
   app.route('/userlikes').post(articles.getTreeLikes);
+  app.route('/treeimage/:treeId').get(articles.getTreeImage);
+
+
+  app.route('/searchbyloc').get(articles.findTreesByLocation);
+  app.route('/searchbyname/:search').get(articles.searchTrees);
   //the app.use middleware route above with multer handles file uploads
 /*
   app.route('/user/image').post(function(req, res) {
@@ -75,6 +77,4 @@ module.exports = function(Articles, app, auth) {
     //articles.uploadUserImage(req, res, newFileName, username);
   });
 */
-
-
 };
