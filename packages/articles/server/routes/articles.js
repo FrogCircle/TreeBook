@@ -65,7 +65,7 @@ module.exports = function(Articles, app, auth) {
   app.route('/userlikes').post(articles.getTreeLikes);
 
 
-  app.route('/searchbyloc/:lat/:lng').get(articles.findTreesByLocation);
+  app.route('/searchbyloc').get(articles.findTreesByLocation);
   app.route('/searchbyname/:search').get(articles.searchTrees);
   //the app.use middleware route above with multer handles file uploads
 /*
