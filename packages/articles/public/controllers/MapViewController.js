@@ -25,6 +25,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
   function($scope, $q, uiGmapGoogleMapApi, TreeData, Search) {
     $scope.resolved = false;
 
+    //Promise that retrive the near by tree data based on the location
     var searchNearTrees = function(center){
       $scope.nearTrees = [];
       return $q.when(center).then(function(center){
