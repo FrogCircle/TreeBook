@@ -14,14 +14,6 @@
     </form>
   </div>
 
-<div class="search">
-  <button data-ng-show="currentStatus" data-ng-click="changeStatus()">Search Tree</button>
-  <form name="searchForm" data-ng-show="!currentStatus" data-ng-submit="searchTrees()">
-    <input type="text" data-ng-model="searchString">
-    <button data-ng-disabled="searchForm.$invalid" type="submit">Treee!</button>
-  </form>
-</div>
-
 
 
 <div data-ng-repeat="tree in treees[currentPage]">
@@ -37,10 +29,6 @@
             <h3 class="modal-title">{{tree.name}}</h3>
             <h5>{{tree.qspecies}}</h5>
           </div>
-          <div>
-            <p>Placeholder text for blurb about tree: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-        </div>
         </div>
         <div class="col-md-1"></div>
 
