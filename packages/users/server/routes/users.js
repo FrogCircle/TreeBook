@@ -45,7 +45,7 @@ module.exports = function(MeanUser, app, auth, database, passport) {
   app.route('/userimage')
     .post(users.updateImageUrl);
 
-  // Get user profile url from mongo db, NOT FUNCTIONING
+  // Get user profile url from mongo db
   app.route('/userimage/*')
     .get(users.getImageUrl);
 

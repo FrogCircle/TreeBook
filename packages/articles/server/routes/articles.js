@@ -60,4 +60,8 @@ module.exports = function(Articles, app, auth) {
   app.route('/treemessages').post(articles.insertMessagesFromTrees);
   //the app.use middleware route above uses multer to handle file uploads
   app.route('/user/image').post(function(req, res) {});
+  app.route('/treelike').post(articles.insertLikes);
+  app.route('/treelikes').post(articles.getUserLikes);
+  app.route('/userlikes').get(articles.insertLikes);
+
 };

@@ -48,11 +48,11 @@ angular.module('mean.articles')
       GetMessages.get({ treeid: $stateParams.treeId }, function(messages) {
         $scope.messages = messages;
         $scope.messages.forEach(function(message){
-          console.log(message);
           UserImage.loadUserImage(message.username, function(url){
             message.imageUrl = url;
           });
         });
       });
     };
+
 }]);
