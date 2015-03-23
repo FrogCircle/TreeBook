@@ -1,19 +1,23 @@
 <section data-ng-controller="PaginationDemoCtrl" data-ng-init="find()">
 <div class="row>">
-  <div class="col-md-8 col-md-offset-4">
+  <div class="col-md-12 col-md-offset-2" style="padding-left:60px;">
     <h2>
       Browse Trees
     </h2>
+
+  <div class="search" style="display: inline-block; padding-bottom: 10px;">
+    <form data-ng-submit="searchTrees()">
+      <input type="text" data-ng-model="searchString">
+      <input type="submit">
+    </form>
   </div>
+
+  <div style="display: inline-block;">
+    Search by name, species or address.
+  </div>
+
 </div>
 
-<div class="search">
-  <button data-ng-show="currentStatus" data-ng-click="changeStatus()">Search Tree</button>
-  <form name="searchForm" data-ng-show="!currentStatus" data-ng-submit="searchTrees()">
-    <input type="text" data-ng-model="searchString">
-    <button data-ng-disabled="searchForm.$invalid" type="submit">Treee!</button>
-  </form>
-</div>
 
 <div data-ng-repeat="tree in treees[currentPage]">
   <a ng-href="/#!/trees/{{tree.treeid}}">
@@ -28,10 +32,6 @@
             <h3 class="modal-title">{{tree.name}}</h3>
             <h5>{{tree.qspecies}}</h5>
           </div>
-          <div>
-            <p>Placeholder text for blurb about tree: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-        </div>
         </div>
         <div class="col-md-1"></div>
 

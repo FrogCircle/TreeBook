@@ -54,7 +54,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
         };
         $scope.map = {center: mapCenter, zoom: 20 };
         searchNearTrees(mapCenter).then(function(){
-          console.log('Get the near trees and markers');
+          // console.log('Get the near trees and markers');
 
           //Changed to resolve once all data are loaded
           $scope.resolved = true;

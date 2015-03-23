@@ -1,6 +1,8 @@
 'use strict';
 var azure = require('azure-storage');
 var pg = require('pg');
+var request = require('request');
+var parseString = require('xml2js').parseString;
 var conString = 'postgres://' + process.env.POSTGRES + '/postgres';
 var retryOperations = new azure.ExponentialRetryPolicyFilter();
 var blobSvc = azure.createBlobService().withFilter(retryOperations);
@@ -21,12 +23,12 @@ exports.getTreeData = function(req, res) {
   pg.connect(conString, function(err, client, done) {
     var selectMessages = 'SELECT tree.name, tree.treeid, q.qspecies, tree.plotsize, tree.qcaretaker, tree.plantdate, l.latitude, l.longitude, image.imageurl, image.imagewidth, image.imageheight, image.imagetype from qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN image ON (q.qspeciesid = image.qspeciesid) WHERE treeid = $1;';
     client.query(selectMessages, [treeid], function(error, results) {
-      done();
       if (error) {
         console.log(error, 'THERE WAS AN ERROR');
       } else {
         res.json(results.rows[0]);
       }
+      done();
     });
   });
 };
@@ -98,17 +100,31 @@ exports.postMessageFromUser = function(req, res) {
   var username = req.body.username;
   var message = req.body.message;
   var treeid = req.body.treeid;
-  // console.log(username, message, treeid);
-  pg.connect(conString, function(err, client, done) {
-    if (err) {
-      console.log('error is', err);
-    }
-    else {
-      var insertMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
-      client.query(insertMessages, [message, username, treeid], function(error, results) {
-        // console.log('postMessageFromUser result is ', results.rows);
-        res.json(results.rows);
-        done();
+  var returnMessages = [];
+  var url = 'http://www.botlibre.com/rest/botlibre/form-chat?application=' + process.env.APPLICATIONID + '&message=' + message + '&instance=812292';
+  request(url, function(error, response, body) {
+    console.log('body', body);
+    if (!error && response.statusCode === 200) {
+      parseString(body, function(error, result) {
+        pg.connect(conString, function(err, client, done) {
+          if (err) {
+            console.log('error is', err);
+          }
+          else {
+            var insertMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
+            client.query(insertMessages, [message, username, treeid], function(error, results) {
+              returnMessages.push(results.rows[0]);
+              done();
+            });
+            var insertTreeMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
+            client.query(insertTreeMessages, [result.response.message[0], 'unknown', treeid], function(error, results) {
+              // console.log(error);
+              returnMessages.push(results.rows[0]);
+              res.send(returnMessages);
+              done();
+            });
+          }
+        });
       });
     }
   });
