@@ -127,7 +127,7 @@ exports.user = function(req, res, next, id) {
 /**
  * Update user profile image url
  */
-exports.updateImageUrl = function(req, res, next) {
+exports.updateImageUrl = function(req, res, cb) {
   console.log('req.body in imageUrl', req.body);
   var username = req.body.username;
   var url = req.body.imageUrl;
@@ -137,6 +137,12 @@ exports.updateImageUrl = function(req, res, next) {
     }, function(err, user) {
       user.imageUrl = url;
       user.save();
+      if( err ) {
+        console.log('error updating ImageUrl in mongoDB for user', err);
+        return err;
+      } else {
+        res.json({username: user.username, url: url });
+      }
     });
 };
 
@@ -150,6 +156,7 @@ exports.getImageUrl = function(req, res, next) {
       username: username
     }, function(err, user){
       if (user){
+        console.log('user data is ', user);
         res.send(user.imageUrl);
       } else{
         res.send('theme/assets/img/icons/user-icon.png');
