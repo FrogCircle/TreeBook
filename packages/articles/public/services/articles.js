@@ -105,6 +105,43 @@ angular.module('mean.articles')
       saveUserImage: saveUserImage
       };
   }
+])
+
+.factory('Likes', ['$http',
+  function($http) {
+
+    var getLikes = function(treeId, cb){
+      var userLikes = [];
+      $http.post('/treelikes', {treeId: treeId})
+      .success(function(data){
+        data.forEach(function(userLike){
+          if (userLikes.indexOf(userLike.username) === -1){
+            userLikes.push(userLike.username);
+          }
+        });
+        cb(userLikes);
+      })
+      .error(function(error){
+        console.log('error while saving like');
+      });
+    };
+
+    var saveLike = function(username, treeId, cb){
+      $http.post('/treelike', {username: username, treeId: treeId})
+      .success(function(data){
+        console.log('success saving like');
+        cb();
+      })
+      .error(function(error){
+        console.log('error while saving like');
+      });
+    };
+
+    return {
+      getLikes: getLikes,
+      saveLike: saveLike
+    };
+  }
 ]);
 
 

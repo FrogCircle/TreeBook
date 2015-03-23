@@ -1,4 +1,5 @@
 <section data-ng-controller="TreesController" data-ng-init="findOne()">
+
   <div class="row">
   <div class="col-md-4 col-md-offset-1">
     <div class="profile-image-div">
@@ -7,10 +8,23 @@
 
     <h3 data-treeid="{{tree.treeid}}">{{tree.name}}</h3>
     <p><strong><span class="species">Species:</span> {{tree.qspecies}}</strong></p>
-    <h4>Info block 1</h4>
     <p><strong>Plotsize:</strong> {{tree.plotsize}}</p>
     <p><strong>Date planted:</strong> {{tree.plantdate | date:'yyyy-MM-dd'}}</p>
     <p><strong>Caretaker:</strong> {{tree.qcaretaker}}</p>
+
+  <div class="likes">
+    <button class="btn btn-success" ng-click="like()">Like This Tree</button>
+      <div ng-if='anyLikes'>
+        Users who have liked this tree
+      </div>
+    <div data-ng-repeat="like in likes">
+      <div>
+       {{like}}
+      </div>
+    </div>
+  </div>
+
+
   </div>
   <div class="col-md-5" style="height: 365px;">
     <div class="text-center" style="float: right;">

@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('mean.articles')
+
 //UserController for userProfile page
-.controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global',
-  function($scope, $upload, UserImage, GetUserMessages, Global){
+.controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage',
+  function($scope, $upload, UserImage, GetUserMessages, Global, TreeImage){
     $scope.global = Global;
 
     //watch for image file upload
@@ -54,8 +55,16 @@ angular.module('mean.articles')
       GetUserMessages.get({ username: $scope.global.user.username }, function(messages) {
         $scope.user = {};
         $scope.user.messages = messages;
+        $scope.user.messages.forEach(function(message){
+          console.log(message);
+          TreeImage.loadTreeImage(message.treeid, function(url){
+            message.imageUrl = url;
+          });
+        });
+
         $scope.user.name = $scope.global.user.name;
         $scope.loadUserImage($scope.global.user.username);
       });
     };
+
 }]);

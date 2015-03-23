@@ -172,7 +172,7 @@ exports.insertMessagesFromTrees = function(req, res) {
  * @param res
  */
 exports.insertLikes = function(req, res) {
-  var treeid = req.body.treeid;
+  var treeid = req.body.treeId;
   var username = req.body.username;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
@@ -211,13 +211,14 @@ exports.getTreeLikes = function(req, res) {
  * @param res
  */
 exports.getUserLikes = function(req, res) {
-  var treeid = req.body.treeid;
+  var treeid = ''+req.body.treeId;
+  console.log(treeid, 1234, typeof treeid);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectLikes = 'SELECT userid from likes WHERE likes.treeid = $1;';
+    var selectLikes = 'SELECT username from likes WHERE treeid = $1;';
     client.query(selectLikes, [treeid], function(error, results) {
       console.log('results is ', results);
-      res.send(results);
+      res.send(results.rows);
       done();
     });
   });
