@@ -11,7 +11,10 @@ angular.module('mean.users')
   }
 ])
 
-// Factory to retrieve tree images
+/**
+ * TreeImage factory to get the image of a tree id. Used on the user profile page
+ * Status: not working - SQL doesn't return anything
+ */
 .factory('TreeImage', ['$http',
   function($http, $stateParams) {
     var imageStore = {};
@@ -38,6 +41,11 @@ angular.module('mean.users')
   }
 ])
 
+
+/**
+ * UserLikes factory to get all likes for a user
+ * Status: not working - SQL doesn't return anything
+ */
 .factory('UserLikes', ['$http',
   function($http) {
 
@@ -47,7 +55,6 @@ angular.module('mean.users')
       .success(function(data){
         console.log(data);
         data.forEach(function(treeLike){
-          console.log(12345);
           if (treeLikes.indexOf(treeLike.treeName) === -1){
             treeLikes.push(treeLike.treeName);
           }

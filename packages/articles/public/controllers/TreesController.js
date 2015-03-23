@@ -57,6 +57,7 @@ angular.module('mean.articles')
       Likes.getLikes($scope.tree.treeid, function(likes){
         $scope.likes = likes;
         if (likes.length !== 0){
+          console.log(likes);
           $scope.anyLikes = true;
         }
       });

@@ -193,7 +193,7 @@ exports.insertLikes = function(req, res) {
 exports.getTreeLikes = function(req, res) {
   /**
   * Paulo I can see that username is correct in this scope and I can see that it is in the table, but the query
-  * doesn't seem to work. I tried to debug but couldn't get it to work. Could you give it a go?
+  * doesn't seem to work. I tried to debug but couldn't get it to work.
   */
   var username = req.body.username;
   pg.connect(conString, function(err, client, done) {
@@ -202,7 +202,7 @@ exports.getTreeLikes = function(req, res) {
       'thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN thumbnail ON ' +
       '(q.qspeciesid = thumbnail.qspeciesid) JOIN likes ON (tree.treeid = likes.treeid)' + ' WHERE username = $1;';
     client.query(selectLikes, [username], function(error, results) {
-      console.log('results is ', results);
+      // console.log('results is ', results);
       res.send(results.rows);
       done();
     });
@@ -308,7 +308,11 @@ exports.findTreesByLocation = function(req, res) {
  * @param res
  */
 exports.getTreeImage = function(req, res){
-  var treeid = req.body.treeid;
+  var treeid = req.params.treeId;
+  /**
+  * Paulo I can see that treeid is correct in this scope but the query
+  * doesn't seem to work. I tried to debug but couldn't get it to work.
+  */
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var getImage = 'SELECT image.imageurl, image.imagewidth, image.imageheight, image.imagetype FROM image JOIN qspecies ON qspecies.qspeciesid = image.qspeciesid JOIN tree on tree.qspeciesid = qspecies.qspeciesid  WHERE image.treeid = $1;';

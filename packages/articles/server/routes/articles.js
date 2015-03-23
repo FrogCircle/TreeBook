@@ -63,6 +63,7 @@ module.exports = function(Articles, app, auth) {
   app.route('/treelike').post(articles.insertLikes);
   app.route('/treelikes').post(articles.getUserLikes);
   app.route('/userlikes').post(articles.getTreeLikes);
+  app.route('/treeimage/:treeId').get(articles.getTreeImage);
 
 
   app.route('/searchbyloc').get(articles.findTreesByLocation);
