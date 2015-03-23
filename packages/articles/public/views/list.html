@@ -8,8 +8,7 @@
 </div>
 
 <div class="search">
-  <button data-ng-show="currentStatus" data-ng-click="changeStatus()">Search Tree</button>
-  <form name="searchForm" data-ng-show="!currentStatus" data-ng-submit="searchTrees()">
+  <form name="searchForm" data-ng-submit="searchTrees()">
     <input type="text" data-ng-model="searchString">
     <button data-ng-disabled="searchForm.$invalid" type="submit">Treee!</button>
   </form>
