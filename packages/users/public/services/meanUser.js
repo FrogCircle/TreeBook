@@ -64,5 +64,21 @@ angular.module('mean.users')
       getLikes: getLikes,
     };
   }
+])
+
+/**
+ * GetUserMessages factory to handle the routing to the server for getting user messages
+ */
+.factory('GetUserMessages', ['$resource', '$stateParams',
+  function($resource, $stateParams) {
+    return $resource('usermessages/:username', {
+      treeid: '@_username'
+    }, {
+      get: {
+        method: 'GET',
+        isArray: true
+      }
+    });
+  }
 ]);
 
