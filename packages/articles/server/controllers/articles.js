@@ -1,6 +1,8 @@
 'use strict';
 var azure = require('azure-storage');
 var pg = require('pg');
+var request = require('request');
+var parseString = require('xml2js').parseString;
 var conString = 'postgres://' + process.env.POSTGRES + '/postgres';
 var retryOperations = new azure.ExponentialRetryPolicyFilter();
 var blobSvc = azure.createBlobService().withFilter(retryOperations);
@@ -21,12 +23,12 @@ exports.getTreeData = function(req, res) {
   pg.connect(conString, function(err, client, done) {
     var selectMessages = 'SELECT tree.name, tree.treeid, q.qspecies, tree.plotsize, tree.qcaretaker, tree.plantdate, l.latitude, l.longitude, image.imageurl, image.imagewidth, image.imageheight, image.imagetype from qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN image ON (q.qspeciesid = image.qspeciesid) WHERE treeid = $1;';
     client.query(selectMessages, [treeid], function(error, results) {
-      done();
       if (error) {
         console.log(error, 'THERE WAS AN ERROR');
       } else {
         res.json(results.rows[0]);
       }
+      done();
     });
   });
 };
@@ -77,7 +79,7 @@ exports.getMessagesForUsers = function(req, res) {
   console.log('in getMessageForUsers and username is', username);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
-    var selectMessages = 'SELECT message.message, message.treeid, tree.treename, message.username, message.messageid, message.createdAt FROM message JOIN tree ON (tree.treeid = message.treeid) WHERE username = $1 LIMIT 100;';
+    var selectMessages = 'SELECT message.message, message.treeid, tree.name, message.username, message.messageid, message.createdAt FROM message JOIN tree ON (tree.treeid = message.treeid) WHERE username = $1 LIMIT 100;';
     client.query(selectMessages, [username], function(error, results) {
       res.json(results.rows);
     });
@@ -97,17 +99,35 @@ exports.postMessageFromUser = function(req, res) {
   var username = req.body.username;
   var message = req.body.message;
   var treeid = req.body.treeid;
-  console.log(username, message, treeid);
-  pg.connect(conString, function(err, client, done) {
-    if (err) {
-      console.log('error is', err);
-    }
-    else {
-      var insertMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
-      client.query(insertMessages, [message, username, treeid], function(error, results) {
-        console.log('postMessageFromUser result is ', results.rows);
-        res.json(results.rows);
-        done();
+  var returnMessages = [];
+  var url = 'http://www.botlibre.com/rest/botlibre/form-chat?application=' + process.env.APPLICATIONID + '&message=' + message + '&instance=812292';
+  request(url, function(error, response, body) {
+    console.log('body', body);
+    if (!error && response.statusCode === 200) {
+      parseString(body, function(error, result) {
+        console.log(result.response.message);
+        console.log(result.response.message[0]);
+        pg.connect(conString, function(err, client, done) {
+          if (err) {
+            console.log('error is', err);
+          }
+          else {
+            var insertMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
+            client.query(insertMessages, [message, username, treeid], function(error, results) {
+              console.log('postMessageFromUser result is ', results.rows);
+              returnMessages.push(results.rows);
+              done();
+            });
+            var insertTreeMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
+            client.query(insertTreeMessages, [result.message, 'unknown', treeid], function(error, results) {
+              console.log(error);
+              console.log('postMessageFromUTree', results.rows);
+              returnMessages.push(results.rows);
+              res.send(returnMessages);
+              done();
+            });
+          }
+        });
       });
     }
   });
@@ -195,9 +215,9 @@ exports.insertLikes = function(req, res) {
  */
 exports.getTreeLikes = function(req, res) {
   /**
-  * Paulo I can see that username is correct in this scope and I can see that it is in the table, but the query
-  * doesn't seem to work. I tried to debug but couldn't get it to work.
-  */
+   * Paulo I can see that username is correct in this scope and I can see that it is in the table, but the query
+   * doesn't seem to work. I tried to debug but couldn't get it to work.
+   */
   var username = req.body.username;
   pg.connect(conString, function(err, client, done) {
     console.log('USERNAME IS', username);
@@ -218,7 +238,7 @@ exports.getTreeLikes = function(req, res) {
  * @param res
  */
 exports.getUserLikes = function(req, res) {
-  var treeid = ''+req.body.treeId;
+  var treeid = '' + req.body.treeId;
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var selectLikes = 'SELECT username from likes WHERE treeid = $1;';
@@ -310,12 +330,12 @@ exports.findTreesByLocation = function(req, res) {
  * @param req
  * @param res
  */
-exports.getTreeImage = function(req, res){
+exports.getTreeImage = function(req, res) {
   var treeid = req.params.treeId;
   /**
-  * Paulo I can see that treeid is correct in this scope but the query
-  * doesn't seem to work. I tried to debug but couldn't get it to work.
-  */
+   * Paulo I can see that treeid is correct in this scope but the query
+   * doesn't seem to work. I tried to debug but couldn't get it to work.
+   */
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var getImage = 'SELECT image.imageurl, image.imagewidth, image.imageheight, image.imagetype FROM image JOIN qspecies ON qspecies.qspeciesid = image.qspeciesid JOIN tree on tree.qspeciesid = qspecies.qspeciesid  WHERE image.treeid = $1;';
