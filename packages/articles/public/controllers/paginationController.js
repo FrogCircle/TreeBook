@@ -27,9 +27,11 @@ angular.module('mean.articles')
     // Search by name based on the search String, async promise
     var searchByName = function(searchString){
       console.log('Search by name called');
+      searchString = searchString.toLowerCase();
+      searchString = searchString[0].toUpperCase() + searchString.slice(1);
+      console.log(searchString);
       var body = { search: searchString };
       return Search.getByName().get(body, function(results){
-        console.log(results);
         //add the results to the page
         return results;
       });
@@ -41,7 +43,6 @@ angular.module('mean.articles')
       var body = { longitude: lng, latitude: lat };
       console.log('Search place called');
       return Search.getNearTrees().get(body, function(results){
-        console.log(results);
         return results;
       });
     };
@@ -64,11 +65,8 @@ angular.module('mean.articles')
     // Search for the tree location based on the address typed in
     $scope.searchTrees = function(){
       var searchString = $scope.searchString;
-      console.log(searchString);
       //location or the other
       Search.getLocation(searchString).then(function(location){
-        console.log('check location in bound');
-        console.log(location);
         //Weird place, is a function to be called location.lat()
         var lat = location.lat();
         var lng = location.lng();
