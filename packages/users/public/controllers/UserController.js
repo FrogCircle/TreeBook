@@ -9,6 +9,7 @@ angular.module('mean.articles')
     $scope.likes = [];
     $scope.anyLikes = false;
     $scope.imagesLoaded = false;
+    var contextUsername = $stateParams.userId;
 
     //watch for image file upload
     $scope.$watch('files', function () {  // user controller
@@ -17,7 +18,7 @@ angular.module('mean.articles')
 
     $scope.getLikes = function(){
       console.log($stateParams);
-      UserLikes.getLikes($scope.global.user.username, function(likes){
+      UserLikes.getLikes(contextUsername, function(likes){
         $scope.likes = likes;
         if (likes.length !== 0){
           $scope.anyLikes = true;
@@ -28,7 +29,8 @@ angular.module('mean.articles')
 
     //upload image file
     $scope.upload = function (files) { // user controller
-      var thisUser = $scope.global.user.username;
+      console.log('stateParams', $stateParams);
+      var thisUser = contextUsername;
       if (files && files.length) {
         var file = files[0];
         $upload.upload({
@@ -66,7 +68,7 @@ angular.module('mean.articles')
 
     //get All messages from a User and display on user profile page
     $scope.getUserMessages = function($stateParams) {
-      GetUserMessages.get({ username: $scope.global.user.username }, function(messages) {
+      GetUserMessages.get({ username: contextUsername }, function(messages) {
         $scope.user = {};
         $scope.user.messages = messages;
         $scope.user.messages.forEach(function(message){
@@ -76,8 +78,8 @@ angular.module('mean.articles')
         });
         $scope.imagesLoaded = true;
 
-        $scope.user.name = $scope.global.user.name;
-        $scope.loadUserImage($scope.global.user.username);
+        $scope.user.name = contextUsername;
+        $scope.loadUserImage(contextUsername);
         $scope.getLikes();
       });
     };
