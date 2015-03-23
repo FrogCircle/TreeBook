@@ -3,8 +3,13 @@
 angular.module('mean.articles')
 
 //UserController for userProfile page
+<<<<<<< HEAD
 .controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage', 'UserLikes',
   function($scope, $upload, UserImage, GetUserMessages, Global, TreeImage, UserLikes){
+=======
+.controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage',
+  function($scope, $upload, UserImage, GetUserMessages, Global, TreeImage){
+>>>>>>> Added like functionality to profile page
     $scope.global = Global;
     $scope.likes = [];
     $scope.anyLikes = false;
