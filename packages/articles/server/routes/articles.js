@@ -62,6 +62,6 @@ module.exports = function(Articles, app, auth) {
   app.route('/user/image').post(function(req, res) {});
   app.route('/treelike').post(articles.insertLikes);
   app.route('/treelikes').post(articles.getUserLikes);
-  app.route('/userlikes').get(articles.insertLikes);
+  app.route('/userlikes').post(articles.getTreeLikes);
 
 };

@@ -3,14 +3,25 @@
 angular.module('mean.articles')
 
 //UserController for userProfile page
-.controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage',
-  function($scope, $upload, UserImage, GetUserMessages, Global, TreeImage){
+.controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage', 'UserLikes',
+  function($scope, $upload, UserImage, GetUserMessages, Global, TreeImage, UserLikes){
     $scope.global = Global;
+    $scope.likes = [];
+    $scope.anyLikes = false;
 
     //watch for image file upload
     $scope.$watch('files', function () {  // user controller
       $scope.upload($scope.files);
     });
+
+    $scope.getLikes = function(){
+      UserLikes.getLikes($scope.user.name, function(likes){
+        $scope.likes = likes;
+        if (likes.length !== 0){
+          $scope.anyLikes = true;
+        }
+      });
+    };
 
     //upload image file
     $scope.upload = function (files) { // user controller
@@ -56,7 +67,6 @@ angular.module('mean.articles')
         $scope.user = {};
         $scope.user.messages = messages;
         $scope.user.messages.forEach(function(message){
-          console.log(message);
           TreeImage.loadTreeImage(message.treeid, function(url){
             message.imageUrl = url;
           });
@@ -64,6 +74,7 @@ angular.module('mean.articles')
 
         $scope.user.name = $scope.global.user.name;
         $scope.loadUserImage($scope.global.user.username);
+        $scope.getLikes();
       });
     };
 
