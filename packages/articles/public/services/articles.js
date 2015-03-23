@@ -31,9 +31,13 @@ angular.module('mean.articles')
  */
 .factory('TreeData', ['Trees', '$stateParams',
   function(Trees, $stateParams){
-    var getTree = function(){
+    var getTree = function(cb){
       return Trees
         .get({ treeId: $stateParams.treeId }, function(t){
+          // optional callback to set a paramter in messages only after load
+          if (cb){
+            cb(t);
+          }
           return t;
         });
     };
