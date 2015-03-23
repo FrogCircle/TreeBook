@@ -45,11 +45,12 @@ angular.module('mean.users')
       var treeLikes = [];
       $http.post('/userlikes', {username: username})
       .success(function(data){
-        console.log(data);
         data.forEach(function(treeLike){
-          console.log(12345);
-          if (treeLikes.indexOf(treeLike.treeName) === -1){
-            treeLikes.push(treeLike.treeName);
+          if (treeLikes.indexOf(treeLike.name) === -1){
+            treeLikes.push({
+              name: treeLike.name,
+              id:  treeLike.treeid
+            });
           }
         });
         cb(treeLikes);

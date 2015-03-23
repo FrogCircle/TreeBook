@@ -8,6 +8,7 @@ angular.module('mean.articles')
     $scope.global = Global;
     $scope.likes = [];
     $scope.anyLikes = false;
+    $scope.imagesLoaded = false;
 
     //watch for image file upload
     $scope.$watch('files', function () {  // user controller
@@ -15,12 +16,13 @@ angular.module('mean.articles')
     });
 
     $scope.getLikes = function(){
-      UserLikes.getLikes($scope.user.name, function(likes){
+      UserLikes.getLikes($scope.global.user.username, function(likes){
         $scope.likes = likes;
         if (likes.length !== 0){
           $scope.anyLikes = true;
         }
       });
+
     };
 
     //upload image file
@@ -71,6 +73,7 @@ angular.module('mean.articles')
             message.imageUrl = url;
           });
         });
+        $scope.imagesLoaded = true;
 
         $scope.user.name = $scope.global.user.name;
         $scope.loadUserImage($scope.global.user.username);
