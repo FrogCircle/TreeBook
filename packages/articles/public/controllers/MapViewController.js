@@ -25,6 +25,20 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
   function($scope, $q, uiGmapGoogleMapApi, TreeData, Search) {
     $scope.resolved = false;
 
+    var searchNearTrees = function(center){
+      $scope.nearTrees = [];
+      return $q.when(center).then(function(center){
+        Search.getNearTrees().get(center, function(results){
+          for(var i = 0, size = results.length; i < size; i = i + 1){
+            var tmp = {};
+            tmp.id = results[i].treeid;
+            tmp.coords = {latitude: results[i].latitude, longitude: results[i].longitude};
+            $scope.nearTrees.push(tmp);
+          }
+        });
+      });
+    };
+
     // Promise assign the latitude and longitude to the $scope
     // $scope.resolved is used for the ng-if
     var onLoad = function(data){
@@ -50,6 +64,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
           }
         };
         $scope.resolved = true;
+        searchNearTrees(mapCenter)
       });
     };
 
