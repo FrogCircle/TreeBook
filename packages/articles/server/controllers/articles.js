@@ -130,10 +130,13 @@ exports.searchTrees = function(req, res) {
   pg.connect(conString, function(err, client, done) {
     console.log('in search trees');
     console.log(err);
-    var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
-      'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
-      '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
+    var selectTrees = 'SELECT tree.name, tree.treeid, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
       'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies LIKE $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
+
+    // var selectTrees = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
+    //   'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
+    //   '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
+    //   'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies LIKE $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
     client.query(selectTrees, [searchNum, searchString, offset], function(error, results) {
       console.log('error', error);
       //console.log('results', results);
