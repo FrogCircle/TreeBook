@@ -10,6 +10,7 @@ angular.module('mean.articles')
     $scope.anyLikes = false;
     $scope.imagesLoaded = false;
     var contextUsername = $stateParams.userId;
+    $scope.isProfileOwner = (contextUsername === $scope.global.user.username);
 
     //watch for image file upload
     $scope.$watch('files', function () {  // user controller
