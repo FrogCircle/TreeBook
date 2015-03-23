@@ -25,13 +25,6 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
   function($scope, $q, uiGmapGoogleMapApi, TreeData, Search) {
     $scope.resolved = false;
 
-    //Search the near tree and assign the results for markers use
-    // var nearTreeSearch = function(treeLoc){
-    //   Search.getNearTrees.get({ search: treeLoc }, function(results){
-    //     $scope.nearTrees = results;
-    //   });
-    // };
-
     // Promise assign the latitude and longitude to the $scope
     // $scope.resolved is used for the ng-if
     var onLoad = function(data){
