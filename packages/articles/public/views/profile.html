@@ -31,10 +31,14 @@
       <div class="angular-google-map-container" data-ng-controller="MapViewController">
         <div data-ng-if="resolved">
           <ui-gmap-google-map center="map.center" zoom="map.zoom">
+            <!-- center tree -->
             <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
             </ui-gmap-marker>
+
+            <!-- nearby trees -->
             <ui-gmap-marker data-ng-repeat="m in nearTrees" coords="m.coords" idkey="m.id">
             </ui-gmap-marker>
+
           </ui-gmap-google-map>
         </div>
       </div>
