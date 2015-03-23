@@ -3,8 +3,8 @@
 angular.module('mean.articles')
 
 //UserController for userProfile page
-.controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage', 'UserLikes',
-  function($scope, $upload, UserImage, GetUserMessages, Global, TreeImage, UserLikes){
+.controller('UserController', ['$scope', '$stateParams', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage', 'UserLikes',
+  function($scope, $stateParams, $upload, UserImage, GetUserMessages, Global, TreeImage, UserLikes){
     $scope.global = Global;
     $scope.likes = [];
     $scope.anyLikes = false;
@@ -16,6 +16,7 @@ angular.module('mean.articles')
     });
 
     $scope.getLikes = function(){
+      console.log($stateParams);
       UserLikes.getLikes($scope.global.user.username, function(likes){
         $scope.likes = likes;
         if (likes.length !== 0){
