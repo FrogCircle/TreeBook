@@ -51,8 +51,9 @@ angular.module('mean.articles')
               console.log('error on hand');
             } else {
               $scope.user.uploadError = '';
-              $scope.loadUserImage($scope.image.path);
-              UserImage.saveUserImage(thisUser, $scope.image.path);
+              UserImage.saveUserImage(thisUser, $scope.image.path, function(data) {
+                $scope.loadUserImage(data.username);
+              });
             }
           });
         }
@@ -61,10 +62,11 @@ angular.module('mean.articles')
 
     //load user image in conjunction with factory UserImage
     $scope.loadUserImage = function(username) {
-      var context = $scope.user;
       UserImage.loadUserImage(username, function(imageUrl){
-        context.image = imageUrl;
-      });
+        var random = (new Date()).toString();
+        //append a random string as a param to force ng-src to reload the image
+        $scope.user.image = imageUrl + '?cb=' + random;
+        });
     };
 
     //get All messages from a User and display on user profile page
