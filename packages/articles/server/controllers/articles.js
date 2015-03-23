@@ -223,7 +223,7 @@ exports.getUserLikes = function(req, res) {
     console.log(err);
     var selectLikes = 'SELECT username from likes WHERE treeid = $1;';
     client.query(selectLikes, [treeid], function(error, results) {
-      console.log('results is ', results);
+      // console.log('results is ', results);
       res.send(results.rows);
       done();
     });
