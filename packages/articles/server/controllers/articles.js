@@ -16,7 +16,9 @@ blobSvc.createContainerIfNotExists('userpictures', {publicAccessLevel: 'blob'}, 
 });
 
 /**
- * Get tree data for a single tree (profile view)
+ * Returns tree data for a single tree (profile view). Function expects a treeid.
+ * @param req
+ * @param res
  */
 exports.getTreeData = function(req, res) {
   var treeid = req.params.treeId;
@@ -34,7 +36,9 @@ exports.getTreeData = function(req, res) {
 };
 
 /**
- * Get tree data for 250 trees (list view)
+ * Get tree data for 250 trees (list view).
+ * @param req
+ * @param res
  */
 exports.getAll = function(req, res) {
   pg.connect(conString, function(err, client, done) {
@@ -125,6 +129,7 @@ exports.postMessageFromUser = function(req, res) {
             });
           }
         });
+
       });
     }
   });
@@ -230,7 +235,7 @@ exports.getTreeLikes = function(req, res) {
  * @param res
  */
 exports.getUserLikes = function(req, res) {
-  var treeid = ''+req.body.treeId;
+  var treeid = '' + req.body.treeId;
   pg.connect(conString, function(err, client, done) {
     // console.log(err);
     var selectLikes = 'SELECT username from likes WHERE treeid = $1;';
@@ -318,9 +323,8 @@ exports.findTreesByLocation = function(req, res) {
  * @param req
  * @param res
  */
-exports.getTreeImage = function(req, res){
+exports.getTreeImage = function(req, res) {
   var treeid = req.params.treeId;
-  // console.log('TREE ID', treeid)
   pg.connect(conString, function(err, client, done) {
     // console.log(err);
     var getImage = 'SELECT image.imageurl, image.imagewidth, image.imageheight, image.imagetype FROM image JOIN qspecies ON qspecies.qspeciesid = image.qspeciesid JOIN tree on tree.qspeciesid = qspecies.qspeciesid  WHERE tree.treeid = $1;';
@@ -335,6 +339,13 @@ exports.getTreeImage = function(req, res){
 
 
 //This can be refactored to store image in DB instead of locally in folder
+/**
+ * This function uploads a profile image to the azure cdn.
+ * @param req
+ * @param res
+ * @param imageName
+ * @param cb
+ */
 exports.uploadUserImage = function(req, res, imageName, cb) {
   //packages/articles/server/controllers/test/uploads/
   var localPath = 'packages/theme/public/assets/img/uploads/' + imageName;

@@ -62,6 +62,7 @@
     "passport-local": "1.0.0",
     "passport-twitter": "1.0.2",
     "pg": "^4.3.0",
+    "request": "^2.53.0",
     "serve-favicon": "2.2.0",
     "request": "^2.53.0",
     "swig": "1.4.2",

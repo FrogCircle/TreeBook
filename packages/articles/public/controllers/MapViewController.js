@@ -22,7 +22,15 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
  * MapView Controller to handle the MapView on ProfilePage
  */
 .controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'TreeData', 'Search',
-  function($scope, $q, uiGmapGoogleMapApi, TreeData, Search) {
+    /**
+     *
+     * @param $scope
+     * @param $q
+     * @param uiGmapGoogleMapApi
+     * @param TreeData
+     * @param Search
+     */
+    function($scope, $q, uiGmapGoogleMapApi, TreeData, Search) {
     $scope.resolved = false;
 
     //Promise that retrive the near by tree data based on the location
@@ -43,10 +51,12 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
         });
       });
     };
-
-    // Promise assign the latitude and longitude to the $scope
-    // $scope.resolved is used for the ng-if
-    var onLoad = function(data){
+      /**
+       * Promise assign the latitude and longitude to the $scope, $scope.resolved is used for the ng-if.
+       * @param data
+       * @returns {*}
+       */
+      var onLoad = function(data){
       return $q.when(data).then(function(data){
         var mapCenter = {
           latitude: data.latitude,
