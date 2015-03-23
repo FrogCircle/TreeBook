@@ -178,7 +178,7 @@ exports.insertLikes = function(req, res) {
     console.log(err);
     var insertLikes = 'INSERT INTO likes (username, treeid) values($1, $2)';
     client.query(insertLikes, [username, treeid], function(error, results) {
-      console.log('results is ', results);
+      // console.log('results is ', results);
       res.send(results);
       done();
     });
@@ -191,15 +191,19 @@ exports.insertLikes = function(req, res) {
  * @param res
  */
 exports.getTreeLikes = function(req, res) {
+  /**
+  * Paulo I can see that username is correct in this scope and I can see that it is in the table, but the query
+  * doesn't seem to work. I tried to debug but couldn't get it to work. Could you give it a go?
+  */
   var username = req.body.username;
   pg.connect(conString, function(err, client, done) {
-    console.log(err);
+    console.log('USERNAME IS', username);
     var selectLikes = 'SELECT tree.name, q.qspecies, thumbnail.url, thumbnail.width, thumbnail.height, ' +
       'thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN thumbnail ON ' +
-      '(q.qspeciesid = thumbnail.qspeciesid) JOIN likes ON (tree.treeid = likes.treeid)' + ' WHERE likes.username = $1;';
+      '(q.qspeciesid = thumbnail.qspeciesid) JOIN likes ON (tree.treeid = likes.treeid)' + ' WHERE username = $1;';
     client.query(selectLikes, [username], function(error, results) {
       console.log('results is ', results);
-      res.send(results);
+      res.send(results.rows);
       done();
     });
   });
@@ -212,12 +216,11 @@ exports.getTreeLikes = function(req, res) {
  */
 exports.getUserLikes = function(req, res) {
   var treeid = ''+req.body.treeId;
-  console.log(treeid, 1234, typeof treeid);
   pg.connect(conString, function(err, client, done) {
     console.log(err);
     var selectLikes = 'SELECT username from likes WHERE treeid = $1;';
     client.query(selectLikes, [treeid], function(error, results) {
-      console.log('results is ', results);
+      // console.log('results is ', results);
       res.send(results.rows);
       done();
     });
@@ -242,7 +245,7 @@ exports.insertComments = function(req, res) {
     else {
       var insertComments = 'INSERT INTO comment (comment, username, treeid, messageid, createdat) values ($1, $2, $3, $5, now) RETURNING *;';
       client.query(insertComments, [comment, username, treeid, messageid], function(error, results) {
-        console.log('postCommentFromUser result is ', results.rows);
+        // console.log('postCommentFromUser result is ', results.rows);
         res.json(results.rows);
         done();
       });

@@ -14,15 +14,16 @@
     </div>
     <div class="col-md-7 well">
       <h3 class="no-top-margin" data-userid="{{user.userid}}">{{user.name}}</h3>
-      <h4>Info block 1</h4>
-      <h4>Info block 2</h4>
-
     </div>
   </div>
   <div class="row">
     <div class="col-md-3 col-md-offset-1 well-user">
       <h3>My Forest</h3>
-
+      <div data-ng-repeat="like in likes">
+        <div>
+         {{like}}
+        </div>
+      </div>
     </div>
     <div class="col-md-7">
       <h3>My Comments</h3>

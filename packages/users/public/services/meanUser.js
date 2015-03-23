@@ -36,4 +36,33 @@ angular.module('mean.users')
         loadTreeImage: loadTreeImage,
       };
   }
+])
+
+.factory('UserLikes', ['$http',
+  function($http) {
+
+    var getLikes = function(username, cb){
+      var treeLikes = [];
+      $http.post('/userlikes', {username: username})
+      .success(function(data){
+        console.log(data);
+        data.forEach(function(treeLike){
+          console.log(12345);
+          if (treeLikes.indexOf(treeLike.treeName) === -1){
+            treeLikes.push(treeLike.treeName);
+          }
+        });
+        cb(treeLikes);
+      })
+      .error(function(error){
+        console.log('error getting userlikes');
+      });
+    };
+
+
+    return {
+      getLikes: getLikes,
+    };
+  }
 ]);
+
