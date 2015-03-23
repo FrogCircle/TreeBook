@@ -6,20 +6,24 @@
       <img src="{{tree.imageurl}}" class="profile-tree-image">
     </div>
 
-    <h3 data-treeid="{{tree.treeid}}">{{tree.name}}</h3>
-    <p><strong><span class="species">Species:</span> {{tree.qspecies}}</strong></p>
-    <p><strong>Plotsize:</strong> {{tree.plotsize}}</p>
-    <p><strong>Date planted:</strong> {{tree.plantdate | date:'yyyy-MM-dd'}}</p>
-    <p><strong>Caretaker:</strong> {{tree.qcaretaker}}</p>
+    <h3 class="tree-name" data-treeid="{{tree.treeid}}">{{tree.name}}</h3>
+    <span>
+      <button class="btn btn-success" ng-click="like()" style="margin-bottom: 10px;">Like This Tree</button>
+    </span>
+    <p class="tree-info"><strong><span class="species">Species:</span> {{tree.qspecies}}</strong></p>
+    <p class="tree-info"><strong>Plotsize:</strong> {{tree.plotsize}}</p>
+    <p class="tree-info"><strong>Date planted:</strong> {{tree.plantdate | date:'yyyy-MM-dd'}}</p>
+    <p class="tree-info"><strong>Caretaker:</strong> {{tree.qcaretaker}}</p>
 
   <div class="likes">
-    <button class="btn btn-success" ng-click="like()">Like This Tree</button>
-      <div ng-if='anyLikes'>
-        Users who have liked this tree
+      <div ng-if='anyLikes' style="font-size: 1.3em;">
+        <strong>
+          Users who have liked this tree
+        </strong>
       </div>
     <div data-ng-repeat="like in likes">
       <div>
-       <a ng-href="#!/user/{{like}}">{{like}}</a>
+       <a style="font-size: 1.1em;" ng-href="#!/user/{{like}}">{{like}}</a>
       </div>
     </div>
   </div>
@@ -49,7 +53,7 @@
   </div>
   <div ng-controller="MessagesController" ng-init="getMessages()">
     <div class="row">
-      <div class="col-md-9 col-md-offset-1 well">
+      <div class="col-md-9 col-md-offset-1 well" style="margin-top: 20px;">
         <form name="messageForm" ng-submit="submitMessage()">
           <div class="textarea-holder">
           <textarea style="border-radius: 5px; border: 2px solid #9EBD2E; margin-left: 15px;"
@@ -69,7 +73,17 @@
       <div ng-if="message.imageUrl" class="thumb-container">
         <img ng-src="{{message.imageUrl}}" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
       </div>
-      <span><strong><a ng-href="#!/user/{{message.username}}">{{ message.username }}</a></strong></span><br>
+      <span>
+        <strong>
+          <a ng-href={{message.redirect}}>
+            {{ message.username }}
+          </a>
+        <span ng-if="message.isTree">
+          Tree Response
+        </span>
+        </strong>
+      </span>
+      <br>
       <span style="color:#727272;">{{ message.createdat | date: 'medium' }}</span>
       <p>{{ message.message }}</p>
       <div style="clear:both;"></div>

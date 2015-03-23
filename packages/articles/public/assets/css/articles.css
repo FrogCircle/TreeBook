@@ -116,3 +116,12 @@ ul.articles li:not(:last-child) {
 .no-top-margin {
   margin-top: 0;
 }
+
+.tree-name {
+  display: inline-block;
+  margin-right: 25px;
+}
+
+.tree-info {
+  margin-bottom: 5px;
+}
