@@ -301,11 +301,7 @@ exports.findTreesByLocation = function(req, res) {
   var lowerLatitude = lat - 0.001;
   var lowerLongitude = lng - 0.001;
   pg.connect(conString, function(err, client, done) {
-    // console.log('in location search');
-    // console.log(err);
-    var locationQuery = 'SELECT tree.name, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, ' +
-      'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
-      '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
+    var locationQuery = 'SELECT tree.name, tree.treeid, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
       '(l.latitude BETWEEN $1 AND $2) AND (l.longitude BETWEEN $3 AND $4)';
     client.query(locationQuery, [lowerLatitude, upperLatitude, lowerLongitude, upperLongitude], function(error, results) {
       // console.log('error', error);
