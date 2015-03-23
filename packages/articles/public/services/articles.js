@@ -1,8 +1,18 @@
 'use strict';
 
-// Articles service used for articles REST endpoint
+/**
+ * In this file there are numerous factories that are used to connect the controllers in public to the server.
+ * These factories are used by the controllers and usually get picked up by the server in server/routes/articles.js
+ * TODO: consolidate factories. For example we have 2 facotiries for messages (get and post), when ideally that would
+ * be 1.
+ */
+
+
 angular.module('mean.articles')
 
+/**
+ * Trees factory to handle the routing to the server for basic tree requests
+ */
 .factory('Trees', ['$resource',
   function($resource) {
     return $resource('articles/:treeId', {
@@ -15,11 +25,12 @@ angular.module('mean.articles')
   }
 ])
 
-
-// treeData service to provide tree data
+/**
+ * TreeData factory to expose the getTree method which gets tree data using Trees factory
+ * There is a redundancy in this method as it is called by MapViewController and TreesController, both of which init a request
+ */
 .factory('TreeData', ['Trees', '$stateParams',
   function(Trees, $stateParams){
-    // Save Tree to var
     var getTree = function(){
       return Trees
         .get({ treeId: $stateParams.treeId }, function(t){
@@ -31,7 +42,9 @@ angular.module('mean.articles')
   }
 ])
 
-// GetMessages factory for getting all messages related to a treeid
+/**
+ * GetMessages factory to handle the routing to the server for basic message requests
+ */
 .factory('GetMessages', ['$resource', '$stateParams', 'Global',
   function($resource, $stateParams, Global) {
     return $resource('treemessages/:treeid', {
@@ -45,21 +58,9 @@ angular.module('mean.articles')
   }
 ])
 
-// GetUserMessages factory for getting all messages posted by a user
-.factory('GetUserMessages', ['$resource', '$stateParams',
-  function($resource, $stateParams) {
-    return $resource('usermessages/:username', {
-      treeid: '@_username'
-    }, {
-      get: {
-        method: 'GET',
-        isArray: true
-      }
-    });
-  }
-])
-
-// Message factory for posting usermessage
+/**
+ * Messages factory to handle the posting of messages to the server
+ */
 .factory('Messages',
   function($resource, $stateParams) {
     return $resource('usermessages', {}, {
@@ -71,7 +72,9 @@ angular.module('mean.articles')
   }
 )
 
-// UserImage factory for persisting user photo
+/**
+ * User Image factory to get images for usernames. Uses data storage to avoid redundant server calls
+ */
 .factory('UserImage', ['$http',
   function($http, $stateParams) {
     var imageStore = {};
@@ -107,13 +110,23 @@ angular.module('mean.articles')
   }
 ])
 
+/**
+ * Likes factory to handle the
+ */
 .factory('Likes', ['$http',
   function($http) {
 
+    /**
+     * getLikes function to get user likes uses storage to avoid multiple likes
+     * Ideally that redundancy would be handled in SQL.
+     */
     var getLikes = function(treeId, cb){
+      // The callback here is to asynchronously save this data to the necissary $scope
       var userLikes = [];
       $http.post('/treelikes', {treeId: treeId})
       .success(function(data){
+        // iterating through to find redundant user likes. 1 user can like a tree multiple times,
+        // but it should only show once on the page.
         data.forEach(function(userLike){
           if (userLikes.indexOf(userLike.username) === -1){
             userLikes.push(userLike.username);
@@ -126,7 +139,12 @@ angular.module('mean.articles')
       });
     };
 
+
+    /**
+     * saveLike function to handle the posting of likes to the server
+     */
     var saveLike = function(username, treeId, cb){
+      // the callback is to asynchronously call getLikes in the controller
       $http.post('/treelike', {username: username, treeId: treeId})
       .success(function(data){
         console.log('success saving like');
@@ -138,6 +156,7 @@ angular.module('mean.articles')
     };
 
     return {
+      // exposing the functions to the controllers.
       getLikes: getLikes,
       saveLike: saveLike
     };

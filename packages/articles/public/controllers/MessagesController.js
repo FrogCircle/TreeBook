@@ -2,15 +2,22 @@
 
 angular.module('mean.articles')
 
-//Handles sumbit message and get all messages on tree profile page
+
+/**
+ * Handles sumbit message and get all messages on tree profile page
+ */
 .controller('MessagesController',['$scope','Messages', 'Global','GetMessages',
                                   'TreeData', '$stateParams', 'UserImage',
   function($scope, Messages, Global, GetMessages, TreeData, $stateParams, UserImage){
+
+    // $scope.global is necissary to get user information
     $scope.global = Global;
-    console.log('Global is ', Global);
+    // the TreeData factory handles the basic tree data. It is in the services folder.
     $scope.tree = TreeData.getTree();
 
-    //Post message to database from single tree profile view
+    /**
+     * Post message to database from single tree profile view
+     */
     $scope.submitMessage = function() {
       var message = $scope.inputMessage;
       var username = $scope.global.user.username;
@@ -21,6 +28,7 @@ angular.module('mean.articles')
         treeid: treeid
       };
 
+      // Messages is a factory that in services/articles.js
       Messages.save(body, function(data) {
         var newMessage = data[0];
         //change date format for each message to readable format
@@ -34,6 +42,7 @@ angular.module('mean.articles')
 
         $scope.messages.push(newMessage);
 
+        // UserImage is a factory in services/articles.js
         UserImage.loadUserImage(newMessage.username, function(url){
           console.log(url, 'here');
           newMessage.imageUrl = url;
@@ -43,11 +52,16 @@ angular.module('mean.articles')
       });
     };
 
-    //get All messages for a Tree and display on tree profile page
+    /**
+     * get All messages for a Tree and display on tree profile page
+     */
     $scope.getMessages = function() {
+      // GetMessage is a factory in services/articles.js
       GetMessages.get({ treeid: $stateParams.treeId }, function(messages) {
         $scope.messages = messages;
         $scope.messages.forEach(function(message){
+          // UserImage is a factory in services/articles.js
+          // It is called for each message to get the url of the users picture
           UserImage.loadUserImage(message.username, function(url){
             message.imageUrl = url;
           });

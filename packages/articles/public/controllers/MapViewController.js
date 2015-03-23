@@ -1,13 +1,15 @@
 'use strict';
 
-/*
-  Controller that handle the map display, get the lat and lng data and
-  display the map on the profile.html
-  currently need maker to be added
-*/
+/**
+ * Controller that handle the map display, get the lat and lng data and
+ * display the map on the profile.html
+ * currently need maker to be added
+ */
 angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
 
-//Configure tha google map api
+/**
+ * Configure tha google map api
+ */
 .config(['uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApi){
   uiGmapGoogleMapApi.configure({
       //provide api key if available
@@ -16,7 +18,9 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
   });
 }])
 
-//set up the map view ctrl
+/**
+ * set up the map view ctrl
+ */
 .controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'TreeData',
   function($scope, $q, uiGmapGoogleMapApi, TreeData) {
     $scope.resolved = false;
