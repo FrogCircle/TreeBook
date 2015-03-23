@@ -18,7 +18,9 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
   });
 }])
 
-//set up the map view ctrl
+/**
+ * MapView Controller to handle the MapView on ProfilePage
+ */
 .controller('MapViewController', ['$scope', '$q', 'uiGmapGoogleMapApi', 'TreeData', 'Search',
   function($scope, $q, uiGmapGoogleMapApi, TreeData, Search) {
     $scope.resolved = false;
