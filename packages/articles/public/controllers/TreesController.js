@@ -33,6 +33,7 @@ angular.module('mean.articles')
       // It determines the tree by looking at the $stateparams
       TreeData.getTree().$promise.then(function(tree){
         $scope.tree = tree;
+        console.log(tree);
         $scope.getLikes();
       });
     };
