@@ -299,6 +299,24 @@ exports.findTreesByLocation = function(req, res) {
   });
 };
 
+/**
+ * Return an image for a tree. This function takes a treeid.
+ * @param req
+ * @param res
+ */
+exports.getTreeImage = function(req, res){
+  var treeid = req.body.treeid;
+  pg.connect(conString, function(err, client, done) {
+    console.log(err);
+    var getImage = 'SELECT image.imageurl, image.imagewidth, image.imageheight, image.imagetype FROM image JOIN qspecies ON qspecies.qspeciesid = image.qspeciesid JOIN tree on tree.qspeciesid = qspecies.qspeciesid  WHERE image.treeid = $1;';
+    client.query(getImage, [treeid], function(error, results) {
+      console.log('results is ', results);
+      res.send(results);
+      done();
+    });
+  });
+};
+
 
 //This can be refactored to store image in DB instead of locally in folder
 exports.uploadUserImage = function(req, res, imageName, cb) {
