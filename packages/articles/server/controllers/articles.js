@@ -284,10 +284,10 @@ exports.findTreesByLocation = function(req, res) {
   console.log('find by loc');
   var lat = parseFloat(req.query.latitude);
   var lng = parseFloat(req.query.longitude);
-  var upperLongitude = lng + 0.0005;
-  var upperLatitude = lat + 0.0005;
-  var lowerLatitude = lat - 0.0005;
-  var lowerLongitude = lng - 0.0005;
+  var upperLongitude = lng + 0.001;
+  var upperLatitude = lat + 0.001;
+  var lowerLatitude = lat - 0.001;
+  var lowerLongitude = lng - 0.001;
   pg.connect(conString, function(err, client, done) {
     console.log('in location search');
     console.log(err);
