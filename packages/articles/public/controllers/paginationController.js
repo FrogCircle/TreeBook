@@ -68,14 +68,13 @@ angular.module('mean.articles')
       Search.getLocation(searchString).then(function(location){
         console.log('check location in bound');
         console.log(location);
-        //Weird place, is a function to be called
+        //Weird place, is a function to be called location.lat()
         var lat = location.lat();
         var lng = location.lng();
         if(lng <= -122.368107024455 && lng >= -122.511257155794 && lat <= 37.8103949467147 && lat >=  37.5090039879895) {
           searchByLocation(lat, lng).$promise.then(function(results){
             paginateTree(results);
           });
-
         } else {
           //search by name
           searchByName(searchString).$promise.then(function(results){
