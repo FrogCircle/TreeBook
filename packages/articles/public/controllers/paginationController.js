@@ -2,11 +2,12 @@
 
 angular.module('mean.articles')
 
-// Handles Pagination on list page
+/**
+ * Handles Pagination on list page
+ */
 .controller('PaginationDemoCtrl', ['$scope', 'Trees', 'Search',
   function($scope, Trees, Search) {
     $scope.totalItems = 8;
-    // For some reason the number of pages will be totalItems / 8
     var itemsPerPage = 25;
     $scope.currentPage = 1;
 
@@ -50,6 +51,9 @@ angular.module('mean.articles')
       });
     };
 
+    /**
+     * function to handle the page setting
+     */
     $scope.setPage = function (pageNo) {
       $scope.currentPage = pageNo;
     };

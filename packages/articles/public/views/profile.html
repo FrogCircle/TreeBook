@@ -1,4 +1,5 @@
 <section data-ng-controller="TreesController" data-ng-init="findOne()">
+
   <div class="row">
   <div class="col-md-4 col-md-offset-1">
     <div class="profile-image-div">
@@ -7,10 +8,23 @@
 
     <h3 data-treeid="{{tree.treeid}}">{{tree.name}}</h3>
     <p><strong><span class="species">Species:</span> {{tree.qspecies}}</strong></p>
-    <h4>Info block 1</h4>
     <p><strong>Plotsize:</strong> {{tree.plotsize}}</p>
     <p><strong>Date planted:</strong> {{tree.plantdate | date:'yyyy-MM-dd'}}</p>
     <p><strong>Caretaker:</strong> {{tree.qcaretaker}}</p>
+
+  <div class="likes">
+    <button class="btn btn-success" ng-click="like()">Like This Tree</button>
+      <div ng-if='anyLikes'>
+        Users who have liked this tree
+      </div>
+    <div data-ng-repeat="like in likes">
+      <div>
+       {{like}}
+      </div>
+    </div>
+  </div>
+
+
   </div>
   <div class="col-md-5" style="height: 365px;">
     <div class="text-center" style="float: right;">
@@ -28,7 +42,7 @@
   </div>
   </div>
   <div ng-controller="MessagesController" ng-init="getMessages()">
-    <div class="row ">
+    <div class="row">
       <div class="col-md-9 col-md-offset-1 well">
         <form name="messageForm" ng-submit="submitMessage()">
           <div class="textarea-holder">
@@ -36,7 +50,7 @@
                     name="message-input"
                     type="text" placeholder="Get to know a tree"
                     cols="110" rows="3"
-                    ng-model="message">
+                    ng-model="inputMessage">
 
           </textarea>
           <input type="submit" value="Submit" class="btn message-button" ng-disabled="messageForm.$invalid">
@@ -46,10 +60,10 @@
     </div>
 
     <div class="row col-md-10 col-lg-offset-1 message" data-ng-repeat="message in messages | orderBy:'-createdat'">
-      <div class="thumb-container">
-        <img src="theme/assets/img/cypress1.jpg" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
+      <div ng-if="message.imageUrl" class="thumb-container">
+        <img ng-src="{{message.imageUrl}}" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
       </div>
-      <span><strong>{{ message.username }}</strong></span><br>
+      <span><strong><a ng-href="#!/user/{{message.username}}">{{ message.username }}</a></strong></span><br>
       <span style="color:#727272;">{{ message.createdat | date: 'medium' }}</span>
       <p>{{ message.message }}</p>
       <div style="clear:both;"></div>

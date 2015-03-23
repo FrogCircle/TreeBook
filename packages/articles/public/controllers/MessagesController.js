@@ -2,17 +2,24 @@
 
 angular.module('mean.articles')
 
-//Handles sumbit message and get all messages on tree profile page
-.controller('MessagesController',['$scope','Messages', 'Global',
-                                 'GetMessages', 'TreeData', '$stateParams',
-  function($scope, Messages, Global, GetMessages, TreeData, $stateParams){
+
+/**
+ * Handles sumbit message and get all messages on tree profile page
+ */
+.controller('MessagesController',['$scope','Messages', 'Global','GetMessages',
+                                  'TreeData', '$stateParams', 'UserImage',
+  function($scope, Messages, Global, GetMessages, TreeData, $stateParams, UserImage){
+
+    // $scope.global is necissary to get user information
     $scope.global = Global;
-    console.log('Global is ', Global);
+    // the TreeData factory handles the basic tree data. It is in the services folder.
     $scope.tree = TreeData.getTree();
 
-    //Post message to database from single tree profile view
+    /**
+     * Post message to database from single tree profile view
+     */
     $scope.submitMessage = function() {
-      var message = $scope.message;
+      var message = $scope.inputMessage;
       var username = $scope.global.user.username;
       var treeid = $scope.tree.treeid;
       var body = {
@@ -20,6 +27,8 @@ angular.module('mean.articles')
         username: username,
         treeid: treeid
       };
+
+      // Messages is a factory that in services/articles.js
       Messages.save(body, function(data) {
         var newMessage = data[0];
         //change date format for each message to readable format
@@ -30,21 +39,34 @@ angular.module('mean.articles')
         };
         newMessage.createdat = date.toLocaleDateString('en-us', options);
         //async load new message to DOM. Loads to end of message list
-        $scope.messages.push(data[0]);
-        //reset message form to empty
-        $scope.message = '';
+
+        $scope.messages.push(newMessage);
+
+        // UserImage is a factory in services/articles.js
+        UserImage.loadUserImage(newMessage.username, function(url){
+          console.log(url, 'here');
+          newMessage.imageUrl = url;
+        });
+
+        $scope.inputMessage = '';
       });
     };
 
-    //get All messages for a Tree and display on tree profile page
+    /**
+     * get All messages for a Tree and display on tree profile page
+     */
     $scope.getMessages = function() {
-      //$scope.global = Global;
-      console.log('Global is ', Global);
-      console.log('in getMessages');
+      // GetMessage is a factory in services/articles.js
       GetMessages.get({ treeid: $stateParams.treeId }, function(messages) {
-        console.log(messages);
         $scope.messages = messages;
-        console.log('$scope.messages is ', $scope.messages);
+        $scope.messages.forEach(function(message){
+          // UserImage is a factory in services/articles.js
+          // It is called for each message to get the url of the users picture
+          UserImage.loadUserImage(message.username, function(url){
+            message.imageUrl = url;
+          });
+        });
       });
     };
+
 }]);

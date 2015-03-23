@@ -1,15 +1,27 @@
 'use strict';
 
 angular.module('mean.articles')
+
 //UserController for userProfile page
-.controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global',
-  function($scope, $upload, UserImage, GetUserMessages, Global){
+.controller('UserController', ['$scope', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage', 'UserLikes',
+  function($scope, $upload, UserImage, GetUserMessages, Global, TreeImage, UserLikes){
     $scope.global = Global;
+    $scope.likes = [];
+    $scope.anyLikes = false;
 
     //watch for image file upload
     $scope.$watch('files', function () {  // user controller
       $scope.upload($scope.files);
     });
+
+    $scope.getLikes = function(){
+      UserLikes.getLikes($scope.user.name, function(likes){
+        $scope.likes = likes;
+        if (likes.length !== 0){
+          $scope.anyLikes = true;
+        }
+      });
+    };
 
     //upload image file
     $scope.upload = function (files) { // user controller
@@ -27,10 +39,7 @@ angular.module('mean.articles')
             console.log('progress: ' + progressPercentage + '% ' +
             evt.config.file.name);
           }).success(function (data, status, headers, config) {
-            console.log('file ' + config.file.name + 'uploaded. Response: ' +
-            console.log('returned data ', data));
             $scope.image = data;
-            console.log('$scope.image is ', $scope.image);
             if( $scope.image.uploadError ) {
               $scope.user.uploadError = $scope.image.uploadError;
               console.log('error on hand');
@@ -45,20 +54,28 @@ angular.module('mean.articles')
     };
 
     //load user image in conjunction with factory UserImage
-    $scope.loadUserImage = function(username) { // user controller
-      $scope.user.image = UserImage.loadUserImage(username);
+    $scope.loadUserImage = function(username) {
+      var context = $scope.user;
+      UserImage.loadUserImage(username, function(imageUrl){
+        context.image = imageUrl;
+      });
     };
 
     //get All messages from a User and display on user profile page
-    $scope.getUserMessages = function($stateParams) { // user controller
+    $scope.getUserMessages = function($stateParams) {
       GetUserMessages.get({ username: $scope.global.user.username }, function(messages) {
-        console.log('$scope.messages is ', messages);
         $scope.user = {};
         $scope.user.messages = messages;
-        $scope.user.name = $scope.global.user.name;
-        //$scope.loadUserImage($scope.global.user.username);
-        $scope.loadUserImage($scope.global.user.imageUrl);
+        $scope.user.messages.forEach(function(message){
+          TreeImage.loadTreeImage(message.treeid, function(url){
+            message.imageUrl = url;
+          });
+        });
 
+        $scope.user.name = $scope.global.user.name;
+        $scope.loadUserImage($scope.global.user.username);
+        $scope.getLikes();
       });
     };
+
 }]);
