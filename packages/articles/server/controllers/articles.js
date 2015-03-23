@@ -106,8 +106,6 @@ exports.postMessageFromUser = function(req, res) {
     console.log('body', body);
     if (!error && response.statusCode === 200) {
       parseString(body, function(error, result) {
-        console.log(result.response.message);
-        console.log(result.response.message[0]);
         pg.connect(conString, function(err, client, done) {
           if (err) {
             console.log('error is', err);
@@ -115,37 +113,22 @@ exports.postMessageFromUser = function(req, res) {
           else {
             var insertMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
             client.query(insertMessages, [message, username, treeid], function(error, results) {
-              console.log('postMessageFromUser result is ', results.rows);
-              returnMessages.push(results.rows);
+              returnMessages.push(results.rows[0]);
               done();
             });
             var insertTreeMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
-            client.query(insertTreeMessages, [result.message, 'unknown', treeid], function(error, results) {
-              console.log(error);
-              console.log('postMessageFromUTree', results.rows);
-              returnMessages.push(results.rows);
+            client.query(insertTreeMessages, [result.response.message[0], 'unknown', treeid], function(error, results) {
+              // console.log(error);
+              returnMessages.push(results.rows[0]);
               res.send(returnMessages);
               done();
             });
           }
         });
-        // console.log(username, message, treeid);
-        pg.connect(conString, function(err, client, done) {
-          if (err) {
-            console.log('error is', err);
-          }
-          else {
-            var insertMessages = 'INSERT INTO message (message, username, treeid, createdat) values ($1, $2, $3, now()) RETURNING *;';
-            client.query(insertMessages, [message, username, treeid], function(error, results) {
-              // console.log('postMessageFromUser result is ', results.rows);
-              res.json(results.rows);
-              done();
-            });
-          }
-        });
-      })
+
+      });
     }
-  })
+  });
 };
 
 /**
