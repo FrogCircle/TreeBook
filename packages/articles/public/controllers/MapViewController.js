@@ -40,7 +40,6 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
             }
             $scope.nearTrees.push(tmp);
           }
-          console.log($scope.nearTrees);
         });
       });
     };
@@ -56,19 +55,6 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
         $scope.map = {center: mapCenter, zoom: 20 };
         searchNearTrees(mapCenter).then(function(){
           console.log('Get the near trees and markers');
-
-          $scope.coordsUpdates = 0;
-          $scope.dynamicMoveCtr = 0;
-
-          //make the marker for the center tree
-          $scope.marker = {
-            id: 1,
-            coords: mapCenter,
-            options: {
-              animation: 1,
-              draggable: true
-            }
-          };
 
           //Changed to resolve once all data are loaded
           $scope.resolved = true;
