@@ -8,14 +8,14 @@
 </div>
 
 <div class="search">
-  <form data-ng-submit="searchTrees()">
+  <form name="searchForm" data-ng-submit="searchTrees()">
     <input type="text" data-ng-model="searchString">
-    <input type="submit">
+    <button data-ng-disabled="searchForm.$invalid" type="submit">Treee!</button>
   </form>
 </div>
 
 <div data-ng-repeat="tree in treees[currentPage]">
-  <a ng-href='/#!/trees/{{tree.treeid}}'>
+  <a ng-href="/#!/trees/{{tree.treeid}}">
     <div class="row tree-row-listview">
         <div class="col-md-4">
           <div class="tree-in-treeview">

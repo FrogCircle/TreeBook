@@ -21,6 +21,7 @@ angular.module('mean.articles')
         $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
       }
       $scope.trees = trees;
+      $scope.searchString = '';
     };
 
     // Search by name based on the search String, async promise
