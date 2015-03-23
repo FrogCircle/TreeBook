@@ -34,6 +34,10 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
             var tmp = {};
             tmp.id = i;
             tmp.coords = {latitude: results[i].latitude, longitude: results[i].longitude};
+            tmp.options = { draggable: false };
+            if(tmp.coords.latitude === center.latitude && tmp.coords.longitude === center.longitude){
+              tmp.options = { animation: 1, draggable: false };
+            }
             $scope.nearTrees.push(tmp);
           }
           console.log($scope.nearTrees);
@@ -72,7 +76,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
       });
     };
 
-    //Load the tree data
+    //Load the tree
     TreeData.getTree().$promise.then(function(tree){
       onLoad(tree);
     });
