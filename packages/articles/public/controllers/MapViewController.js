@@ -72,6 +72,7 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
       });
     };
 
+    //Load the tree data
     TreeData.getTree().$promise.then(function(tree){
       onLoad(tree);
     });
