@@ -57,19 +57,6 @@ angular.module('mean.articles', ['uiGmapgoogle-maps', 'angularFileUpload'])
         searchNearTrees(mapCenter).then(function(){
           console.log('Get the near trees and markers');
 
-          $scope.coordsUpdates = 0;
-          $scope.dynamicMoveCtr = 0;
-
-          //make the marker for the center tree
-          $scope.marker = {
-            id: 1,
-            coords: mapCenter,
-            options: {
-              animation: 1,
-              draggable: true
-            }
-          };
-
           //Changed to resolve once all data are loaded
           $scope.resolved = true;
         });
