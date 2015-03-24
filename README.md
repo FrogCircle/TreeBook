@@ -45,7 +45,15 @@ Express routes the request via packages/articles/server/routes/MessagesControlle
 In packages/articles/server/controllers/articles.js 'postMessagesFromUser' inserts the message into the database
 
 ## Environmental Vars
-TBSECRET - Secret Key for cookies
+TBSECRET                    // Secret Key for cookies
+APPLICATIONID               // ChatBot API
+AZURE_STORAGE_ACCOUNT       // Storage for image uploads
+AZURE_STORAGE_ACCESS_KEY    // Storage for image uploads
+POSTGRES                    // SQL DB with tree data
+TBEMAIL                     // Email for reset password
+TBPASS                      // Email for reset password
+NODE_ENV                    // Env
+
 
 ## License
 We believe that mean should be free and easy to integrate within your existing projects so we chose [The MIT License](http://opensource.org/licenses/MIT)
