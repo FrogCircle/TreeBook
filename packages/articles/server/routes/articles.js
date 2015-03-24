@@ -33,7 +33,7 @@ module.exports = function(Articles, app, auth) {
         var newFileName = req.files.file[0].name;
         if(!fileTooLarge) {
           articles.uploadUserImage(req, res, newFileName, function() {
-            file.path = 'https://treebooktest.blob.core.windows.net/userpictures/' + newFileName;
+            file.path = 'http://dinizcdnstorage.blob.core.windows.net/userpictures/' + newFileName;
             //file param is actually an object with the path as a property
             res.send(file);
             //delete file from local uploads folder
