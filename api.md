@@ -2,9 +2,11 @@
 
 ##TREE DATA
 <pre>
-/articles               GET (PG) get some Tree Data for 250 trees
-/articles/:treeId       GET (PG) gets a tree data by ID
-/treeimage/:treeId      GET (PG) gets tree imgurl by ID
+/articles               GET  (PG) get some Tree Data for 250 trees
+/articles/:treeId       GET  (PG) gets a tree data by ID
+/treeimage/:treeId      GET  (PG) gets tree imgurl by ID
+
+/articles/new           POST (PG) adds a new tree to the database
 </pre>
 
 ##MESSAGES (Trees/Users)
@@ -19,7 +21,7 @@
 ##USER DATA
 <pre>
 
-/user/:id               N/A  Express automatically parses userid from any query
+/user/:username         GET  (mongo) fetch a user's information based on username
 /userimage              POST (mongo) upsert user imageurl in db
 /userimage/*            GET  (mongo) fetch user's profile imgurl
 
