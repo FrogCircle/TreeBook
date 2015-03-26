@@ -19,6 +19,9 @@ angular.module('mean.articles')
       function($scope, $stateParams, $upload, UserImage, GetUserMessages, Global, TreeImage, UserLikes, UserInfo) {
       $scope.global = Global;
       $scope.likes = [];
+      $scope.user = {};
+      $scope.user.updates = [{status: 'i like trees'}];
+      console.log($scope.user.updates);
       $scope.anyLikes = false;
       $scope.imagesLoaded = false;
       var contextUsername = $stateParams.userId;
@@ -28,6 +31,8 @@ angular.module('mean.articles')
       $scope.$watch('files', function() {  // user controller
         $scope.upload($scope.files);
       });
+
+
 
       $scope.getLikes = function() {
         console.log($stateParams);
@@ -93,7 +98,6 @@ angular.module('mean.articles')
        */
       $scope.getUserMessages = function($stateParams) {
         GetUserMessages.get({username: contextUsername}, function(messages) {
-          $scope.user = {};
           $scope.user.messages = messages;
           $scope.user.messages.forEach(function(message) {
             TreeImage.loadTreeImage(message.treeid, function(url) {
@@ -108,15 +112,30 @@ angular.module('mean.articles')
         });
       };
 
+
       /**
        * get UserInfo
-       * 
+       * @param user with name property
        */
        $scope.getUserInfo = function(user) {
+        console.log('getting stuff', user.name);
         UserInfo.get(user.name)
           .then(function (res) {
-            console.log(res.data);
+            console.log('before loading', $scope.user);
+            $scope.user.updates = res.data.updates;
+            console.log('finish loading', $scope.user);
           });
        };
 
+      $scope.init = function () {
+        $scope.getUserMessages();
+        $scope.getUserInfo({name: contextUsername});
+      };
+
+      $scope.updateStatus = function (user, message) {
+        UserInfo.post(user.name, message)
+          .then(function (res) {
+            $scope.user.updates.push(res.data);
+          });
+        };
     }]);

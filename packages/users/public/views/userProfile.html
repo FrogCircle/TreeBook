@@ -1,22 +1,41 @@
-<section data-ng-controller="UserController" data-ng-init="getUserMessages()">
+<section data-ng-controller="UserController" data-ng-init="init()">
+
   <button ng-click='getUserInfo(user)'>CLICK ME</button>
+
+  <div class='col-md-7'>
+    STATUS UPDATES
+    <ul>
+      <li ng-repeat = "update in user.updates">{{update.status}}</li>
+    </ul>
+  </div>
+
   <div class="row">
     <div class="col-md-3 col-md-offset-1">
+
       <div class="profile-image-div">
         <img ng-src="{{user.image}}" class="profile-user-image">
       </div>
+
       <div ng-if="isProfileOwner" style="text-align: center;">
         <button class="btn btn-default" ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">
           Upload Image
         </button>
         <div style="color:red;" ng-if="user.uploadError">{{user.uploadError}}</div>
 
+        <form ng-submit="updateStatus(user, status)">
+          {{status}}
+          <input type='text' ng-model='status' placeholder='I Love Trees~'>
+          <button>CLICK ME</button>
+        </form>
       </div>
+
     </div>
+
     <div class="col-md-7 well">
       <h3 class="no-top-margin"> {{user.name}}</h3>
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-3 col-md-offset-1 well-user">
       <h3>My Forest</h3>
@@ -26,6 +45,7 @@
         </div>
       </div>
     </div>
+
     <div class="col-md-7" style="margin-top: -180px;">
       <h3>My Comments</h3>
       <div data-ng-repeat="message in user.messages | orderBy:'-createdat'">
@@ -39,7 +59,4 @@
       </div>
     </div>
   </div>
-
-
-  
 </section>

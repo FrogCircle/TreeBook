@@ -92,8 +92,17 @@ angular.module('mean.users')
       });
     };
 
+    var post = function (username, status) {
+      return $http({
+        url: '/users/' + username + '/status/',
+        method:'POST',
+        data: {status: status}
+      });
+    };
+
     return {
-      get: get
+      get: get,
+      post: post
     };
   }
 ]);
