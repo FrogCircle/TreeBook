@@ -6,6 +6,8 @@ var parseString = require('xml2js').parseString;
 var conString = 'postgres://' + process.env.POSTGRES + '/postgres';
 var retryOperations = new azure.ExponentialRetryPolicyFilter();
 var blobSvc = azure.createBlobService().withFilter(retryOperations);
+var async = require('async');
+
 blobSvc.createContainerIfNotExists('userpictures', {publicAccessLevel: 'blob'}, function(error, result, response) {
   if (!error) {
     console.log(result);
@@ -361,3 +363,54 @@ exports.uploadUserImage = function(req, res, imageName, cb) {
 };
 
 
+/**
+ * Inserts a New Tree into DB with provided information.
+ * @param req
+ * @param res
+ *
+ * TODO: Hook up tree api to Angular Add Tree Form
+ */
+exports.addTree = function (req, res, next) {
+  var locationQuery = "INSERT INTO location (xcoord, ycoord , latitude, longitude) select $1, $2, $3, $4 WHERE NOT EXISTS (SELECT xcoord FROM location WHERE xcoord = $1 and ycoord = $2);";
+  var treeQuery = "INSERT INTO tree (name, qspeciesid, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, locationid) SELECT 'tree', (select distinct qspeciesid from qspecies where qspecies = $1 limit 1), $2, $3, $4, $5, $6, $7, $8, $9, (select distinct locationid from location where xcoord = $10 limit 1) WHERE NOT EXISTS (SELECT treeid FROM tree WHERE treeid = $9);";
+  var qspeciesQuery = "INSERT INTO qspecies (qspecies) SELECT $1 WHERE NOT EXISTS (SELECT qspecies FROM qspecies WHERE qspecies = $1);";
+  var tree = JSON.parse(body);
+  pg.connect(conString, function (err, client, done) {
+    console.log('nothing is inserted yet make sure the data is being passed in first', tree);
+
+
+
+    var longitude = tree.location.longitude || '9999';
+    var latitude = tree.location.latitude || '9999';
+    var xcoord = tree.xcoord || '9999';
+    var ycoord = tree.ycoord || '9999';
+
+    client.query(locationQuery, [xcoord, ycoord, latitude, longitude], function (error, results) {
+      //console.log("Finished location inserts!", error, results);
+      done();
+    });
+
+    var qspecies = tree.qspecies,
+
+    client.query(qspeciesQuery, [tree.qspecies], function (error, results) {
+      //console.log("Finished tree inserts!", error, results);
+      done();
+    });
+
+    var treeid = tree.treeid;
+    var siteorder = tree.siteorder || 9999;
+    var qsiteinfo = tree.qsiteinfo || 'unknown';
+    var qcaretaker = tree.qcaretaker || 'unknown';
+    var plantdate = tree.plantdate || new Date(0);
+    var dbh = tree.dbh || 999;
+    var plotsize = tree.plotsize || "unknown";
+    var permitnotes = tree.permitnotes || "unknown";
+
+    client.query(treeQuery, [name, qspecies, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, xcoord], function (error, results) {
+      //console.log("Finished tree inserts!", error, results);
+      done();
+      client.end();
+    });
+
+  });
+}
