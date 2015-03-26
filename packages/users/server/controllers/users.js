@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+  Update = mongoose.model('Update'),
   User = mongoose.model('User'),
   async = require('async'),
   config = require('meanio').loadConfig(),
@@ -125,10 +126,63 @@ exports.user = function(req, res, next, id) {
 };
 
 /**
+ * Find user by username
+*/
+
+exports.getUserInfo = function(req, res, next) {
+  var username = req.url.split('/')[2];
+  User
+    .findOne({
+      username: username
+    }, function (err, user) {
+      if( err ) {
+        console.log('could not find a user by their username');
+        return err;
+      } else {
+        console.log('found a user by their username', user);
+        var result = {
+          _id: true,
+          username: true,
+          name: true,
+          imageUrl: true,
+          updates: true
+        };
+
+        for (var key in user) {
+          if (result[key]) {
+            result[key] = user[key];
+          }
+        }
+        
+        res.json(result);
+      }
+    });
+};
+
+/**
+ * Update user status message
+ */
+exports.updateStatus = function(req, res, next) {
+  var username = req.url.split('/')[2];
+  var status = req.body.status;
+  var update = new Update({status: status});
+  User
+    .findOne({
+      username: username
+    }, function (err, user) {
+      user.updates.push(update);
+      user.save();
+      console.log('add user update');
+      res.json(update);
+    });
+};
+
+
+/**
  * Update user profile image url
  */
 exports.updateImageUrl = function(req, res, cb) {
-  console.log('req.body in imageUrl', req.body);
+  //console.log('req.body in imageUrl', req.body);
   var username = req.body.username;
   var url = req.body.imageUrl;
   User
@@ -138,7 +192,7 @@ exports.updateImageUrl = function(req, res, cb) {
       user.imageUrl = url;
       user.save();
       if( err ) {
-        console.log('error updating ImageUrl in mongoDB for user', err);
+        // console.log('error updating ImageUrl in mongoDB for user', err);
         return err;
       } else {
         res.json({username: user.username, url: url });
@@ -156,7 +210,7 @@ exports.getImageUrl = function(req, res, next) {
       username: username
     }, function(err, user){
       if (user){
-        console.log('user data is ', user);
+        //console.log('user data is ', user);
         res.send(user.imageUrl);
       } else{
         res.send('theme/assets/img/icons/user-icon.png');

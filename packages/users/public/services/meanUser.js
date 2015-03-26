@@ -81,5 +81,29 @@ angular.module('mean.users')
       }
     });
   }
+])
+
+.factory('UserInfo', ['$http',
+  function($http) {
+    var get = function (username) {
+      return $http({
+        url: '/users/' + username,
+        method: 'GET'
+      });
+    };
+
+    var post = function (username, status) {
+      return $http({
+        url: '/users/' + username + '/status/',
+        method:'POST',
+        data: {status: status}
+      });
+    };
+
+    return {
+      get: get,
+      post: post
+    };
+  }
 ]);
 

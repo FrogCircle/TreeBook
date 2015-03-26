@@ -21,7 +21,9 @@
 ##USER DATA
 <pre>
 
-/user/:username         GET  (mongo) fetch a user's information based on username
+/user/:username         GET  (mongo) fetch a user's document based on username
+/user/:username/status  POST (mongo) insert a status update in the user's document
+
 /userimage              POST (mongo) upsert user imageurl in db
 /userimage/*            GET  (mongo) fetch user's profile imgurl
 

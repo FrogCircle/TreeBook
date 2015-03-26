@@ -39,6 +39,22 @@ var escapeProperty = function(value) {
 };
 
 /**
+ * Update Schema
+ */
+var UpdateSchema = new Schema({
+  status: {
+    type: String,
+    required: true,
+    get: escapeProperty
+  },
+  updated: { 
+    type: Date, 
+    default: Date.now
+  }
+});
+
+
+/**
  * User Schema
  */
 
@@ -78,6 +94,7 @@ var UserSchema = new Schema({
     type: String,
     default: ''
   },
+  updates: [UpdateSchema],
   salt: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
@@ -183,4 +200,5 @@ UserSchema.methods = {
   }
 };
 
+mongoose.model('Update', UpdateSchema);
 mongoose.model('User', UserSchema);
