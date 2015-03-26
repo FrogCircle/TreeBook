@@ -20,8 +20,8 @@ angular.module('mean.articles')
       $scope.global = Global;
       $scope.likes = [];
       $scope.user = {};
-      $scope.user.updates = [{status: 'i like trees'}];
-      console.log($scope.user.updates);
+      $scope.user.updates = [];
+      $scope.user.status = '';
       $scope.anyLikes = false;
       $scope.imagesLoaded = false;
       var contextUsername = $stateParams.userId;
@@ -115,26 +115,34 @@ angular.module('mean.articles')
 
       /**
        * get UserInfo
-       * @param user with name property
+       * @user object with name property
        */
-       $scope.getUserInfo = function(user) {
-        console.log('getting stuff', user.name);
+       $scope.getUserInfo = function(user) {        
         UserInfo.get(user.name)
-          .then(function (res) {
-            console.log('before loading', $scope.user);
-            $scope.user.updates = res.data.updates;
-            console.log('finish loading', $scope.user);
+          .then(function (res) {            
+            $scope.user.updates = res.data.updates;            
           });
        };
 
+       /**
+        * Initialize data for status and messages
+        * 
+        */
       $scope.init = function () {
         $scope.getUserMessages();
         $scope.getUserInfo({name: contextUsername});
       };
 
+      /**
+       * Inserts a status update in db and adds return value to user.updates
+       * @user object with name property
+       * @message string
+       */
       $scope.updateStatus = function (user, message) {
+        console.log(message);
         UserInfo.post(user.name, message)
           .then(function (res) {
+            $scope.user.status = '';
             $scope.user.updates.push(res.data);
           });
         };

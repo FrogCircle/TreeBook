@@ -136,7 +136,7 @@ exports.getUserInfo = function(req, res, next) {
       username: username
     }, function (err, user) {
       if( err ) {
-        console.log('error updating ImageUrl in mongoDB for user', err);
+        console.log('could not find a user by their username');
         return err;
       } else {
         console.log('found a user by their username', user);
@@ -171,8 +171,8 @@ exports.updateStatus = function(req, res, next) {
       username: username
     }, function (err, user) {
       user.updates.push(update);
-      console.log(status, user);
       user.save();
+      console.log('add user update');
       res.json(update);
     });
 };

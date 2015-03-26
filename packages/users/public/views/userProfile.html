@@ -1,14 +1,5 @@
 <section data-ng-controller="UserController" data-ng-init="init()">
 
-  <button ng-click='getUserInfo(user)'>CLICK ME</button>
-
-  <div class='col-md-7'>
-    STATUS UPDATES
-    <ul>
-      <li ng-repeat = "update in user.updates">{{update.status}}</li>
-    </ul>
-  </div>
-
   <div class="row">
     <div class="col-md-3 col-md-offset-1">
 
@@ -21,18 +12,25 @@
           Upload Image
         </button>
         <div style="color:red;" ng-if="user.uploadError">{{user.uploadError}}</div>
-
-        <form ng-submit="updateStatus(user, status)">
-          {{status}}
-          <input type='text' ng-model='status' placeholder='I Love Trees~'>
-          <button>CLICK ME</button>
-        </form>
       </div>
 
     </div>
 
     <div class="col-md-7 well">
-      <h3 class="no-top-margin"> {{user.name}}</h3>
+      <h3 class="no-top-margin">{{user.name}}</h3>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='col-md-7'>
+      <form ng-submit="updateStatus(user, user.status)">
+        <input type='text' ng-model='user.status' plawceholder='I Love Trees~'>
+        <button>CLICK ME</button>
+      </form>
+      STATUS UPDATES
+      <ul>
+        <li ng-repeat="update in user.updates">{{update.status}}</li>
+      </ul>
     </div>
   </div>
 
@@ -41,7 +39,7 @@
       <h3>My Forest</h3>
       <div ng-repeat="like in likes">
         <div>
-         <a ng-href="#!/trees/{{like.id}}">{{ like.name }}</a>
+         <a ng-href="#!/trees/{{like.id}}">{{like.name}}</a>
         </div>
       </div>
     </div>
@@ -53,8 +51,8 @@
           <img src="{{message.imageUrl.imageurl}}" width="75" height="75" style="float:left; margin: 0 7px 7px 0;"/>
         </div>
         <span><strong><a ng-href="#!/trees/{{message.treeid}}">{{ message.name }}</a></strong></span><br>
-        <span style="color:#727272;">{{ message.createdat | date: 'medium' }}</span>
-        <p>{{ message.message }}</p>
+        <span style="color:#727272;">{{message.createdat | date: 'medium'}}</span>
+        <p>{{message.message}}</p>
         <div style="clear:both;"></div>
       </div>
     </div>
