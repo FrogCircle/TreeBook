@@ -41,6 +41,9 @@ module.exports = function(MeanUser, app, auth, database, passport) {
       });
     });
 
+  app.route('/users/:user')
+    .get(users.getUserInfo);
+
   // Save user profile url in mongo db
   app.route('/userimage')
     .post(users.updateImageUrl);
