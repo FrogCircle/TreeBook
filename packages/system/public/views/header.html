@@ -42,4 +42,26 @@
           </li>
         </ul>
     </div>
+
+
+
+
+    <div class="chat-button" ng-click="toggleChat();">
+        <span>{{chatPanelStatus}}</span>
+    </div>
+
+
+    <div class="chat" data-ng-controller="ChatController" ng-if="chatToggle">
+       <form ng-submit="sendMessage(msg)">
+           <input type="text" ng-model="msg" placeholder="start chatting here">
+       </form>
+       <ul>
+           <li ng-repeat="message in messages | reverse;" class="message-container">
+             <span class="chat-photo"><img ng-src="{{message.from.imageUrl}}" alt="user image" width="30px" height="30px"></span>
+             <span class="chat-username">{{message.from.name}}</span><br>
+             &nbsp;&nbsp;<span class="chat-message">{{message.content}}</span>
+           </li>
+       </ul> 
+    </div>
+
 </div>
