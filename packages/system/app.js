@@ -18,6 +18,7 @@ SystemPackage.register(function(app, auth, database) {
   SystemPackage.routes(app, auth, database);
 
   SystemPackage.aggregateAsset('css', 'common.css');
+  SystemPackage.aggregateAsset('js', 'chat.js');
   SystemPackage.angularDependencies(['ui.router', 'mean-factory-interceptor']);
 
   // The middleware in config/express will run before this code
