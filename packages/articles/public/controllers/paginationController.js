@@ -5,7 +5,7 @@ angular.module('mean.articles')
 /**
  * Handles Pagination on list page
  */
-  .controller('PaginationDemoCtrl', ['$scope', '$state', 'Trees', 'Search',
+  .controller('PaginationDemoCtrl', ['$scope', '$state', 'Trees', 'Search', '$http',
     /**
      *
      * @param $scope
@@ -13,13 +13,26 @@ angular.module('mean.articles')
      * @param Trees
      * @param Search
      */
-    function($scope, $state, Trees, Search) {
+    function($scope, $state, Trees, Search, $http) {
       $scope.totalItems = 8;
       var itemsPerPage = 25;
       $scope.currentPage = 1;
       // $scope.trees is an array of arrays. Each subarray is one page which contains tree objects
       $scope.treees = [];
+      $scope.newTree = {};
 
+      $scope.addTree = function(){
+        $http.get('https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY')
+        .success(function(data, status, headers, config) {
+          console.log(data);
+            // this callback will be called asynchronously
+            // when the response is available
+          })
+        .error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+          });
+      };
       //Factor out the pagination function to be reused for all the methods
       /**
        *
