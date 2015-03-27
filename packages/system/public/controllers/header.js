@@ -36,5 +36,47 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
       };
     });
 
+    $scope.chatToggle = false;
+    $scope.chatPanelStatus = 'Show Chat'
+
+    $scope.toggleChat = function (){
+      if($scope.chatToggle){
+        $scope.chatToggle = false;
+        $scope.chatPanelStatus = 'Show Chat'
+
+      } else {
+        $scope.chatToggle = true;
+        $scope.chatPanelStatus = 'Hide Chat'
+      }
+    }
+
   }
-]);
+]).controller('ChatController', ['$scope', '$firebaseArray', 'Global', function($scope, $firebaseArray, Global){
+
+
+  var ref = new Firebase("https://flickering-torch-2529.firebaseio.com/treeChat");
+
+
+  $scope.messages = $firebaseArray(ref);
+
+
+
+  var placeHolder = 'system/assets/img/placeholder.png'
+  $scope.sendMessage = function(msg){
+    console.log(Global.user);
+    Global.user.imageUrl = Global.user.imageUrl || placeHolder;
+    console.log()
+    $scope.messages.$add({
+      from: Global.user,
+      content: msg
+    });
+
+    $scope.msg = ''
+  };
+
+
+}]).filter('reverse', function(){
+  return function(items){
+    return items.slice().reverse()
+  };
+})

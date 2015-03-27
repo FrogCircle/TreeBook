@@ -21,7 +21,9 @@
         "bower_components/ng-file-upload-shim/angular-file-upload.min.js",
 
         "maps.googleapis.com/maps/api/js?sensor=false",
-        "bower_components/angular-google-maps/dist/angular-google-maps.js"
+        "bower_components/angular-google-maps/dist/angular-google-maps.js",
+        "bower_components/firebase/firebase.js",
+        "bower_components/angularfire/dist/angularfire.min.js"
       ]
     }
   }

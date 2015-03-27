@@ -14,6 +14,8 @@
     "underscore": "~1.8.2",
     "angular-google-maps": "~2.0.16",
     "ng-file-upload": "~3.2.4",
-    "ng-file-upload-shim": "~3.2.4"
+    "ng-file-upload-shim": "~3.2.4",
+    "firebase": "~2.2.3",
+    "angularfire": "~1.0.0"
   }
 }
