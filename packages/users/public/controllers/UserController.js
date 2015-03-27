@@ -89,7 +89,9 @@ angular.module('mean.articles')
           var random = (new Date()).toString();
           //append a random string as a param to force ng-src to reload the image
           $scope.user.image = imageUrl + '?cb=' + random;
-          $scope.user.imageUrl = $scope.user.imageUrl ? $scope.user.imageUrl: "https://s-media-cache-ak0.pinimg.com/136x136/d0/d0/4c/d0d04c2afbc78f100bbc1f0387829943.jpg";
+          $scope.user.imageUrl = $scope.user.imageUrl ? 
+                                  $scope.user.imageUrl :
+                                  'https://s-media-cache-ak0.pinimg.com/136x136/d0/d0/4c/d0d04c2afbc78f100bbc1f0387829943.jpg';
         });
       };
 
