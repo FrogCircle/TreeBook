@@ -371,7 +371,9 @@ exports.uploadUserImage = function(req, res, imageName, cb) {
  */
 exports.addTree = function (req, res, next) {
   var locationQuery = 'INSERT INTO location (xcoord, ycoord , latitude, longitude) select $1, $2, $3, $4 WHERE NOT EXISTS (SELECT xcoord FROM location WHERE xcoord = $1 and ycoord = $2);';
-  var treeQuery = 'INSERT INTO tree (name, qspeciesid, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, locationid) SELECT \'tree\', (select distinct qspeciesid from qspecies where qspecies = $1 limit 1), $2, $3, $4, $5, $6, $7, $8, $9, (select distinct locationid from location where xcoord = $10 limit 1) WHERE NOT EXISTS (SELECT treeid FROM tree WHERE treeid = $9);';
+
+  var treeQuery = 'INSERT INTO tree (name, qspeciesid, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, locationid) SELECT $1, (select distinct qspeciesid from qspecies where qspecies = $2 limit 1), $3, $4, $5, $6, $7, $8, $9, $10, (select distinct locationid from location where xcoord = $11 limit 1) WHERE NOT EXISTS (SELECT treeid FROM tree WHERE treeid = $10);';
+
   var qspeciesQuery = 'INSERT INTO qspecies (qspecies) SELECT $1 WHERE NOT EXISTS (SELECT qspecies FROM qspecies WHERE qspecies = $1);';
   var tree = req.body;
   pg.connect(conString, function (err, client, done) {
@@ -397,7 +399,7 @@ exports.addTree = function (req, res, next) {
     });
 
     var name = tree.name;
-    var treeid = tree.treeid;
+    var treeid = tree.treeid || 500002;
     var siteorder = tree.siteorder || 9999;
     var qsiteinfo = tree.qsiteinfo || 'unknown';
     var qcaretaker = tree.qcaretaker || 'unknown';
@@ -405,7 +407,7 @@ exports.addTree = function (req, res, next) {
     var dbh = tree.dbh || 999;
     var plotsize = tree.plotsize || 'unknown';
     var permitnotes = tree.permitnotes || 'unknown';
-
+                            //name, qspeciesid, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, locationid
     client.query(treeQuery, [name, qspecies, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, xcoord], function (error, results) {
       console.log('Finished tree inserts!', error, results);
       done();
