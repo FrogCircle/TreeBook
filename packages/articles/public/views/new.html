@@ -1,0 +1,29 @@
+ADD A NEW TREE
+
+<section data-ng-controller="AddTreeController">
+
+  <form ng-submit="addTree(tree)">
+    <div class='form-group'>
+      <label>Name</label>
+      <input type='text' placeholder="" ng-model="tree.name" class='form-control'></input>
+    </div>
+    <div class='form-group'>
+      <label>Species</label>
+      <input type='text' placeholder="" ng-model="tree.qspecies" class='form-control'></input>
+    </div>
+<!--     <div class='form-group'>
+      <label>xcoord</label>
+      <input type='text' placeholder="" ng-model="tree.xcoord" class='form-control'></input>
+    </div>
+    <div class='form-group'>
+      <label>ycoord</label>
+      <input type='text' placeholder="" ng-model="tree.ycoord" class='form-control'></input>
+    </div> -->
+    <div class='form-group'>
+      <label>location</label>
+      <input type='text' placeholder="" ng-model="tree.location" class='form-control'></input>
+    </div>
+    <button>Submit</button>
+  </form>
+
+</section>

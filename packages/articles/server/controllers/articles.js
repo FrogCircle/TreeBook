@@ -396,6 +396,7 @@ exports.addTree = function (req, res, next) {
       done();
     });
 
+    var name = tree.name;
     var treeid = tree.treeid;
     var siteorder = tree.siteorder || 9999;
     var qsiteinfo = tree.qsiteinfo || 'unknown';
