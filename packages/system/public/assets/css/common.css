@@ -50,3 +50,18 @@ footer p {
 /*.ng-valid.ng-dirty{*/
     /*border-color:#78FA89;*/
 /*}*/
+
+.forest {
+/*    position: absolute;*/
+}
+
+.tree {
+/*    display:block;
+    position: relative;
+    max-height:150px;*/
+}
+
+.tree img {
+/*    max-height:150px;
+    width: 100%;*/
+}

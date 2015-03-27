@@ -70,19 +70,21 @@
 
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="row" ng-repeat="like in likes">
+            <div class="row">
 
-              <div class="col-sm-8">
+              <div class="col-sm-4 forest" ng-repeat="like in likes">
                   <div class="thumbnail">
-                    <img class="forest" ng-src="{{like.imgUrl}}">
+
+                    <img ng-src="{{like.imgUrl}}">
+
+                    <div class="caption">
+                      <h4>{{like.name}}</h4>
+                      <a href="#" class="btn btn-primary" role="button">Like</a>
+                    </div>
                   </div>
               </div>
-              <div class="col-sm-4">
-                <div class="caption">
-                  <h4>{{like.name}}</h4>
-                  <a href="#" class="btn btn-primary" role="button">Like</a>
-                </div>
-              </div>
+              <!-- <div class="col-sm-4">
+              </div> -->
 
             </div>
           </div>
