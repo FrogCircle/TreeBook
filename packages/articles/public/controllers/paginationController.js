@@ -20,19 +20,33 @@ angular.module('mean.articles')
       // $scope.trees is an array of arrays. Each subarray is one page which contains tree objects
       $scope.treees = [];
       $scope.newTree = {};
-
-      $scope.addTree = function(){
-        $http.get('https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY')
-        .success(function(data, status, headers, config) {
-          console.log(data);
-            // this callback will be called asynchronously
-            // when the response is available
+      //'/articles/new'
+      //944 Market St #8, San Francisco, CA 94102
+      $scope.addTree = function(tree){
+        Search.getLocation(tree.address)
+          .then(function (result) {
+            var location = {};
+            location.latitude = result.lat();
+            location.longitude = result.lng();
+            tree.location = location;
+            console.log(tree);
+            return tree;
           })
-        .error(function(data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
+          .then(function (tree){
+            return $http({
+              method: 'POST',
+              url: 'articles/new',
+              data: tree
+            })
+            .then(function (result) {
+              console.log(result);
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
           });
       };
+
       //Factor out the pagination function to be reused for all the methods
       /**
        *

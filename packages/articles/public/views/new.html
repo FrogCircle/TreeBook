@@ -2,7 +2,7 @@ ADD A NEW TREE
 
 <section data-ng-controller="AddTreeController">
 
-  <form ng-submit="addTree(tree)">
+  <form ng-submit="addTree($event, tree)">
     <div class='form-group'>
       <label>Name</label>
       <input type='text' placeholder="" ng-model="tree.name" class='form-control'></input>
