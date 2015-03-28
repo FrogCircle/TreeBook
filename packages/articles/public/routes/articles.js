@@ -55,6 +55,13 @@ angular.module('mean.articles').config(['$stateProvider',
           loggedin: checkLoggedin
         }
       })
+      .state('add tree page', {
+        url: '/trees/new',
+        templateUrl: 'articles/views/new.html',
+        resolve: {
+          loggedin: checkLoggedin
+        }
+      })
       .state('single tree display', {
         url: '/trees/:treeId',
         templateUrl: 'articles/views/profile.html',

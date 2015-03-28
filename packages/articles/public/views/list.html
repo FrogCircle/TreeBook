@@ -22,7 +22,7 @@
     <div class="alert alert-danger animated fadeIn" ng-show="usernameError">{{usernameError}}</div>
     <div class="alert alert-danger animated fadeIn" ng-show="emailError">{{emailError}}</div> -->
     <div class="col-md-6 col-md-offset-2">
-      <form id="tree_form" ng-submit="addTree()">
+      <form id="tree_form" ng-submit="addTree(newTree)">
           <h2>Add New Tree</h2>
 
           <div class="input-wrapper">
@@ -34,14 +34,14 @@
 
           <div class="input-wrapper">
               <input required id="species" placeholder="Species"
-                     ng-model="newTree.species">
+                     ng-model="newTree.qspecies">
 
               <div class="error_message">Please enter a correct info #</div>
           </div>
 
           <div class="input-wrapper">
               <input required id="Address" type="text" name="Address" placeholder="Address"
-                     ng-model="newTree.Address">
+                     ng-model="newTree.address">
 
               <div class="error_message">Please enter a correct info #</div>
           </div>

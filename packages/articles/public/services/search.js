@@ -30,6 +30,7 @@ angular.module('mean.articles')
             var request = {address: target};
             geocoder.geocode(request, function(results, status) {
               // location is found
+              console.log(results);
               if (status === maps.GeocoderStatus.OK) {
                 var location = results[0].geometry.location;
                 resolve(location);
