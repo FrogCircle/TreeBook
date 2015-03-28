@@ -101,7 +101,7 @@ exports.getMessagesForUsers = function(req, res) {
  */
 //
 exports.postMessageFromUser = function(req, res) {
-  // console.log('got into postMessageFromUser');
+  console.log('got into postMessageFromUser');
   var username = req.body.username;
   var message = req.body.message;
   var treeid = req.body.treeid;
@@ -149,7 +149,7 @@ exports.searchTrees = function(req, res) {
   var searchString = typeof search === 'string' ? '%' + search + '%' : 'do not use';
   var searchNum = typeof search === 'number' ? search : 0;
   pg.connect(conString, function(err, client, done) {
-    // console.log('in search trees');
+    console.log('in search trees');
     // console.log(err);
     var selectTrees = 'SELECT tree.name, tree.treeid, q.qspecies, l.latitude, l.longitude, thumbnail.url, thumbnail.width, thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN "location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
       'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies LIKE $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
@@ -158,10 +158,11 @@ exports.searchTrees = function(req, res) {
     //   'thumbnail.height, thumbnail.contenttype FROM qspecies q JOIN tree ON (q.qspeciesid = tree.qspeciesid) JOIN ' +
     //   '"location" l ON (l.locationid = tree.locationid) JOIN thumbnail ON (q.qspeciesid = thumbnail.qspeciesid) WHERE ' +
     //   'tree.treeid = $1 OR tree.name LIKE $2 OR q.qspecies LIKE $2 OR q.qspeciesid = $1 LIMIT 250 OFFSET $3;';
+    console.log(searchNum, searchString, offset);
     client.query(selectTrees, [searchNum, searchString, offset], function(error, results) {
       // console.log('error', error);
       //console.log('results', results);
-      // console.log(results.rows);
+      console.log(results.rows);
       res.json(results.rows);
     });
     done();
@@ -241,7 +242,7 @@ exports.getUserLikes = function(req, res) {
     // console.log(err);
     var selectLikes = 'SELECT username from likes WHERE treeid = $1;';
     client.query(selectLikes, [treeid], function(error, results) {
-      // console.log('results is ', results);
+      console.log('results is ', results);
       res.send(results.rows);
       done();
     });
@@ -266,7 +267,7 @@ exports.insertComments = function(req, res) {
     else {
       var insertComments = 'INSERT INTO comment (comment, username, treeid, messageid, createdat) values ($1, $2, $3, $5, now) RETURNING *;';
       client.query(insertComments, [comment, username, treeid, messageid], function(error, results) {
-        // console.log('postCommentFromUser result is ', results.rows);
+        console.log('postCommentFromUser result is ', results.rows);
         res.json(results.rows);
         done();
       });
@@ -371,15 +372,11 @@ exports.uploadUserImage = function(req, res, imageName, cb) {
  */
 exports.addTree = function (req, res, next) {
   var locationQuery = 'INSERT INTO location (xcoord, ycoord , latitude, longitude) select $1, $2, $3, $4 WHERE NOT EXISTS (SELECT xcoord FROM location WHERE xcoord = $1 and ycoord = $2);';
-
   var treeQuery = 'INSERT INTO tree (name, qspeciesid, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, locationid) SELECT $1, (select distinct qspeciesid from qspecies where qspecies = $2 limit 1), $3, $4, $5, $6, $7, $8, $9, $10, (select distinct locationid from location where xcoord = $11 limit 1) WHERE NOT EXISTS (SELECT treeid FROM tree WHERE treeid = $10);';
-
   var qspeciesQuery = 'INSERT INTO qspecies (qspecies) SELECT $1 WHERE NOT EXISTS (SELECT qspecies FROM qspecies WHERE qspecies = $1);';
   var tree = req.body;
   pg.connect(conString, function (err, client, done) {
     console.log('data rec from client', tree);
-
-
 
     var longitude = tree.location.longitude || '9999';
     var latitude = tree.location.latitude || '9999';
@@ -399,7 +396,7 @@ exports.addTree = function (req, res, next) {
     });
 
     var name = tree.name;
-    var treeid = tree.treeid || 500002;
+    var treeid = tree.treeid;
     var siteorder = tree.siteorder || 9999;
     var qsiteinfo = tree.qsiteinfo || 'unknown';
     var qcaretaker = tree.qcaretaker || 'unknown';
@@ -407,9 +404,12 @@ exports.addTree = function (req, res, next) {
     var dbh = tree.dbh || 999;
     var plotsize = tree.plotsize || 'unknown';
     var permitnotes = tree.permitnotes || 'unknown';
-                            //name, qspeciesid, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, locationid
+
+    console.log(name, qspecies, longitude, latitude);
+
     client.query(treeQuery, [name, qspecies, siteorder, qsiteinfo, qcaretaker, plantdate, dbh, plotsize, permitnotes, treeid, xcoord], function (error, results) {
       console.log('Finished tree inserts!', error, results);
+      res.json(results);
       done();
       client.end();
     });

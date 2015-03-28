@@ -28,7 +28,9 @@ angular.module('mean.articles')
             var location = {};
             location.latitude = result.lat();
             location.longitude = result.lng();
+            tree.treeid = Math.floor(500000 + (Math.random() * 100000));
             tree.location = location;
+            tree.qspecies = 'Tree(s) ::';
             console.log(tree);
             return tree;
           })
@@ -39,7 +41,7 @@ angular.module('mean.articles')
               data: tree
             })
             .then(function (result) {
-              console.log(result);
+              console.log('added new tree', result);
             });
           })
           .catch(function (err) {
@@ -53,10 +55,21 @@ angular.module('mean.articles')
        * @param trees
        */
       var paginateTree = function(trees) {
-        $scope.treees = [];
-        $scope.totalItems = trees.length / itemsPerPage * 8;
-        for (var i = 0; i < $scope.totalItems; i = i + 1) {
-          $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
+
+        $scope.treees = [[]];
+
+        if (trees.length > 8) {
+          $scope.totalItems = Math.ceil(trees.length / itemsPerPage * 8) ;
+          for (var i = 0; i < $scope.totalItems; i = i + 1) {
+            $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
+          }
+        } else {
+          $scope.totalItems = trees.length;
+          var t = [];
+          for (var j = 0; j < trees.length; j = j + 1) {
+            t.push(trees[j]);
+          }
+          $scope.treees.push(t);
         }
         $scope.searchString = '';
       };
@@ -129,6 +142,7 @@ angular.module('mean.articles')
             } else {
               //search by name
               searchByName(searchString).$promise.then(function(results) {
+                console.log(results);
                 paginateTree(results);
               });
             }
