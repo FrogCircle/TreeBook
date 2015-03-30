@@ -5,7 +5,7 @@ angular.module('mean.articles')
 /**
  * Handles Pagination on list page
  */
-  .controller('PaginationDemoCtrl', ['$scope', '$state', 'Trees', 'Search',
+  .controller('PaginationDemoCtrl', ['$scope', '$state', 'Trees', 'Search', '$http',
     /**
      *
      * @param $scope
@@ -13,12 +13,41 @@ angular.module('mean.articles')
      * @param Trees
      * @param Search
      */
-    function($scope, $state, Trees, Search) {
+    function($scope, $state, Trees, Search, $http) {
       $scope.totalItems = 8;
       var itemsPerPage = 25;
       $scope.currentPage = 1;
       // $scope.trees is an array of arrays. Each subarray is one page which contains tree objects
       $scope.treees = [];
+      $scope.newTree = {};
+      //'/articles/new'
+      //944 Market St #8, San Francisco, CA 94102
+      $scope.addTree = function(tree){
+        Search.getLocation(tree.address)
+          .then(function (result) {
+            var location = {};
+            location.latitude = result.lat();
+            location.longitude = result.lng();
+            tree.treeid = Math.floor(500000 + (Math.random() * 100000));
+            tree.location = location;
+            tree.qspecies = 'Tree(s) ::';
+            console.log(tree);
+            return tree;
+          })
+          .then(function (tree){
+            return $http({
+              method: 'POST',
+              url: 'articles/new',
+              data: tree
+            })
+            .then(function (result) {
+              console.log('added new tree', result);
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      };
 
       //Factor out the pagination function to be reused for all the methods
       /**
@@ -26,10 +55,21 @@ angular.module('mean.articles')
        * @param trees
        */
       var paginateTree = function(trees) {
-        $scope.treees = [];
-        $scope.totalItems = trees.length / itemsPerPage * 8;
-        for (var i = 0; i < $scope.totalItems; i = i + 1) {
-          $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
+
+        $scope.treees = [[]];
+
+        if (trees.length > 8) {
+          $scope.totalItems = Math.ceil(trees.length / itemsPerPage * 8) ;
+          for (var i = 0; i < $scope.totalItems; i = i + 1) {
+            $scope.treees.push(trees.slice(i * itemsPerPage, (i + 1) * itemsPerPage));
+          }
+        } else {
+          $scope.totalItems = trees.length;
+          var t = [];
+          for (var j = 0; j < trees.length; j = j + 1) {
+            t.push(trees[j]);
+          }
+          $scope.treees.push(t);
         }
         $scope.searchString = '';
       };
@@ -102,6 +142,7 @@ angular.module('mean.articles')
             } else {
               //search by name
               searchByName(searchString).$promise.then(function(results) {
+                console.log(results);
                 paginateTree(results);
               });
             }

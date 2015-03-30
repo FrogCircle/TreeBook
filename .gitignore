@@ -1,3 +1,4 @@
+.profile
 # --------------------
 # OSX Files
 # --------------------
@@ -103,4 +104,5 @@ modules/views/
 ## File-based project format:
 *.ipr
 *.iws
+
 

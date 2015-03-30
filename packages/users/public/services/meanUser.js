@@ -46,10 +46,12 @@ angular.module('mean.users')
       $http.post('/userlikes', {username: username})
       .success(function(data){
         data.forEach(function(treeLike){
+          console.log(treeLike);
           if (treeLikes.indexOf(treeLike.name) === -1){
             treeLikes.push({
               name: treeLike.name,
-              id:  treeLike.treeid
+              id:  treeLike.treeid,
+              imgUrl: treeLike.url
             });
           }
         });
@@ -80,6 +82,30 @@ angular.module('mean.users')
         isArray: true
       }
     });
+  }
+])
+
+.factory('UserInfo', ['$http',
+  function($http) {
+    var get = function (username) {
+      return $http({
+        url: '/users/' + username,
+        method: 'GET'
+      });
+    };
+
+    var post = function (username, status) {
+      return $http({
+        url: '/users/' + username + '/status/',
+        method:'POST',
+        data: {status: status}
+      });
+    };
+
+    return {
+      get: get,
+      post: post
+    };
   }
 ]);
 

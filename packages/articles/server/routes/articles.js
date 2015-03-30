@@ -51,6 +51,8 @@ module.exports = function(Articles, app, auth) {
 
   app.route('/articles').get(articles.getAll);
   app.route('/articles/:treeId').get(articles.getTreeData);
+  //endpoint to add new tree
+  app.route('/articles/new').post(articles.addTree);
 
   app.route('/usermessages/:userid').get(articles.getMessagesForUsers);
   app.route('/usermessages').post(articles.postMessageFromUser);

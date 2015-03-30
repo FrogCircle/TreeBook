@@ -3,7 +3,7 @@
 angular.module('mean.articles')
 
 //UserController for userProfile page
-  .controller('UserController', ['$scope', '$stateParams', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage', 'UserLikes',
+  .controller('UserController', ['$scope', '$stateParams', '$upload', 'UserImage', 'GetUserMessages', 'Global', 'TreeImage', 'UserLikes', 'UserInfo',
     /**
      *
      * @param $scope
@@ -14,10 +14,14 @@ angular.module('mean.articles')
      * @param Global
      * @param TreeImage
      * @param UserLikes
+     * @param UserInfo
      */
-      function($scope, $stateParams, $upload, UserImage, GetUserMessages, Global, TreeImage, UserLikes) {
+      function($scope, $stateParams, $upload, UserImage, GetUserMessages, Global, TreeImage, UserLikes, UserInfo) {
       $scope.global = Global;
       $scope.likes = [];
+      $scope.user = {};
+      $scope.user.updates = [];
+      $scope.user.status = '';
       $scope.anyLikes = false;
       $scope.imagesLoaded = false;
       var contextUsername = $stateParams.userId;
@@ -27,6 +31,8 @@ angular.module('mean.articles')
       $scope.$watch('files', function() {  // user controller
         $scope.upload($scope.files);
       });
+
+
 
       $scope.getLikes = function() {
         console.log($stateParams);
@@ -83,6 +89,9 @@ angular.module('mean.articles')
           var random = (new Date()).toString();
           //append a random string as a param to force ng-src to reload the image
           $scope.user.image = imageUrl + '?cb=' + random;
+          $scope.user.imageUrl = $scope.user.imageUrl ? 
+                                  $scope.user.imageUrl :
+                                  'https://s-media-cache-ak0.pinimg.com/136x136/d0/d0/4c/d0d04c2afbc78f100bbc1f0387829943.jpg';
         });
       };
 
@@ -92,7 +101,6 @@ angular.module('mean.articles')
        */
       $scope.getUserMessages = function($stateParams) {
         GetUserMessages.get({username: contextUsername}, function(messages) {
-          $scope.user = {};
           $scope.user.messages = messages;
           $scope.user.messages.forEach(function(message) {
             TreeImage.loadTreeImage(message.treeid, function(url) {
@@ -107,4 +115,39 @@ angular.module('mean.articles')
         });
       };
 
+
+      /**
+       * get UserInfo
+       * @user object with name property
+       */
+       $scope.getUserInfo = function(user) {        
+        UserInfo.get(user.name)
+          .then(function (res) {
+            console.log(res.data);
+            $scope.user.updates = res.data.updates;            
+          });
+       };
+
+       /**
+        * Initialize data for status and messages
+        * 
+        */
+      $scope.init = function () {
+        $scope.getUserMessages();
+        $scope.getUserInfo({name: contextUsername});
+      };
+
+      /**
+       * Inserts a status update in db and adds return value to user.updates
+       * @user object with name property
+       * @message string
+       */
+      $scope.updateStatus = function (user, message) {
+        console.log(message);
+        UserInfo.post(user.name, message)
+          .then(function (res) {
+            $scope.user.status = '';
+            $scope.user.updates.push(res.data);
+          });
+        };
     }]);
