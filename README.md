@@ -1,6 +1,11 @@
 # ![TreeBook Logo](https://s3-us-west-1.amazonaws.com/treebookicons/tree-64.png) TreeBook
 
-TreeBook is the definitive social networking site for trees.
+TreeBook is the definitive social networking site for Tree Huggers, Lovers and Enthusiasts.
+
+##Contributors:
+*Greenfield:* Paulo Dniz, Eddie Dolan, Jonah Nisenson, and Eric Liu
+
+*Legacy:* John Zhang, Seunghoon Ko, and Eli Xian
 
 ## Folder structure
 
@@ -34,25 +39,33 @@ Each of articles, system, then and users loosely has the following structure
 
 ```
 
-### Example code flow
+### Code Flow and API
 In order to help you understand the folder structure we will walk through how data flows through the application logic for a specific use.
-
+For detailed API information please refer to the [api readme](api.md).
+<pre>
 When a user posts a message on the tree profile page -
 'SubmitMessage' is invoked in packages/articles/public/controllers/MessagesController.js
 'SubmitMessage' uses the the 'Messages' factory in packages/articles/public/services/articles.js
 A post request is submitted to /usermessages
 Express routes the request via packages/articles/server/routes/MessagesController.js to 'postMessagesFromUser'
 In packages/articles/server/controllers/articles.js 'postMessagesFromUser' inserts the message into the database
+</pre>
+
+
 
 ## Environmental Vars
-TBSECRET                    // Secret Key for cookies
-APPLICATIONID               // ChatBot API
-AZURE_STORAGE_ACCOUNT       // Storage for image uploads
-AZURE_STORAGE_ACCESS_KEY    // Storage for image uploads
-POSTGRES                    // SQL DB with tree data
-TBEMAIL                     // Email for reset password
-TBPASS                      // Email for reset password
-NODE_ENV                    // Env
+Create a .profile bash script that exports the following variables
+```
+#!/bin/sh
+export TBSECRET=""                  #Secret Key for cookies
+export APPLICATIONID=""             #ChatBot API
+export POSTGRES=""                  #SQL DB with tree data
+export AZURE_STORAGE_ACCOUNT=""     #Storage for image uploads 
+export AZURE_STORAGE_ACCESS_KEY=""  #Storage for image uploads
+export TBPASS=""                    #Email for reset password
+export TBEMAIL=""                   #Email for reset password
+export NODE_ENV="DEVELOPMENT"       #For local development only
+```
 
 
 ## License
